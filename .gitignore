@@ -1,0 +1,16 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local tooling
+.codex/
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Ignore outdated reference docs explicitly marked as non-mainline
+PROJECT_DOCS/z02871/

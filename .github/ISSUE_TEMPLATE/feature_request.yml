@@ -1,0 +1,28 @@
+name: Feature request
+description: 提出新功能、新页面或新场景建议
+labels: [enhancement]
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景与目标
+      description: 这个需求要解决什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 建议方案
+      description: 你期望增加什么能力？
+    validations:
+      required: true
+  - type: textarea
+    id: business_value
+    attributes:
+      label: 业务价值
+      description: 对领导汇报、产品方向或落地实施有什么价值？
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考资料
+      description: 可附截图、链接或文档位置

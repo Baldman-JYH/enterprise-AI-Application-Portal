@@ -1,0 +1,28 @@
+name: Bug report
+description: 反馈缺陷、错误或行为异常
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 具体出现了什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 如何复现该问题？
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+      description: 正常情况下应表现为？
+  - type: textarea
+    id: scope
+    attributes:
+      label: 影响范围
+      description: 涉及哪些页面、文档或场景？

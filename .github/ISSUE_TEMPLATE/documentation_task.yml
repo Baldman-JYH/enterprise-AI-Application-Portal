@@ -1,0 +1,23 @@
+name: Documentation task
+description: 跟踪文档整理、汇总、归档和更新任务
+labels: [documentation]
+body:
+  - type: textarea
+    id: target
+    attributes:
+      label: 文档目标
+      description: 这次文档更新想解决什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: 涉及文档
+      description: 需要更新哪些文件？
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 注意事项
+      description: 是否涉及阅读顺序、归档或版本收口？
