@@ -27,47 +27,43 @@
       <article class="hero-card">
         <p class="card-kicker">快捷切换</p>
         <div class="hero-actions">
-          <a class="button" href="../demo-balanced-workspace/">用户工作入口</a>
-          <a class="button secondary" href="../demo-agent-trace/">Agent 执行轨迹</a>
-          <a class="button secondary" href="../demo-mobile/?role=admin">移动端管理员</a>
+          <a class="button" id="adminUserLink" href="../demo-a-c/">用户工作入口</a>
+          <a class="button secondary" id="adminMobileUserLink" href="../demo-mobile/?role=user">移动端用户</a>
+          <a class="button secondary" id="adminMobileAdminLink" href="../demo-mobile/?role=admin">移动端管理员</a>
         </div>
       </article>
     </section>
 
     <section class="metric-grid">
-      <article class="metric-card">
-        <span>今日 Tokens</span>
-        <strong>1.82M</strong>
-        <small>较昨日 +12.4%</small>
-      </article>
-      <article class="metric-card">
-        <span>今日推理成本</span>
-        <strong>¥ 3,240</strong>
-        <small>预算使用率 58%</small>
-      </article>
-      <article class="metric-card">
-        <span>活跃用户</span>
-        <strong>426</strong>
-        <small>覆盖 9 个部门</small>
-      </article>
-      <article class="metric-card">
-        <span>待审批任务</span>
-        <strong>7</strong>
-        <small>高优先级 3 个</small>
-      </article>
-      <article class="metric-card">
-        <span>活跃智能体</span>
-        <strong>14</strong>
-        <small>3 个流程型高频</small>
-      </article>
-      <article class="metric-card">
-        <span>知识命中率</span>
-        <strong>87%</strong>
-        <small>采购、制度场景最佳</small>
-      </article>
+      <article class="metric-card"><span>今日 Tokens</span><strong id="metricTokens">1.82M</strong><small id="metricTokensHint">较昨日 +12.4%</small></article>
+      <article class="metric-card"><span>今日推理成本</span><strong id="metricCost">¥ 3,240</strong><small id="metricCostHint">预算使用率 58%</small></article>
+      <article class="metric-card"><span>活跃用户</span><strong id="metricUsers">426</strong><small id="metricUsersHint">覆盖 9 个部门</small></article>
+      <article class="metric-card"><span>待审批任务</span><strong id="metricApprovals">7</strong><small id="metricApprovalsHint">高优先级 3 个</small></article>
+      <article class="metric-card"><span>活跃智能体</span><strong id="metricAgents">14</strong><small id="metricAgentsHint">3 个流程型高频</small></article>
+      <article class="metric-card"><span>知识命中率</span><strong id="metricHitRate">87%</strong><small id="metricHitRateHint">采购、制度场景最佳</small></article>
     </section>
 
     <section class="dashboard-grid">
+      <article class="panel wide linked-panel">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">跨角色联动</p>
+            <h3 id="sharedTaskTitle">当前共享任务</h3>
+          </div>
+          <span class="badge" id="sharedTaskBadge">实时联动</span>
+        </div>
+        <div class="linked-flow-grid">
+          <div class="linked-flow-main">
+            <p id="sharedTaskText">用户端发起的任务会同步到管理员视角，便于查看审批积压、tokens 消耗和治理风险。</p>
+            <div class="tag-row" id="sharedTaskMeta"></div>
+          </div>
+          <div class="linked-flow-side">
+            <p class="card-kicker">共享任务队列</p>
+            <div id="sharedTaskList" class="stack-list"></div>
+          </div>
+        </div>
+      </article>
+
       <article class="panel">
         <div class="panel-head">
           <div>
@@ -113,6 +109,7 @@
     </section>
   </main>
 
+  <script src="../shared/demo-flow.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>

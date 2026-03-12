@@ -195,3 +195,44 @@ body {
   margin-top: 8px;
   font-size: 22px;
 }
+
+.shared-card p:last-of-type {
+  color: var(--muted);
+  line-height: 1.65;
+}
+.shared-meta,
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.shared-meta {
+  margin-top: 12px;
+}
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fbfbf8;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+.action-row {
+  margin-top: 14px;
+}
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fbfbf8;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+}

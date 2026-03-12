@@ -1136,3 +1136,158 @@ textarea {
 .brand-mark {
   background: linear-gradient(145deg, #202123, #10a37f);
 }
+
+.role-bridge {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 24px 26px;
+}
+.role-bridge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+}
+.role-bridge-copy h3 {
+  margin: 4px 0 0;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+.role-bridge-copy p:last-child {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.role-bridge-meta,
+.role-bridge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.role-bridge-meta {
+  justify-content: end;
+}
+.role-bridge-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(32, 33, 35, 0.08);
+  color: var(--muted);
+  font-size: 13px;
+}
+.bridge-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+@media (max-width: 860px) {
+  .role-bridge {
+    padding: 20px;
+  }
+  .role-bridge-head {
+    display: grid;
+  }
+  .role-bridge-meta {
+    justify-content: start;
+  }
+}
+
+/* Hero-first refinement */
+html,
+body {
+  background: linear-gradient(180deg, #fcfcf9 0%, #f6f7f2 100%);
+}
+body::after {
+  display: none;
+}
+.topbar {
+  padding: 6px 0 8px;
+}
+.landing-hero-shell {
+  max-width: 940px;
+  min-height: calc(100vh - 220px);
+  gap: 20px;
+}
+.hero-copy-centered {
+  gap: 14px;
+}
+.hero-greeting {
+  max-width: 760px;
+  font-size: clamp(48px, 6.4vw, 80px);
+  letter-spacing: -0.05em;
+}
+.hero-subtitle {
+  max-width: 680px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.hero-composer {
+  max-width: 900px;
+  padding: 18px 18px 16px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(32, 33, 35, 0.08);
+  box-shadow: 0 22px 58px rgba(15, 23, 42, 0.08);
+}
+.hero-composer::before {
+  display: none;
+}
+.hero-composer textarea {
+  min-height: 108px;
+  font-size: 18px;
+  line-height: 1.68;
+}
+.hero-composer textarea::placeholder {
+  color: rgba(32, 33, 35, 0.34);
+}
+.composer-toolbar {
+  padding-top: 14px;
+  border-top: 1px solid rgba(32, 33, 35, 0.08);
+}
+.tool-pill {
+  background: #f7f7f4;
+}
+.hero-inline-note {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.hero-hint-bar {
+  display: none;
+}
+.hero-chip-cloud {
+  justify-content: center;
+  gap: 10px;
+}
+.quick-chip {
+  min-height: 40px;
+  padding: 0 16px;
+}
+.role-bridge {
+  max-width: 1120px;
+  margin: 28px auto 0;
+}
+.landing-grid {
+  margin-top: 26px;
+}
+@media (max-width: 860px) {
+  .hero-greeting {
+    font-size: clamp(40px, 11vw, 56px);
+  }
+  .hero-composer {
+    padding: 16px;
+  }
+  .hero-composer textarea {
+    min-height: 96px;
+  }
+}

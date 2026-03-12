@@ -58,6 +58,7 @@
         </div>
       </header>
 
+
       <section class="scene scene-active landing-scene" data-scene="landing">
         <div class="landing-hero-shell">
           <div class="hero-copy hero-copy-centered">
@@ -78,7 +79,7 @@
             </div>
           </div>
 
-          <div class="hero-hint-bar"><span>先对话，再由内部智能体自动拆解任务</span><span>支持会议、采购、制度、周报、差旅、权限</span><span>关键动作保留确认，其他步骤自动执行</span></div>
+          <p class="hero-inline-note">AI 会自动识别意图并调用内部智能体执行，关键动作保留确认，其余步骤自动完成。</p>
 
           <div class="chip-cloud hero-chip-cloud" id="landingChips"></div>
         </div>
@@ -108,6 +109,22 @@
             <div class="approval-card" id="pendingActionCard"></div>
           </section>
         </div>
+
+        <section class="glow-card role-bridge" aria-label="角色联动">
+          <div class="role-bridge-head">
+            <div class="role-bridge-copy">
+              <p class="section-kicker">角色联动</p>
+              <h3 id="roleBridgeTitle">当前任务会同步到管理员与移动端</h3>
+              <p id="roleBridgeText">用户在桌面端发起的任务，会同步给管理员控制台和移动端，便于演示统一入口后的跨角色协作闭环。</p>
+            </div>
+            <div class="role-bridge-meta" id="roleBridgeMeta"></div>
+          </div>
+          <div class="role-bridge-actions">
+            <a class="secondary-btn bridge-link" id="bridgeAdminLink" href="../demo-admin-console/">切到管理员查看</a>
+            <a class="secondary-btn bridge-link" id="bridgeMobileUserLink" href="../demo-mobile/?role=user">手机继续处理</a>
+            <a class="secondary-btn bridge-link" id="bridgeMobileAdminLink" href="../demo-mobile/?role=admin">手机看治理</a>
+          </div>
+        </section>
       </section>
 
       <section class="scene" data-scene="planning">
@@ -220,7 +237,9 @@
     </main>
   </div>
 
+  <script src="../shared/demo-flow.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
+
 
