@@ -9,15 +9,20 @@
 <body>
   <div class="workspace-shell">
     <aside class="history-rail">
-      <div class="brand-block">
-        <p class="eyebrow">Enterprise AI</p>
-        <h1>统一工作入口</h1>
+      <div class="rail-top">
+        <div class="brand-block">
+          <p class="eyebrow">Enterprise AI</p>
+          <div class="brand-lockup">
+            <span class="brand-dot" aria-hidden="true"></span>
+            <span class="brand-title">工作区</span>
+          </div>
+        </div>
+        <button class="primary-btn full-width new-chat-btn" id="newChatBtn" type="button">新建对话</button>
       </div>
-      <button class="primary-btn full-width" id="newChatBtn" type="button">新建对话</button>
 
       <section class="rail-section">
         <div class="section-head compact">
-          <h2>历史对话</h2>
+          <h2>最近对话</h2>
           <span class="meta-text" id="threadCount">0 条</span>
         </div>
         <div class="thread-list" id="threadList"></div>
@@ -93,4 +98,5 @@
   <script src="./app.js"></script>
 </body>
 </html>
+
 
