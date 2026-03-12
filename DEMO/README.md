@@ -12,8 +12,12 @@
 - `移动端视角`
   - `demo-mobile`
 
-统一入口页：
+统一登录页：
 
 - `DEMO/index.html`
+
+登录成功后进入统一导航页：
+
+- `DEMO/portal.html`
 
 如果启用 GitHub Pages，可直接把 `DEMO` 目录发布为静态站点，并通过一个 URL 分享给公司同事。

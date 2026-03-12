@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>企业 AI 门户 Demo 导航</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>企业智能体工作入口 | 统一登录</title>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f7f3;
-      --panel: rgba(255, 255, 255, 0.92);
-      --panel-strong: rgba(252, 252, 249, 0.98);
-      --border: rgba(32, 33, 35, 0.08);
+      --bg: #f7f8f4;
+      --panel: rgba(255, 255, 255, 0.95);
+      --panel-soft: rgba(255, 255, 255, 0.82);
+      --border: rgba(15, 23, 42, 0.08);
       --text: #202123;
-      --muted: #6e6e80;
+      --muted: #667085;
       --accent: #10a37f;
-      --accent-2: #202123;
-      --shadow: 0 18px 60px rgba(15, 23, 42, 0.07);
-      --radius: 28px;
+      --shadow: 0 24px 80px rgba(15, 23, 42, 0.10);
+      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.06);
       font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -25,419 +25,469 @@
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(16, 163, 127, 0.08), transparent 22%),
-        radial-gradient(circle at top right, rgba(0, 0, 0, 0.04), transparent 24%),
-        linear-gradient(180deg, #fcfcf9 0%, #f3f4ee 100%);
+        radial-gradient(circle at 10% 12%, rgba(16, 163, 127, 0.10), transparent 24%),
+        radial-gradient(circle at 88% 18%, rgba(15, 23, 42, 0.05), transparent 18%),
+        linear-gradient(180deg, #fcfcf9 0%, #eef2ea 100%);
     }
-    main {
-      width: min(1240px, calc(100vw - 40px));
+    .shell {
+      width: min(1220px, calc(100vw - 40px));
       margin: 0 auto;
-      padding: 40px 0 72px;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(380px, 460px);
+      gap: 28px;
+      align-items: center;
+      padding: 32px 0;
     }
-    .hero,
-    .card,
-    .table-shell,
-    .reading-strip {
-      border-radius: 32px;
-      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+    .story,
+    .login-card {
+      border-radius: 36px;
       border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
       box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
     }
-    .hero {
-      padding: 42px;
+    .story {
+      position: relative;
+      overflow: hidden;
+      padding: 44px;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .eyebrow,
+    .story::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(16, 163, 127, 0.12), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.05), transparent 28%);
+      pointer-events: none;
+    }
+    .brand,
     .section-kicker,
-    .card strong {
-      margin: 0;
+    .metric strong,
+    .capsule strong {
       font-size: 12px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--accent);
     }
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 4.8vw, 56px);
-      line-height: 1.06;
-      letter-spacing: -0.03em;
-      max-width: 860px;
+    .brand-block,
+    .story-copy,
+    .story-bottom {
+      position: relative;
+      z-index: 1;
     }
-    .hero p:last-of-type {
-      margin: 18px 0 0;
-      max-width: 760px;
+    .brand-block {
+      display: grid;
+      gap: 10px;
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .brand-note {
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 540px;
     }
-    .link-strip,
-    .reading-tags,
-    .meta,
-    .actions,
-    .table-badges {
+    .story-copy h1 {
+      margin: 18px 0 16px;
+      max-width: 680px;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+    .story-copy p {
+      margin: 0;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.85;
+    }
+    .story-grid {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .metric {
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+    .metric span {
+      display: block;
+      margin-top: 10px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .metric p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .story-bottom {
+      display: grid;
+      gap: 16px;
+    }
+    .capsule-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-    .link-strip { margin-top: 24px; }
-    .pill,
-    .reading-tags span,
-    .meta span,
-    .table-badge {
-      padding: 10px 14px;
+    .capsule {
+      padding: 14px 16px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(32, 33, 35, 0.08);
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(15, 23, 42, 0.08);
       color: var(--muted);
       font-size: 13px;
+      box-shadow: var(--shadow-soft);
     }
-    .hint {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 13px;
+    .capsule strong {
+      display: block;
+      margin-bottom: 4px;
+      letter-spacing: 0.12em;
     }
-    .section { margin-top: 28px; }
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
-      margin-bottom: 18px;
+    .login-card {
+      padding: 32px;
+      display: grid;
+      gap: 22px;
+      align-self: center;
     }
-    .section-head h2 {
-      margin: 0;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-    }
-    .section-head p { margin: 6px 0 0; color: var(--muted); }
-    .reading-strip {
-      padding: 22px 24px;
+    .login-head {
       display: grid;
       gap: 12px;
     }
-    .reading-strip h2 {
+    .login-head h2 {
       margin: 0;
-      font-size: 22px;
-      letter-spacing: -0.02em;
+      font-size: 34px;
+      letter-spacing: -0.04em;
     }
-    .reading-strip p {
+    .login-head p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
+      font-size: 15px;
     }
-    .table-shell {
-      padding: 24px;
-      overflow: auto;
+    .role-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px;
-    }
-    thead th {
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 13px;
+    .role-pill {
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.82);
       color: var(--muted);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border);
-      background: rgba(247, 247, 243, 0.9);
-    }
-    tbody td {
-      padding: 18px 16px;
-      vertical-align: top;
-      border-bottom: 1px solid rgba(32, 33, 35, 0.06);
-      line-height: 1.7;
-    }
-    tbody tr:last-child td { border-bottom: 0; }
-    .table-title {
-      display: grid;
-      gap: 6px;
-    }
-    .table-title strong {
-      font-size: 17px;
-      letter-spacing: -0.01em;
-    }
-    .table-sub {
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .priority {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 12px;
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(16, 163, 127, 0.1);
-      color: var(--accent);
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
     }
-    .priority.secondary {
-      background: rgba(32, 33, 35, 0.06);
-      color: var(--muted);
-    }
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-    .card {
-      padding: 24px;
-      backdrop-filter: blur(12px);
-    }
-    .card h3 {
-      margin: 18px 0 10px;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-    }
-    .card p { margin: 0; color: var(--muted); line-height: 1.72; }
-    a.button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 18px;
-      border-radius: 999px;
-      color: #ffffff;
-      text-decoration: none;
-      background: #202123;
-      font-weight: 700;
-      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
-      box-shadow: 0 10px 24px rgba(32, 33, 35, 0.12);
-    }
-    a.button.secondary {
+    .role-pill.active {
+      background: rgba(16, 163, 127, 0.10);
       color: var(--text);
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(32, 33, 35, 0.08);
-      box-shadow: none;
+      border-color: rgba(16, 163, 127, 0.36);
     }
-    a.button:hover { transform: translateY(-1px); }
-    code {
-      padding: 3px 7px;
-      border-radius: 8px;
-      background: rgba(32, 33, 35, 0.06);
+    .role-pill:hover {
+      transform: translateY(-1px);
     }
-    @media (max-width: 860px) {
-      main { width: min(100vw - 24px, 1240px); padding: 24px 0 44px; }
-      .hero, .card, .table-shell, .reading-strip { padding: 20px; }
-      .card-grid { grid-template-columns: 1fr; }
-      .section-head { flex-direction: column; align-items: start; }
+    .login-form {
+      display: grid;
+      gap: 16px;
+    }
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .field input {
+      width: 100%;
+      min-height: 54px;
+      padding: 0 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      background: rgba(255, 255, 255, 0.92);
+      font: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .field input:focus {
+      border-color: rgba(16, 163, 127, 0.45);
+      box-shadow: 0 0 0 4px rgba(16, 163, 127, 0.12);
+    }
+    .input-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .submit-row,
+    .helper-row {
+      display: grid;
+      gap: 12px;
+    }
+    .button {
+      min-height: 54px;
+      border-radius: 18px;
+      border: 0;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+    .button.primary {
+      background: #202123;
+      color: #ffffff;
+      box-shadow: 0 14px 34px rgba(32, 33, 35, 0.14);
+    }
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--text);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+    }
+    .button:hover {
+      transform: translateY(-1px);
+    }
+    .helper-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .helper-card {
+      padding: 14px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.74);
+    }
+    .helper-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .helper-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .login-note {
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(16, 163, 127, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      border: 1px solid rgba(16, 163, 127, 0.12);
+    }
+    .login-note strong {
+      color: var(--text);
+    }
+    .error {
+      min-height: 20px;
+      color: #c2410c;
+      font-size: 13px;
+    }
+    @media (max-width: 1040px) {
+      .shell {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+      .story {
+        min-height: auto;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100vw - 24px, 1220px);
+        padding: 18px 0 24px;
+      }
+      .story,
+      .login-card {
+        padding: 22px;
+        border-radius: 28px;
+      }
+      .story-grid,
+      .helper-row {
+        grid-template-columns: 1fr;
+      }
+      .story-copy h1 {
+        font-size: clamp(36px, 11vw, 54px);
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <section class="hero">
-      <p class="eyebrow">Enterprise AI Portal Demo Hub</p>
-      <h1>先用一张对比表看懂各版本 demo 在回答什么问题，再决定给领导看哪一版。</h1>
-      <p>这个导航页现在不再只是“若干入口链接”，而是把每个 demo 的定位、适合汇报的问题、核心优势和推荐顺序直接展开，方便领导快速筛选。</p>
-      <div class="link-strip">
-        <span class="pill">对话式统一入口</span>
-        <span class="pill">部门工具专区</span>
-        <span class="pill">权限与下载治理</span>
-        <span class="pill">管理员运营控制台</span>
-        <span class="pill">移动端角色切换</span>
+  <main class="shell">
+    <section class="story" aria-label="企业统一登录介绍">
+      <div class="brand-block">
+        <div class="brand">AI-Native Enterprise Workspace</div>
+        <div class="brand-title">企业智能体工作入口</div>
+        <div class="brand-note">统一登录后进入企业 AI 门户导航页，再按角色查看对话式工作入口、管理员治理控制台、移动端体验和多版本方案。</div>
       </div>
-      <p class="hint">对外分享地址：<code>https://baldman-jyh.github.io/enterprise-AI-Application-Portal/</code></p>
-    </section>
 
-    <section class="section">
-      <div class="reading-strip">
-        <p class="section-kicker">建议阅读顺序</p>
-        <h2>给领导汇报时，建议先看“平衡版工作入口”，再看“管理员控制台”，最后补“移动端”。</h2>
-        <p>如果领导先想看“未来首页能不能像 ChatGPT 一样简单”，就先打开极简版；如果领导更关心“AI 怎么真的把流程跑起来”，就优先看执行轨迹版。</p>
-        <div class="reading-tags">
-          <span>首看：平衡型企业工作入口版</span>
-          <span>第二看：管理员运营控制台</span>
-          <span>第三看：移动端角色切换版</span>
+      <div class="story-copy">
+        <div class="section-kicker">统一入口，统一权限，统一治理</div>
+        <h1>先登录，再进入企业内部智能体协作空间。</h1>
+        <p>该入口用于承接企业账号认证和门户分发。员工从这里进入智能体工作入口，管理员从这里进入治理与授权视图，形成统一的访问和权限边界。</p>
+        <div class="story-grid">
+          <article class="metric">
+            <strong>对话优先</strong>
+            <span>01</span>
+            <p>统一进入对话式工作入口，减少系统切换和应用查找成本。</p>
+          </article>
+          <article class="metric">
+            <strong>权限清晰</strong>
+            <span>02</span>
+            <p>支持员工、管理员双角色视角，并能衔接部门工具可见与下载策略。</p>
+          </article>
+          <article class="metric">
+            <strong>统一分发</strong>
+            <span>03</span>
+            <p>登录后进入总导航页，集中访问桌面端、移动端和治理控制台。</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="story-bottom">
+        <div class="capsule-row">
+          <div class="capsule"><strong>用户入口</strong>大对话框、任务规划、待确认流程、部门工具专区</div>
+          <div class="capsule"><strong>管理员入口</strong>Token 消耗、工具授权、下载治理、平台告警</div>
+          <div class="capsule"><strong>移动端入口</strong>角色切换、摘要查看、快速发起</div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>版本对比表</h2>
-          <p>直接回答“这一版主要讲什么、适合谁看、优先级如何”。</p>
-        </div>
+    <section class="login-card" aria-label="企业统一登录卡片">
+      <div class="login-head">
+        <div class="section-kicker">Enterprise Sign In</div>
+        <h2>统一登录</h2>
+        <p>登录后进入企业 AI 门户总导航页。当前页面支持员工与管理员两种体验入口。</p>
       </div>
-      <div class="table-shell">
-        <table>
-          <thead>
-            <tr>
-              <th>版本</th>
-              <th>适合回答的问题</th>
-              <th>核心优势</th>
-              <th>更适合谁看</th>
-              <th>推荐优先级</th>
-              <th>入口</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>平衡型企业工作入口版</strong>
-                  <span class="table-sub">桌面主版本 / 最贴近真实落地</span>
-                </div>
-              </td>
-              <td>我们未来的企业 AI 门户首页，整体大概会长什么样？</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">大对话框统一入口</span>
-                  <span class="table-badge">最近任务与待确认</span>
-                  <span class="table-badge">部门工具专区</span>
-                  <span class="table-badge">跨角色联动</span>
-                </div>
-              </td>
-              <td>领导、业务负责人、产品、前端</td>
-              <td><span class="priority">优先看</span></td>
-              <td><a class="button" href="./demo-balanced-workspace/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>极简对话首页版</strong>
-                  <span class="table-sub">最像 ChatGPT 首屏的版本</span>
-                </div>
-              </td>
-              <td>首页是否可以足够简单，让员工一进来就先对话？</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">首屏极简</span>
-                  <span class="table-badge">弱化系统感</span>
-                  <span class="table-badge">保留工具专区轻量版</span>
-                </div>
-              </td>
-              <td>领导、品牌、设计、产品</td>
-              <td><span class="priority secondary">补充看</span></td>
-              <td><a class="button secondary" href="./demo-minimal-chat/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>智能体执行轨迹版</strong>
-                  <span class="table-sub">强调 Planner / Router / Tool 调用</span>
-                </div>
-              </td>
-              <td>AI 不是聊天而已，它内部到底怎么拆任务、怎么调用系统、怎么等确认？</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">多 Agent 轨迹</span>
-                  <span class="table-badge">审批节点可解释</span>
-                  <span class="table-badge">工具资产轨迹补充</span>
-                </div>
-              </td>
-              <td>领导、架构、技术、平台团队</td>
-              <td><span class="priority secondary">按需看</span></td>
-              <td><a class="button secondary" href="./demo-agent-trace/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>管理员运营控制台</strong>
-                  <span class="table-sub">治理 / 成本 / 审批 / 工具授权</span>
-                </div>
-              </td>
-              <td>平台上线后，谁来管 token、成本、审批积压、工具权限和下载分发？</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">Token 与成本</span>
-                  <span class="table-badge">治理告警</span>
-                  <span class="table-badge">部门工具权限控制</span>
-                </div>
-              </td>
-              <td>领导、管理员、平台治理团队</td>
-              <td><span class="priority">优先看</span></td>
-              <td><a class="button" href="./demo-admin-console/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>移动端角色切换版</strong>
-                  <span class="table-sub">用户 / 管理员双视角</span>
-                </div>
-              </td>
-              <td>同事如果直接在手机上看，这个系统是否还能成立？</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">移动端工作入口</span>
-                  <span class="table-badge">管理员摘要</span>
-                  <span class="table-badge">部门工具联动</span>
-                </div>
-              </td>
-              <td>领导、业务同事、移动端用户</td>
-              <td><span class="priority secondary">第三顺位</span></td>
-              <td><a class="button secondary" href="./demo-mobile/">打开 demo</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>快速入口</h2>
-          <p>如果不想先看表，也可以直接从这里点开。</p>
-        </div>
+      <div class="role-pills" id="roleSelector">
+        <button class="role-pill active" type="button" data-role="user">员工账号</button>
+        <button class="role-pill" type="button" data-role="admin">管理员账号</button>
       </div>
-      <div class="card-grid">
-        <article class="card">
-          <strong>推荐 1</strong>
-          <h3>平衡型企业工作入口版</h3>
-          <p>最适合直接汇报，能同时展示大对话框首页、流程闭环、角色联动和部门工具专区。</p>
-          <div class="meta">
-            <span>桌面主版本</span>
-            <span>业务落地感最强</span>
-            <span>适合先演示</span>
-          </div>
-          <div class="actions">
-            <a class="button" href="./demo-balanced-workspace/">打开 demo</a>
-            <a class="button secondary" href="./demo-a-c/">稳定版本</a>
-          </div>
+
+      <form class="login-form" id="loginForm">
+        <div class="field">
+          <label for="accountInput">企业账号</label>
+          <input id="accountInput" name="account" type="text" autocomplete="username" value="zhang.san" />
+          <div class="input-meta" id="accountMeta">默认账号：zhang.san</div>
+        </div>
+        <div class="field">
+          <label for="passwordInput">登录密码</label>
+          <input id="passwordInput" name="password" type="password" autocomplete="current-password" value="Demo@2026" />
+          <div class="input-meta">当前保留登录动作、角色切换和登录后跳转逻辑。</div>
+        </div>
+        <div class="error" id="errorText" aria-live="polite"></div>
+        <div class="submit-row">
+          <button class="button primary" type="submit">登录并进入导航页</button>
+          <button class="button secondary" id="ssoButton" type="button">通过企业 SSO 进入</button>
+        </div>
+      </form>
+
+      <div class="helper-row">
+        <article class="helper-card">
+          <strong>员工账号</strong>
+          <p>zhang.san，登录后可查看桌面端工作入口、部门工具专区和移动端场景。</p>
         </article>
-        <article class="card">
-          <strong>推荐 2</strong>
-          <h3>管理员运营控制台</h3>
-          <p>适合补充“平台治理不是可选项”，特别是 token 消耗、审计、审批积压和工具权限控制。</p>
-          <div class="meta">
-            <span>治理视角</span>
-            <span>成本与风控</span>
-            <span>工具授权</span>
-          </div>
-          <div class="actions">
-            <a class="button" href="./demo-admin-console/">打开 demo</a>
-          </div>
+        <article class="helper-card">
+          <strong>管理员账号</strong>
+          <p>admin.ai，登录后可继续进入治理控制台、工具授权和运营统计模块。</p>
         </article>
-        <article class="card">
-          <strong>补充 1</strong>
-          <h3>极简对话首页版</h3>
-          <p>用来回答“首页能不能更像 ChatGPT”，适合作为视觉方向补充，不建议单独替代主版本汇报。</p>
-          <div class="meta">
-            <span>首页气质验证</span>
-            <span>更轻更简</span>
-            <span>仍带工具专区</span>
-          </div>
-          <div class="actions">
-            <a class="button secondary" href="./demo-minimal-chat/">打开 demo</a>
-          </div>
-        </article>
-        <article class="card">
-          <strong>补充 2</strong>
-          <h3>智能体执行轨迹版</h3>
-          <p>用来回答“AI 不是黑盒”，适合技术型领导或平台团队，强调执行链路和系统调用的可解释性。</p>
-          <div class="meta">
-            <span>Agent 轨迹</span>
-            <span>流程解释</span>
-            <span>资产接入视角</span>
-          </div>
-          <div class="actions">
-            <a class="button secondary" href="./demo-agent-trace/">打开 demo</a>
-          </div>
-        </article>
+      </div>
+
+      <div class="login-note">
+        <strong>登录说明：</strong>当前页面用于表达企业统一认证入口的产品形态。后续可对接企业 AD、OAuth2、OIDC 或单点登录系统。
       </div>
     </section>
   </main>
+
+  <script>
+    (function () {
+      var authKey = "enterprise-ai-demo-auth";
+      var profileKey = "enterprise-ai-demo-profile";
+      var defaultProfiles = {
+        user: { account: "zhang.san", password: "Demo@2026", name: "张三", role: "user" },
+        admin: { account: "admin.ai", password: "Demo@2026", name: "平台管理员", role: "admin" }
+      };
+
+      if (sessionStorage.getItem(authKey)) {
+        window.location.replace("./portal.html");
+        return;
+      }
+
+      var activeRole = "user";
+      var roleSelector = document.getElementById("roleSelector");
+      var accountInput = document.getElementById("accountInput");
+      var passwordInput = document.getElementById("passwordInput");
+      var accountMeta = document.getElementById("accountMeta");
+      var errorText = document.getElementById("errorText");
+      var loginForm = document.getElementById("loginForm");
+      var ssoButton = document.getElementById("ssoButton");
+
+      function applyRole(role) {
+        activeRole = role;
+        var profile = defaultProfiles[role];
+        accountInput.value = profile.account;
+        passwordInput.value = profile.password;
+        accountMeta.textContent = "默认账号：" + profile.account;
+        roleSelector.querySelectorAll(".role-pill").forEach(function (button) {
+          button.classList.toggle("active", button.dataset.role === role);
+        });
+        errorText.textContent = "";
+      }
+
+      roleSelector.addEventListener("click", function (event) {
+        var button = event.target.closest(".role-pill");
+        if (!button) {
+          return;
+        }
+        applyRole(button.dataset.role);
+      });
+
+      function persistAndEnter(profile) {
+        sessionStorage.setItem(authKey, "1");
+        sessionStorage.setItem(profileKey, JSON.stringify(profile));
+        window.location.href = "./portal.html";
+      }
+
+      loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var account = accountInput.value.trim();
+        var password = passwordInput.value.trim();
+        if (!account || !password) {
+          errorText.textContent = "请输入企业账号和密码后再继续。";
+          return;
+        }
+        var profile = defaultProfiles[activeRole];
+        persistAndEnter({
+          account: account,
+          name: profile.name,
+          role: activeRole
+        });
+      });
+
+      ssoButton.addEventListener("click", function () {
+        var profile = defaultProfiles[activeRole];
+        persistAndEnter(profile);
+      });
+
+      applyRole(activeRole);
+    })();
+  </script>
 </body>
 </html>
+
+
