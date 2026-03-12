@@ -554,3 +554,35 @@
   - 管理员看“平台运行、模型消耗、审批积压、风险治理”
 - `移动端` 不适合照搬桌面端布局，应单独以 `mobile-first` 方式设计，优先承接快速发起和摘要查看。
 - `可分享 URL` 对当前项目是必须项，因为 demo 需要给领导和同事异地查看，不能只停留在本机文件预览。
+
+## 2026-03-12 第二十四阶段：复查 GitHub Pages 阻塞原因
+
+### 复查结果
+
+- 已确认当前 GitHub 账户登录有效，仓库页面和设置页均可正常访问。
+- 已确认仓库当前状态为 `Private repository`。
+- 在仓库 Pages 设置页，GitHub 当前直接显示：`Upgrade or make this repository public to enable Pages`。
+- 已确认 `Deploy Demo Pages` workflow 已触发，但执行失败。
+
+### Actions 失败原因
+
+- 失败任务：`Deploy Demo Pages #1`
+- 失败提交：`a79022a`
+- GitHub Actions 注解核心报错为：
+  - `Get Pages site failed. Please verify that the repository has Pages enabled and configured to build using GitHub Actions`
+- 结合 Pages 设置页现状，当前失败的根因不是 workflow 语法，而是仓库未满足启用 Pages 的前置条件。
+
+### 当前结论
+
+- 现在无法直接通过当前仓库生成可分享 Pages URL，根因是：
+  - 仓库是私有仓库
+  - 当前账号 / 仓库条件下，GitHub 不允许直接为它启用 Pages
+- 如果要继续用 GitHub Pages 分享 demo，需满足以下任一条件：
+  1. 将仓库改为 `public`
+  2. 使用支持私有 Pages 的更高等级 GitHub 方案
+  3. 改用其他静态托管方案
+
+### 建议下一步
+
+- 最直接方案：将当前仓库改为 `public`，然后重新启用 / 触发 Pages workflow。
+- 如果不能公开仓库，则建议改用其他可分享静态托管方式，而不是继续卡在 GitHub Pages 上。
