@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业AI门户 Demo - 极简对话版</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Minimal Chat Entrance</p>
+        <h1>企业 AI 对话入口</h1>
+      </div>
+      <a class="top-link" href="../index.html">返回版本导航</a>
+    </header>
+
+    <section class="hero-block">
+      <p class="hero-kicker">先说需求，不先找系统</p>
+      <h2>让一个对话框承接企业内部的大部分工作请求。</h2>
+      <p class="hero-subtitle">这个版本刻意弱化系统感，只保留最少信息密度，适合向领导展示“未来首页是否可以像 ChatGPT 一样简单”。</p>
+    </section>
+
+    <section class="composer-card">
+      <label class="composer-label" for="promptInput">描述你的工作需求</label>
+      <textarea id="promptInput" rows="4">帮我安排明天下午和采购部的项目评审会议，并生成议程。</textarea>
+      <div class="composer-actions">
+        <div class="quick-row" id="quickRow"></div>
+        <button id="runBtn" class="primary-btn">开始处理</button>
+      </div>
+    </section>
+
+    <section class="signal-strip">
+      <div class="signal-pill">统一入口</div>
+      <div class="signal-pill">内部智能体自动分流</div>
+      <div class="signal-pill">关键动作再确认</div>
+    </section>
+
+    <section class="response-grid">
+      <article class="panel summary-panel">
+        <p class="panel-kicker">AI 理解</p>
+        <h3 id="resultTitle">等待输入</h3>
+        <p id="resultIntro">点击“开始处理”后，这里会显示系统对需求的理解和处理摘要。</p>
+      </article>
+
+      <article class="panel steps-panel">
+        <p class="panel-kicker">执行路径</p>
+        <div id="stepList" class="step-list"></div>
+      </article>
+
+      <article class="panel side-panel">
+        <p class="panel-kicker">系统动作</p>
+        <div id="toolList" class="mini-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

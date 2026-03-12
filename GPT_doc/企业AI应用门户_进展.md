@@ -514,3 +514,43 @@
    - [`PROJECT_DOCS/企业AI应用门户_阅读导航.md`](../PROJECT_DOCS/企业AI应用门户_阅读导航.md)
    - [`DEMO/demo-a-c/README.md`](../DEMO/demo-a-c/README.md)
 3. 最后直接从 demo 或新分支开始继续。
+
+## 2026-03-12 第二十三阶段：补齐分享站点、管理员视角与移动端 demo
+
+### 本阶段新增内容
+
+- 新增统一 demo 导航页：[`DEMO/index.html`](../DEMO/index.html)
+  - 作为本地预览和 GitHub Pages 分享入口
+  - 按 `用户视角 / 管理员视角 / 移动端视角` 三条线组织
+- 新增管理员控制台 demo：[`DEMO/demo-admin-console/index.html`](../DEMO/demo-admin-console/index.html)
+  - 承接原始原型中提到的 `tokens`、模型调用、成本、审批积压、活跃智能体、治理告警等模块
+- 新增移动端 demo：[`DEMO/demo-mobile/index.html`](../DEMO/demo-mobile/index.html)
+  - 支持 `用户视角 / 管理员视角` 切换
+  - 适合转发给同事在手机端直接查看
+- 新增 demo 统一说明：[`DEMO/README.md`](../DEMO/README.md)
+- 新增 GitHub Pages 部署工作流：[`deploy-demo-pages.yml`](../.github/workflows/deploy-demo-pages.yml)
+  - 配置为将 `DEMO` 目录发布为静态站点
+
+### 本阶段校验结果
+
+- 已通过脚本语法校验：
+  - `DEMO/demo-mobile/app.js`
+  - `DEMO/demo-admin-console/app.js`
+- 已通过浏览器实际查看确认：
+  - demo 导航页可正常展示
+  - 管理员控制台可正常展示
+  - 移动端 demo 在 `?role=admin` 下可正常切换到管理员视角
+
+### 当前可分享 URL 方案
+
+- 目标分享地址：`https://baldman-jyh.github.io/enterprise-AI-Application-Portal/`
+- 当前仓库已补齐 GitHub Pages 工作流，推送到远端后即可作为静态站点部署基础。
+- 如果远端仓库尚未把 Pages 来源切到 `GitHub Actions`，则还需要在 GitHub 仓库设置页完成一次性启用。
+
+### 设计与产品上的新增判断
+
+- `管理员` 与 `用户` 不应只是在同一个页面里做少量字段显隐，而是应该形成明确的视图分层：
+  - 用户看“对话入口、待确认任务、最近工作”
+  - 管理员看“平台运行、模型消耗、审批积压、风险治理”
+- `移动端` 不适合照搬桌面端布局，应单独以 `mobile-first` 方式设计，优先承接快速发起和摘要查看。
+- `可分享 URL` 对当前项目是必须项，因为 demo 需要给领导和同事异地查看，不能只停留在本机文件预览。

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业 AI 门户 Demo - 管理员控制台</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="dashboard-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Admin Control Tower</p>
+        <h1>企业 AI 管理员运营控制台</h1>
+        <p>这个页面承接管理员视角，重点展示 tokens、模型调用、审批积压、治理和风险。</p>
+      </div>
+      <a class="nav-link" href="../index.html">返回导航</a>
+    </header>
+
+    <section class="hero-grid">
+      <article class="hero-card">
+        <p class="card-kicker">运行摘要</p>
+        <h2>统一查看平台运行状态，而不是逐系统切换统计面板。</h2>
+        <p>适合向领导解释“企业 AI 门户不是只有对话入口，后面还需要治理、成本和审计能力”。</p>
+      </article>
+
+      <article class="hero-card">
+        <p class="card-kicker">快捷切换</p>
+        <div class="hero-actions">
+          <a class="button" href="../demo-balanced-workspace/">用户工作入口</a>
+          <a class="button secondary" href="../demo-agent-trace/">Agent 执行轨迹</a>
+          <a class="button secondary" href="../demo-mobile/?role=admin">移动端管理员</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="metric-grid">
+      <article class="metric-card">
+        <span>今日 Tokens</span>
+        <strong>1.82M</strong>
+        <small>较昨日 +12.4%</small>
+      </article>
+      <article class="metric-card">
+        <span>今日推理成本</span>
+        <strong>¥ 3,240</strong>
+        <small>预算使用率 58%</small>
+      </article>
+      <article class="metric-card">
+        <span>活跃用户</span>
+        <strong>426</strong>
+        <small>覆盖 9 个部门</small>
+      </article>
+      <article class="metric-card">
+        <span>待审批任务</span>
+        <strong>7</strong>
+        <small>高优先级 3 个</small>
+      </article>
+      <article class="metric-card">
+        <span>活跃智能体</span>
+        <strong>14</strong>
+        <small>3 个流程型高频</small>
+      </article>
+      <article class="metric-card">
+        <span>知识命中率</span>
+        <strong>87%</strong>
+        <small>采购、制度场景最佳</small>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">模型调用分布</p>
+            <h3>主要模型与工作负载</h3>
+          </div>
+          <span class="badge">实时更新</span>
+        </div>
+        <div id="modelList" class="stack-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">审批与流程</p>
+            <h3>当前积压与流转状态</h3>
+          </div>
+          <span class="badge warning">需关注</span>
+        </div>
+        <div id="approvalList" class="stack-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">治理告警</p>
+            <h3>风险、越权与异常调用</h3>
+          </div>
+          <span class="badge warning">3 条</span>
+        </div>
+        <div id="alertList" class="stack-list"></div>
+      </article>
+
+      <article class="panel wide">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">部门使用热区</p>
+            <h3>当前高频业务场景</h3>
+          </div>
+        </div>
+        <div id="departmentGrid" class="department-grid"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

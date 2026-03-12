@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业 AI 门户 Demo 导航</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111d;
+      --panel: rgba(12, 24, 42, 0.78);
+      --panel-strong: rgba(16, 32, 56, 0.94);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #edf4ff;
+      --muted: #91a4c3;
+      --accent: #8bf2c5;
+      --accent-2: #7bd0ff;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+      --radius: 24px;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(88, 176, 255, 0.2), transparent 32%),
+        radial-gradient(circle at top right, rgba(139, 242, 197, 0.18), transparent 28%),
+        linear-gradient(180deg, #06101b, #081524 48%, #07101a 100%);
+    }
+    main {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 56px 0 80px;
+    }
+    .hero {
+      padding: 40px;
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(19, 38, 65, 0.9), rgba(9, 18, 34, 0.82));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.06;
+    }
+    .hero p:last-child {
+      margin: 18px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .link-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .section { margin-top: 28px; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .section-head h2 { margin: 0; font-size: 24px; }
+    .section-head p { margin: 6px 0 0; color: var(--muted); }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .card {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+    .card strong {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(123, 208, 255, 0.12);
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .card h3 { margin: 18px 0 10px; font-size: 24px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .meta span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: #06101c;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-weight: 700;
+    }
+    a.button.secondary {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .hint { margin-top: 14px; color: var(--muted); font-size: 13px; }
+    code {
+      padding: 3px 7px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    @media (max-width: 860px) {
+      main { width: min(100vw - 24px, 1180px); padding: 24px 0 44px; }
+      .hero, .card { padding: 20px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Enterprise AI Portal Demo Hub</p>
+      <h1>统一展示企业 AI 门户的用户、管理员与移动端视角。</h1>
+      <p>这个入口页用于本地预览和 GitHub Pages 分享。对外演示时不需要解释目录结构，直接发这个页面 URL 即可，再从这里跳到不同版本的 demo。</p>
+      <div class="link-strip">
+        <span class="pill">对话式统一入口</span>
+        <span class="pill">管理员治理视角</span>
+        <span class="pill">移动端工作入口</span>
+        <span class="pill">静态站点可直接分享</span>
+      </div>
+      <p class="hint">GitHub Pages 启用后，分享地址将形如 <code>https://baldman-jyh.github.io/enterprise-AI-Application-Portal/</code></p>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>用户视角</h2>
+          <p>强调“大对话框先行”，让员工先表达需求，再由内部智能体分解和执行。</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <strong>Demo A</strong>
+          <h3>极简对话首页版</h3>
+          <p>最接近 ChatGPT 首页的演示方式，适合向领导展示“未来统一入口是否可以先对话、后分流”。</p>
+          <div class="meta">
+            <span>首屏极简</span>
+            <span>弱化系统感</span>
+            <span>适合汇报演示</span>
+          </div>
+          <div class="actions">
+            <a class="button" href="./demo-minimal-chat/">打开 demo</a>
+          </div>
+        </article>
+        <article class="card">
+          <strong>Demo B</strong>
+          <h3>平衡型企业工作入口版</h3>
+          <p>在大对话框之外保留最近任务、待确认动作和场景卡，适合展示企业实际可落地的工作入口形态。</p>
+          <div class="meta">
+            <span>多场景</span>
+            <span>流程闭环</span>
+            <span>桌面主版本</span>
+          </div>
+          <div class="actions">
+            <a class="button" href="./demo-balanced-workspace/">打开 demo</a>
+            <a class="button secondary" href="./demo-a-c/">稳定版本</a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>管理员视角</h2>
+          <p>强调 tokens、模型调用、审批积压、活跃智能体和企业治理指标，回答“平台运行状态如何、成本和风险怎么看”。</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <strong>Admin A</strong>
+          <h3>智能体执行轨迹版</h3>
+          <p>适合展示内部智能体如何拆解任务、调用工具、等待确认以及给出可解释执行路径。</p>
+          <div class="meta">
+            <span>执行轨迹</span>
+            <span>多 Agent</span>
+            <span>审批节点</span>
+          </div>
+          <div class="actions">
+            <a class="button" href="./demo-agent-trace/">打开 demo</a>
+          </div>
+        </article>
+        <article class="card">
+          <strong>Admin B</strong>
+          <h3>管理员运营控制台</h3>
+          <p>直接承接原始原型里提到的 tokens 消耗、模型成本、审批积压、活跃用户和风险治理统计。</p>
+          <div class="meta">
+            <span>Token 消耗</span>
+            <span>成本治理</span>
+            <span>审计视角</span>
+          </div>
+          <div class="actions">
+            <a class="button" href="./demo-admin-console/">打开 demo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>移动端视角</h2>
+          <p>适合转发给同事在手机上预览。一个页面内同时切换用户和管理员角色，便于移动端汇报。</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <strong>Mobile</strong>
+          <h3>移动端 AI 工作入口</h3>
+          <p>用户可以快速发起会议、制度问答、周报、差旅等需求；管理员可以在手机端查看 tokens、成本、审批和告警摘要。</p>
+          <div class="meta">
+            <span>Mobile-first</span>
+            <span>角色切换</span>
+            <span>适合转发查看</span>
+          </div>
+          <div class="actions">
+            <a class="button" href="./demo-mobile/">打开 demo</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

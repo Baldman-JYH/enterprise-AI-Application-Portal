@@ -1,0 +1,194 @@
+:root {
+  color-scheme: dark;
+  --bg: #07111d;
+  --bg-soft: rgba(13, 25, 43, 0.82);
+  --panel: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #edf4ff;
+  --muted: #8ea6ca;
+  --accent: #8bf2c5;
+  --accent-2: #7bd0ff;
+  --radius: 24px;
+  --shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(123, 208, 255, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(139, 242, 197, 0.16), transparent 22%),
+    linear-gradient(180deg, #060e18, #0a1524 46%, #07111d 100%);
+}
+.mobile-shell {
+  width: min(100vw - 20px, 460px);
+  margin: 0 auto;
+  padding: 22px 0 40px;
+}
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.eyebrow,
+.card-kicker,
+.hero-kicker {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+.mobile-header h1,
+.hero-card h2,
+.glass-card h3 { margin: 0; }
+.mobile-header h1 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+.phone-frame {
+  padding: 12px;
+  border-radius: 36px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow);
+}
+.phone-inner {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(7, 17, 29, 0.96), rgba(9, 22, 37, 0.9));
+}
+.hero-card,
+.composer-card,
+.glass-card,
+.role-switch {
+  border-radius: 22px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+}
+.hero-card,
+.composer-card,
+.glass-card { padding: 18px; }
+.hero-card p:last-child,
+.glass-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+.role-switch {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+.role-btn,
+.primary-btn,
+.quick-chip {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  font: inherit;
+}
+.role-btn {
+  min-height: 42px;
+  color: var(--muted);
+  background: transparent;
+}
+.role-btn.is-active {
+  color: #06101c;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-weight: 700;
+}
+.composer-card label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.composer-card textarea {
+  width: 100%;
+  resize: none;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font: inherit;
+}
+.primary-btn {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 12px;
+  color: #06101c;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-weight: 700;
+}
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quick-chip {
+  min-height: 36px;
+  padding: 0 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.stack {
+  display: grid;
+  gap: 14px;
+}
+.is-hidden { display: none; }
+.list-block {
+  display: grid;
+  gap: 10px;
+}
+.list-item {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.list-item strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+.list-item span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.metric-card {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.metric-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.metric-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 22px;
+}

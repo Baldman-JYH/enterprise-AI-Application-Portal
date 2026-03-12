@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企业AI门户 Demo - Agent 轨迹版</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Agent Trace Version</p>
+        <h1>企业智能体执行工作台</h1>
+      </div>
+      <a class="top-link" href="../index.html">返回版本导航</a>
+    </header>
+
+    <section class="hero-grid">
+      <article class="panel request-panel">
+        <p class="panel-kicker">任务入口</p>
+        <h2>这里不只是对话，而是可解释的智能体执行。</h2>
+        <textarea id="tracePrompt" rows="5">帮我发起办公用品采购申请，并自动准备预算说明和审批链。</textarea>
+        <div class="action-row">
+          <div class="preset-row" id="presetRow"></div>
+          <button class="primary-btn" id="startTraceBtn">开始执行</button>
+        </div>
+      </article>
+
+      <article class="panel status-panel">
+        <p class="panel-kicker">当前摘要</p>
+        <h3 id="traceTitle">等待执行</h3>
+        <p id="traceSummary">点击开始后，这里会显示 Planner 如何拆解任务，以及当前执行到了哪一步。</p>
+        <div class="metric-grid">
+          <div class="metric-card"><span>Agent 数量</span><strong id="metricAgents">0</strong></div>
+          <div class="metric-card"><span>工具调用</span><strong id="metricTools">0</strong></div>
+          <div class="metric-card"><span>确认节点</span><strong id="metricApprovals">0</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="trace-grid">
+      <article class="panel trace-panel">
+        <div class="panel-head">
+          <div>
+            <p class="panel-kicker">执行轨迹</p>
+            <h3>Planner / Router / Tool 调用</h3>
+          </div>
+          <span class="trace-badge">Live Trace</span>
+        </div>
+        <div id="traceTimeline" class="trace-timeline"></div>
+      </article>
+
+      <article class="panel agent-panel">
+        <p class="panel-kicker">参与角色</p>
+        <div id="agentCards" class="agent-cards"></div>
+      </article>
+
+      <article class="panel approval-panel">
+        <p class="panel-kicker">关键确认</p>
+        <div id="approvalCard" class="approval-card"></div>
+      </article>
+    </section>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
