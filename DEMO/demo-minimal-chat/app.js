@@ -92,3 +92,63 @@ runBtn.addEventListener('click', () => {
 });
 
 renderPreset('meeting');
+
+
+const flowStore = window.EnterpriseAIDemoFlow;
+const compactToolProfile = flowStore?.profiles?.desktopUser ? { ...flowStore.profiles.desktopUser, channel: 'desktop' } : null;
+const compactToolUserMap = { lx: 'LX', zhoumin: '周敏', lina: '李娜', chenhao: '陈灏', liujia: '刘嘉' };
+const toolZoneCompact = document.querySelector('#toolZoneCompact');
+function formatCompactRule(rule = {}) {
+  const scopeLabel = flowStore?.scopeLabels?.[rule.scope] || '未配置';
+  if ((rule.scope === 'department' || rule.scope === 'departmentAdmin') && rule.departments?.length) return `${scopeLabel} · ${rule.departments.join(' / ')}`;
+  if ((rule.scope === 'users' || rule.scope === 'owner') && rule.users?.length) return `${scopeLabel} · ${rule.users.map((userId) => compactToolUserMap[userId] || userId).join(' / ')}`;
+  return scopeLabel;
+}
+function renderCompactToolZone() {
+  if (!toolZoneCompact || !flowStore || !compactToolProfile) return;
+  const snapshot = flowStore.read();
+  const tools = flowStore.listVisibleTools(compactToolProfile, snapshot).slice(0, 4);
+  const downloadable = tools.filter((tool) => flowStore.canDownloadTool(tool, compactToolProfile)).length;
+  toolZoneCompact.innerHTML = `
+    <p class="panel-kicker">部门工具专区</p>
+    <div class="tool-compact-head">
+      <div>
+        <h3>极简首页也保留部门工具入口，但表达更克制。</h3>
+        <p class="tool-compact-note">当前用户 ${compactToolProfile.name} / ${compactToolProfile.department} 可见 ${tools.length} 个工具，其中 ${downloadable} 个可直接下载。</p>
+      </div>
+      <div class="tool-compact-badges">
+        <span class="signal-pill">统一资产入口</span>
+        <span class="signal-pill">按权限可见</span>
+        <span class="signal-pill">支持下载审计</span>
+      </div>
+    </div>
+    <div class="tool-compact-grid">
+      ${tools.map((tool) => {
+        const canDownload = flowStore.canDownloadTool(tool, compactToolProfile);
+        return `
+          <article class="tool-compact-card">
+            <div class="tool-compact-top">
+              <strong>${tool.name}</strong>
+              <span class="tool-compact-pill ${canDownload ? 'is-allowed' : ''}">${canDownload ? '可下载' : '仅查看'}</span>
+            </div>
+            <p>${tool.summary}</p>
+            <div class="tool-compact-meta">
+              <span>${tool.department}</span>
+              <span>${tool.type}</span>
+              <span>${tool.version}</span>
+            </div>
+            <div class="tool-compact-foot">
+              <span>可见：${formatCompactRule(tool.visibility)}</span>
+              ${canDownload ? `<button class="mini-action" type="button" data-compact-download="${tool.toolId}">记录下载</button>` : '<span>下载受限</span>'}
+            </div>
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+  toolZoneCompact.querySelectorAll('[data-compact-download]').forEach((button) => {
+    button.addEventListener('click', () => flowStore.recordToolDownload(button.dataset.compactDownload, compactToolProfile));
+  });
+}
+flowStore?.subscribe(renderCompactToolZone);
+renderCompactToolZone();

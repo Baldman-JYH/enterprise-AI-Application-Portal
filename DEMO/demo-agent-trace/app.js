@@ -112,3 +112,68 @@ startTraceBtn.addEventListener('click', () => {
 });
 
 renderTrace('procurement');
+
+
+const flowStore = window.EnterpriseAIDemoFlow;
+const traceToolProfile = flowStore?.profiles?.desktopUser ? { ...flowStore.profiles.desktopUser, channel: 'desktop' } : null;
+const traceToolUserMap = { lx: 'LX', zhoumin: '周敏', lina: '李娜', chenhao: '陈灏', liujia: '刘嘉' };
+const traceToolZone = document.querySelector('#traceToolZone');
+function formatTraceRule(rule = {}) {
+  const scopeLabel = flowStore?.scopeLabels?.[rule.scope] || '未配置';
+  if ((rule.scope === 'department' || rule.scope === 'departmentAdmin') && rule.departments?.length) return `${scopeLabel} · ${rule.departments.join(' / ')}`;
+  if ((rule.scope === 'users' || rule.scope === 'owner') && rule.users?.length) return `${scopeLabel} · ${rule.users.map((userId) => traceToolUserMap[userId] || userId).join(' / ')}`;
+  return scopeLabel;
+}
+function renderTraceToolZone() {
+  if (!traceToolZone || !flowStore || !traceToolProfile) return;
+  const snapshot = flowStore.read();
+  const tools = flowStore.listVisibleTools(traceToolProfile, snapshot);
+  const focusTool = tools[0];
+  traceToolZone.innerHTML = `
+    <div class="panel-head">
+      <div>
+        <p class="panel-kicker">工具资产接入</p>
+        <h3>智能体执行之外，门户还要承接部门工具分发与权限控制。</h3>
+      </div>
+      <span class="trace-badge">Asset Trace</span>
+    </div>
+    <div class="tool-trace-grid">
+      <article class="tool-trace-focus">
+        <strong>${focusTool.name}</strong>
+        <p>${focusTool.summary}</p>
+        <div class="tool-trace-metrics">
+          <div class="metric-card"><span>可见范围</span><strong>${formatTraceRule(focusTool.visibility)}</strong></div>
+          <div class="metric-card"><span>下载范围</span><strong>${formatTraceRule(focusTool.download)}</strong></div>
+          <div class="metric-card"><span>管理权限</span><strong>${formatTraceRule(focusTool.management)}</strong></div>
+        </div>
+        <div class="tool-trace-note">
+          <strong>为什么放在这个版本里？</strong>
+          <p>因为部门工具上架后，同样要经过“资产接入、权限判断、下载动作审计”这条可解释链路，而不只是静态下载页。</p>
+        </div>
+      </article>
+      <div class="tool-trace-list">
+        ${tools.map((tool) => {
+          const canDownload = flowStore.canDownloadTool(tool, traceToolProfile);
+          return `
+            <article class="tool-trace-item">
+              <div class="tool-trace-item-top">
+                <strong>${tool.name}</strong>
+                <span class="tool-trace-pill ${canDownload ? 'is-allowed' : ''}">${canDownload ? '可下载' : '仅查看'}</span>
+              </div>
+              <p>${tool.department} · ${tool.type} · ${tool.version}</p>
+              <div class="tool-trace-foot">
+                <span>累计下载 ${tool.downloads} 次</span>
+                ${canDownload ? `<button class="trace-download-btn" type="button" data-trace-download="${tool.toolId}">记录下载</button>` : '<span>下载受限</span>'}
+              </div>
+            </article>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  traceToolZone.querySelectorAll('[data-trace-download]').forEach((button) => {
+    button.addEventListener('click', () => flowStore.recordToolDownload(button.dataset.traceDownload, traceToolProfile));
+  });
+}
+flowStore?.subscribe(renderTraceToolZone);
+renderTraceToolZone();

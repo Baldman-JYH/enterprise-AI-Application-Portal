@@ -131,3 +131,93 @@ setRail(false);
 renderRoleBridge();
 flowStore?.recordEvent({scenarioId:state.currentScenario,role:'user',channel:'desktop',action:'打开用户主入口'});
 
+/* Department tool zone */
+const desktopToolProfile = flowStore?.profiles?.desktopUser ? { ...flowStore.profiles.desktopUser, channel: 'desktop' } : null;
+const toolUserDirectory = { lx: 'LX', zhoumin: '周敏', lina: '李娜', chenhao: '陈灏', liujia: '刘嘉' };
+let desktopToolFeedback = '';
+function formatToolTargets(rule = {}) {
+  if ((rule.scope === 'department' || rule.scope === 'departmentAdmin') && rule.departments?.length) return rule.departments.join(' / ');
+  if ((rule.scope === 'users' || rule.scope === 'owner') && rule.users?.length) return rule.users.map((userId) => toolUserDirectory[userId] || userId).join(' / ');
+  return '';
+}
+function formatToolPolicy(rule = {}) {
+  const scopeLabel = flowStore?.scopeLabels?.[rule.scope] || '未配置';
+  const targets = formatToolTargets(rule);
+  return targets ? `${scopeLabel} · ${targets}` : scopeLabel;
+}
+function ensureDesktopToolZone() {
+  const landingScene = document.querySelector('.landing-scene');
+  const roleBridge = landingScene?.querySelector('.role-bridge');
+  if (!landingScene || !roleBridge) return null;
+  let section = landingScene.querySelector('#desktopToolZone');
+  if (!section) {
+    section = document.createElement('section');
+    section.id = 'desktopToolZone';
+    section.className = 'glow-card tool-zone-panel';
+    roleBridge.insertAdjacentElement('afterend', section);
+  }
+  return section;
+}
+function renderDesktopToolZone() {
+  const section = ensureDesktopToolZone();
+  if (!section || !flowStore || !desktopToolProfile) return;
+  const snapshot = flowStore.read();
+  const visibleTools = flowStore.listVisibleTools(desktopToolProfile, snapshot);
+  const downloadableCount = visibleTools.filter((tool) => flowStore.canDownloadTool(tool, desktopToolProfile)).length;
+  section.innerHTML = `
+    <div class="tool-zone-head">
+      <div class="tool-zone-copy">
+        <p class="section-kicker">部门工具专区</p>
+        <h3>各部门用 AI 开发的小工具，也统一收口到门户里。</h3>
+        <p class="tool-zone-note">例如供应链计划部的 Python 程序、采购中心的脚本包、财务部的 Agent 工具包，都可以在这里按权限查看、下载和追踪。</p>
+      </div>
+      <div class="tool-zone-summary">
+        <span class="role-bridge-tag">当前用户：${desktopToolProfile.name} / ${desktopToolProfile.department}</span>
+        <span class="role-bridge-tag">可见工具：${visibleTools.length}</span>
+        <span class="role-bridge-tag">可下载：${downloadableCount}</span>
+      </div>
+    </div>
+    ${desktopToolFeedback ? `<div class="tool-zone-feedback">${desktopToolFeedback}</div>` : ''}
+    <div class="tool-zone-grid">
+      ${visibleTools.map((tool) => {
+        const canDownload = flowStore.canDownloadTool(tool, desktopToolProfile);
+        return `
+          <article class="tool-zone-card">
+            <div class="tool-zone-card-top">
+              <div>
+                <p class="tool-zone-overline">${tool.department} · ${tool.type}</p>
+                <h4>${tool.name}</h4>
+              </div>
+              <span class="badge ${canDownload ? 'badge-done' : 'badge-idle'}">${canDownload ? '可下载' : '仅查看'}</span>
+            </div>
+            <p class="tool-zone-summary-text">${tool.summary}</p>
+            <div class="tool-zone-meta">
+              <div class="tool-zone-meta-item"><span>版本</span><strong>${tool.version}</strong></div>
+              <div class="tool-zone-meta-item"><span>交付物</span><strong>${tool.fileName}</strong></div>
+              <div class="tool-zone-meta-item"><span>可见范围</span><strong>${formatToolPolicy(tool.visibility)}</strong></div>
+              <div class="tool-zone-meta-item"><span>下载范围</span><strong>${formatToolPolicy(tool.download)}</strong></div>
+              <div class="tool-zone-meta-item"><span>管理方式</span><strong>${formatToolPolicy(tool.management)}</strong></div>
+            </div>
+            <div class="tool-zone-actions">
+              <span class="tool-zone-count">累计下载 ${tool.downloads} 次</span>
+              ${canDownload
+                ? `<button class="primary-btn tool-zone-action" data-download-tool="${tool.toolId}">下载工具</button>`
+                : `<button class="secondary-btn tool-zone-action tool-zone-disabled" type="button" disabled>仅可查看</button>`}
+            </div>
+          </article>`;
+      }).join('')}
+    </div>
+  `;
+  section.querySelectorAll('[data-download-tool]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const toolId = button.dataset.downloadTool;
+      const tool = flowStore.read().tools?.[toolId];
+      if (!tool) return;
+      flowStore.recordToolDownload(toolId, desktopToolProfile);
+      desktopToolFeedback = `${tool.name} 的下载已记录，管理员控制台会同步看到下载次数与审计动作。`;
+      renderDesktopToolZone();
+    });
+  });
+}
+flowStore?.subscribe(() => renderDesktopToolZone());
+renderDesktopToolZone();
