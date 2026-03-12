@@ -663,3 +663,34 @@
 
 - 所有主要 demo 的浅色主题修改已经完成，本地文件层面已收口。
 - 下一步将直接提交并推送到 GitHub，这次推送也会顺带重新触发 GitHub Pages 部署。
+
+## 2026-03-12 第二十七阶段：样式改造已推送并恢复可分享 URL
+
+### 提交与推送结果
+
+- 已完成本轮样式改造提交：`7f1d4d4`
+- 提交信息：`style: refresh demos with light chat-first theme`
+- 已成功推送到远端仓库 `main`
+
+### 部署验证结果
+
+- `Deploy Demo Pages` 最新 workflow 已成功完成。
+- 本次成功运行对应提交为：`7f1d4d4`
+- Actions 运行地址：
+  - `https://github.com/Baldman-JYH/enterprise-AI-Application-Portal/actions/runs/22983931770`
+- 对外分享地址已经可以访问，HTTP 状态为 `200`：
+  - `https://baldman-jyh.github.io/enterprise-AI-Application-Portal/`
+
+### 当前可对外查看的 demo
+
+- 统一导航页：`https://baldman-jyh.github.io/enterprise-AI-Application-Portal/`
+- 可继续从导航页进入：
+  - 用户主入口 demo
+  - 管理员控制台 demo
+  - 移动端 demo
+  - 其他多版本演示页
+
+### 当前结论
+
+- 现在 demo 不仅能在本地预览，也已经可以通过公开 URL 发给公司同事查看。
+- 这轮工作已经完成“统一浅色主题 + 可分享访问”的闭环。
