@@ -95,8 +95,7 @@
       display: grid;
       gap: 18px;
     }
-    .role-pills,
-    .helper-list {
+    .role-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -155,14 +154,6 @@
       color: var(--text);
       border: 1px solid var(--border);
     }
-    .helper-list span {
-      padding: 12px 14px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.82);
-      color: var(--muted);
-      font-size: 13px;
-    }
     .error {
       min-height: 18px;
       color: #c2410c;
@@ -193,7 +184,7 @@
     <section class="brand-panel">
       <p class="eyebrow">Enterprise AI</p>
       <h1>企业智能工作入口</h1>
-      <p>统一登录后进入工作入口、治理控制台和手机端入口。</p>
+      <p>登录后按角色直接进入工作入口或治理控制台，手机端支持单独预览。</p>
       <div class="brand-tags">
         <span>统一对话入口</span>
         <span>历史对话保留</span>
@@ -227,6 +218,7 @@
         <div class="submit-row">
           <button class="button primary" type="submit">登录</button>
           <button class="button secondary" id="ssoButton" type="button">企业 SSO</button>
+          <button class="button secondary" id="previewButton" type="button">手机端预览</button>
         </div>
       </form>
     </section>
@@ -236,12 +228,22 @@
     (function () {
       var authKey = 'enterprise-ai-demo-auth';
       var profileKey = 'enterprise-ai-demo-profile';
+      var routeMap = {
+        user: './demo-balanced-workspace/',
+        admin: './demo-admin-console/'
+      };
       var defaultProfiles = {
         user: { account: 'zhang.san', password: 'Demo@2026', name: '张三', role: 'user' },
         admin: { account: 'admin.ai', password: 'Demo@2026', name: '周敏', role: 'admin' }
       };
       if (sessionStorage.getItem(authKey)) {
-        window.location.replace('./portal.html');
+        var currentProfile = {};
+        try {
+          currentProfile = JSON.parse(sessionStorage.getItem(profileKey) || '{}');
+        } catch (error) {
+          currentProfile = {};
+        }
+        window.location.replace(routeMap[currentProfile.role] || routeMap.user);
         return;
       }
       var activeRole = 'user';
@@ -251,6 +253,7 @@
       var errorText = document.getElementById('errorText');
       var loginForm = document.getElementById('loginForm');
       var ssoButton = document.getElementById('ssoButton');
+      var previewButton = document.getElementById('previewButton');
 
       function applyRole(role) {
         activeRole = role;
@@ -266,7 +269,7 @@
       function persistAndEnter(profile) {
         sessionStorage.setItem(authKey, '1');
         sessionStorage.setItem(profileKey, JSON.stringify(profile));
-        window.location.href = './portal.html';
+        window.location.href = routeMap[profile.role] || routeMap.user;
       }
 
       roleSelector.addEventListener('click', function (event) {
@@ -291,9 +294,12 @@
         persistAndEnter(defaultProfiles[activeRole]);
       });
 
+      previewButton.addEventListener('click', function () {
+        window.location.href = './demo-mobile/?role=' + activeRole;
+      });
+
       applyRole(activeRole);
     })();
   </script>
 </body>
 </html>
-

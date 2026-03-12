@@ -33,23 +33,21 @@ button {
 }
 .workspace-shell {
   display: grid;
-  grid-template-columns: 264px minmax(0, 1fr);
+  grid-template-columns: 248px minmax(0, 1fr);
   min-height: 100vh;
 }
 .history-rail {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 16px;
   min-height: 100vh;
-  padding: 18px 14px 18px 16px;
-  align-content: start;
+  padding: 18px 12px 18px 16px;
   background: linear-gradient(180deg, rgba(250, 250, 246, 0.98), rgba(244, 245, 239, 0.92));
   border-right: 1px solid var(--border);
 }
 .rail-top {
   display: grid;
   gap: 12px;
-  align-content: start;
 }
 .brand-block {
   display: grid;
@@ -74,13 +72,10 @@ button {
   letter-spacing: -0.03em;
 }
 .rail-section {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   min-height: 0;
-  padding: 8px;
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.72);
 }
 .topbar h2,
 .section-head h2,
@@ -205,7 +200,10 @@ button {
 }
 .section-head.compact {
   margin-bottom: 0;
-  padding: 6px 8px 12px;
+  padding: 0 6px 0 4px;
+}
+.rail-head h2 {
+  font-size: 15px;
 }
 .meta-text {
   color: var(--muted);
@@ -220,9 +218,10 @@ button {
   gap: 12px;
 }
 .thread-list {
+  max-height: calc(100vh - 188px);
   min-height: 0;
   overflow: auto;
-  padding: 0 4px 4px;
+  padding: 0 4px 4px 0;
 }
 .thread-list::-webkit-scrollbar {
   width: 8px;
@@ -472,12 +471,11 @@ button {
   }
   .history-rail {
     min-height: auto;
-    grid-template-rows: auto;
     border-right: 0;
     border-bottom: 1px solid var(--border);
   }
-  .rail-section {
-    min-height: 280px;
+  .thread-list {
+    max-height: 260px;
   }
   .workspace-grid {
     grid-template-columns: 1fr;

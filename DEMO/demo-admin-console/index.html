@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />  <title>企业 AI 运营与治理控制台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>企业 AI 运营与治理控制台</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -14,9 +15,9 @@
         <h1>运营与治理控制台</h1>
       </div>
       <div class="top-actions">
-        <a class="button secondary" href="../portal.html">导航</a>
-        <a class="button secondary" href="../demo-balanced-workspace/">用户入口</a>
-        <span class="user-pill">周敏</span>
+        <a class="button secondary" href="../demo-mobile/?role=admin">手机端预览</a>
+        <button class="button secondary" id="logoutButton" type="button">退出登录</button>
+        <span class="user-pill" id="adminName">周敏</span>
       </div>
     </header>
 
@@ -122,9 +123,34 @@
     </section>
   </main>
 
+  <script>
+    (function () {
+      var authKey = 'enterprise-ai-demo-auth';
+      var profileKey = 'enterprise-ai-demo-profile';
+      if (!sessionStorage.getItem(authKey)) {
+        window.location.replace('../index.html');
+        return;
+      }
+      var profile = {};
+      try {
+        profile = JSON.parse(sessionStorage.getItem(profileKey) || '{}');
+      } catch (error) {
+        profile = {};
+      }
+      if (profile.role === 'user') {
+        window.location.replace('../demo-balanced-workspace/');
+        return;
+      }
+      document.getElementById('adminName').textContent = profile.name || '周敏';
+      document.getElementById('logoutButton').addEventListener('click', function () {
+        sessionStorage.removeItem(authKey);
+        sessionStorage.removeItem(profileKey);
+        window.location.replace('../index.html');
+      });
+    })();
+  </script>
   <script src="../shared/demo-flow.js"></script>
   <script src="../shared/chat-feedback.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
-

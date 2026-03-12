@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />  <title>企业智能工作入口</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>企业智能工作入口</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -21,8 +22,8 @@
       </div>
 
       <section class="rail-section">
-        <div class="section-head compact">
-          <h2>最近对话</h2>
+        <div class="section-head compact rail-head">
+          <h2>会话</h2>
           <span class="meta-text" id="threadCount">0 条</span>
         </div>
         <div class="thread-list" id="threadList"></div>
@@ -36,9 +37,9 @@
           <h2>统一工作入口</h2>
         </div>
         <div class="topbar-actions">
-          <a class="link-btn" href="../portal.html">导航</a>
-          <a class="link-btn" href="../demo-admin-console/">管理员</a>
-          <div class="avatar">LX</div>
+          <a class="link-btn" href="../demo-mobile/?role=user" id="mobilePreviewLink">手机端预览</a>
+          <button class="link-btn" id="logoutButton" type="button">退出登录</button>
+          <div class="avatar" id="userAvatar">张</div>
         </div>
       </header>
 
@@ -53,7 +54,7 @@
       <section class="workspace-grid">
         <section class="panel chat-panel">
           <div class="section-head">
-            <h2>对话记录</h2>
+            <h2>当前对话</h2>
             <span class="meta-text" id="messageCount">0 条</span>
           </div>
           <div class="message-list" id="messageList"></div>
@@ -93,10 +94,37 @@
     </main>
   </div>
 
+  <script>
+    (function () {
+      var authKey = 'enterprise-ai-demo-auth';
+      var profileKey = 'enterprise-ai-demo-profile';
+      if (!sessionStorage.getItem(authKey)) {
+        window.location.replace('../index.html');
+        return;
+      }
+      var profile = {};
+      try {
+        profile = JSON.parse(sessionStorage.getItem(profileKey) || '{}');
+      } catch (error) {
+        profile = {};
+      }
+      if (profile.role === 'admin') {
+        window.location.replace('../demo-admin-console/');
+        return;
+      }
+      var avatar = document.getElementById('userAvatar');
+      if (avatar) {
+        avatar.textContent = (profile.name || '张三').slice(-1);
+      }
+      document.getElementById('logoutButton').addEventListener('click', function () {
+        sessionStorage.removeItem(authKey);
+        sessionStorage.removeItem(profileKey);
+        window.location.replace('../index.html');
+      });
+    })();
+  </script>
   <script src="../shared/demo-flow.js"></script>
   <script src="../shared/chat-feedback.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
-
-
