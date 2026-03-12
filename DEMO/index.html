@@ -4,19 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
-  <title>企业智能体工作入口 | 统一登录</title>
+  <title>企业智能工作入口 | 统一登录</title>
   <style>
     :root {
       color-scheme: light;
       --bg: #f7f8f4;
       --panel: rgba(255, 255, 255, 0.95);
-      --panel-soft: rgba(255, 255, 255, 0.82);
       --border: rgba(15, 23, 42, 0.08);
       --text: #202123;
       --muted: #667085;
       --accent: #10a37f;
       --shadow: 0 24px 80px rgba(15, 23, 42, 0.10);
-      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.06);
       font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -30,192 +28,99 @@
         linear-gradient(180deg, #fcfcf9 0%, #eef2ea 100%);
     }
     .shell {
-      width: min(1220px, calc(100vw - 40px));
+      width: min(1080px, calc(100vw - 40px));
       margin: 0 auto;
       min-height: 100vh;
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(380px, 460px);
-      gap: 28px;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
       align-items: center;
       padding: 32px 0;
     }
-    .story,
+    .brand-panel,
     .login-card {
-      border-radius: 36px;
+      border-radius: 32px;
       border: 1px solid var(--border);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
       box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
     }
-    .story {
-      position: relative;
-      overflow: hidden;
-      padding: 44px;
-      min-height: 700px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .brand-panel {
+      padding: 40px;
+      display: grid;
+      gap: 20px;
+      min-height: 520px;
+      align-content: center;
     }
-    .story::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(16, 163, 127, 0.12), transparent 26%),
-        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.05), transparent 28%);
-      pointer-events: none;
-    }
-    .brand,
-    .section-kicker,
-    .metric strong,
-    .capsule strong {
+    .eyebrow {
+      margin: 0;
       font-size: 12px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--accent);
     }
-    .brand-block,
-    .story-copy,
-    .story-bottom {
-      position: relative;
-      z-index: 1;
-    }
-    .brand-block {
-      display: grid;
-      gap: 10px;
-    }
-    .brand-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .brand-note {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-      max-width: 540px;
-    }
-    .story-copy h1 {
-      margin: 18px 0 16px;
-      max-width: 680px;
-      font-size: clamp(42px, 6vw, 76px);
-      line-height: 1.02;
-      letter-spacing: -0.05em;
-    }
-    .story-copy p {
+    h1,
+    h2 {
       margin: 0;
-      max-width: 620px;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.85;
-    }
-    .story-grid {
-      margin-top: 32px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-    .metric {
-      padding: 18px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(15, 23, 42, 0.06);
-      box-shadow: var(--shadow-soft);
-    }
-    .metric span {
-      display: block;
-      margin-top: 10px;
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-    }
-    .metric p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    .story-bottom {
-      display: grid;
-      gap: 16px;
-    }
-    .capsule-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .capsule {
-      padding: 14px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      color: var(--muted);
-      font-size: 13px;
-      box-shadow: var(--shadow-soft);
-    }
-    .capsule strong {
-      display: block;
-      margin-bottom: 4px;
-      letter-spacing: 0.12em;
-    }
-    .login-card {
-      padding: 32px;
-      display: grid;
-      gap: 22px;
-      align-self: center;
-    }
-    .login-head {
-      display: grid;
-      gap: 12px;
-    }
-    .login-head h2 {
-      margin: 0;
-      font-size: 34px;
       letter-spacing: -0.04em;
     }
-    .login-head p {
+    h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1.02;
+    }
+    .brand-panel p,
+    .login-card p {
       margin: 0;
       color: var(--muted);
       line-height: 1.75;
-      font-size: 15px;
     }
-    .role-pills {
+    .brand-tags {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
+    }
+    .brand-tags span,
+    .role-pill {
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.82);
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .login-card {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+    .role-pills,
+    .helper-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     .role-pill {
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      background: rgba(255, 255, 255, 0.82);
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font: inherit;
       cursor: pointer;
-      transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
+      color: var(--text);
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
     }
     .role-pill.active {
       background: rgba(16, 163, 127, 0.10);
-      color: var(--text);
-      border-color: rgba(16, 163, 127, 0.36);
-    }
-    .role-pill:hover {
-      transform: translateY(-1px);
-    }
-    .login-form {
-      display: grid;
-      gap: 16px;
+      border-color: rgba(16, 163, 127, 0.32);
     }
     .field {
       display: grid;
       gap: 8px;
     }
     .field label {
-      font-size: 13px;
       color: var(--muted);
+      font-size: 13px;
     }
     .field input {
       width: 100%;
-      min-height: 54px;
+      min-height: 52px;
       padding: 0 16px;
       border-radius: 18px;
       border: 1px solid rgba(15, 23, 42, 0.10);
@@ -223,155 +128,85 @@
       font: inherit;
       color: var(--text);
       outline: none;
-      transition: border-color 180ms ease, box-shadow 180ms ease;
     }
     .field input:focus {
       border-color: rgba(16, 163, 127, 0.45);
       box-shadow: 0 0 0 4px rgba(16, 163, 127, 0.12);
     }
-    .input-meta {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .submit-row,
-    .helper-row {
+    .submit-row {
       display: grid;
       gap: 12px;
     }
     .button {
-      min-height: 54px;
+      min-height: 52px;
       border-radius: 18px;
       border: 0;
       font: inherit;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
     }
     .button.primary {
       background: #202123;
       color: #ffffff;
-      box-shadow: 0 14px 34px rgba(32, 33, 35, 0.14);
+      box-shadow: 0 12px 28px rgba(32, 33, 35, 0.14);
     }
     .button.secondary {
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .helper-list span {
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.82);
-      color: var(--text);
-      border: 1px solid rgba(15, 23, 42, 0.08);
-    }
-    .button:hover {
-      transform: translateY(-1px);
-    }
-    .helper-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .helper-card {
-      padding: 14px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      background: rgba(255, 255, 255, 0.74);
-    }
-    .helper-card strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-    .helper-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-    .login-note {
-      padding: 16px 18px;
-      border-radius: 20px;
-      background: rgba(16, 163, 127, 0.08);
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.8;
-      border: 1px solid rgba(16, 163, 127, 0.12);
-    }
-    .login-note strong {
-      color: var(--text);
     }
     .error {
-      min-height: 20px;
+      min-height: 18px;
       color: #c2410c;
       font-size: 13px;
     }
-    @media (max-width: 1040px) {
+    @media (max-width: 960px) {
       .shell {
         grid-template-columns: 1fr;
-        align-items: start;
       }
-      .story {
+      .brand-panel {
         min-height: auto;
       }
     }
     @media (max-width: 720px) {
       .shell {
-        width: min(100vw - 24px, 1220px);
+        width: min(100vw - 24px, 1080px);
         padding: 18px 0 24px;
       }
-      .story,
+      .brand-panel,
       .login-card {
         padding: 22px;
-        border-radius: 28px;
-      }
-      .story-grid,
-      .helper-row {
-        grid-template-columns: 1fr;
-      }
-      .story-copy h1 {
-        font-size: clamp(36px, 11vw, 54px);
       }
     }
   </style>
 </head>
 <body>
   <main class="shell">
-    <section class="story" aria-label="企业统一登录介绍">
-      <div class="brand-block">
-        <div class="brand">AI-Native Enterprise Workspace</div>
-        <div class="brand-title">企业智能体工作入口</div>
-        <div class="brand-note">统一登录后进入企业 AI 门户导航页，再按角色查看对话式工作入口、管理员治理控制台、移动端体验和多版本方案。</div>
-      </div>
-
-      <div class="story-copy">
-        <div class="section-kicker">统一入口，统一权限，统一治理</div>
-        <h1>先登录，再进入企业内部智能体协作空间。</h1>
-        <p>该入口用于承接企业账号认证和门户分发。员工从这里进入智能体工作入口，管理员从这里进入治理与授权视图，形成统一的访问和权限边界。</p>
-        <div class="story-grid">
-          <article class="metric">
-            <strong>对话优先</strong>
-            <span>01</span>
-            <p>统一进入对话式工作入口，减少系统切换和应用查找成本。</p>
-          </article>
-          <article class="metric">
-            <strong>权限清晰</strong>
-            <span>02</span>
-            <p>支持员工、管理员双角色视角，并能衔接部门工具可见与下载策略。</p>
-          </article>
-          <article class="metric">
-            <strong>统一分发</strong>
-            <span>03</span>
-            <p>登录后进入总导航页，集中访问桌面端、移动端和治理控制台。</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="story-bottom">
-        <div class="capsule-row">
-          <div class="capsule"><strong>用户入口</strong>大对话框、任务规划、待确认流程、部门工具专区</div>
-          <div class="capsule"><strong>管理员入口</strong>Token 消耗、工具授权、下载治理、平台告警</div>
-          <div class="capsule"><strong>移动端入口</strong>角色切换、摘要查看、快速发起</div>
-        </div>
+    <section class="brand-panel">
+      <p class="eyebrow">Enterprise AI</p>
+      <h1>企业智能工作入口</h1>
+      <p>统一登录后进入工作入口、治理控制台和手机端入口。</p>
+      <div class="brand-tags">
+        <span>统一对话入口</span>
+        <span>历史对话保留</span>
+        <span>部门工具专区</span>
+        <span>反馈记录闭环</span>
       </div>
     </section>
 
-    <section class="login-card" aria-label="企业统一登录卡片">
-      <div class="login-head">
-        <div class="section-kicker">Enterprise Sign In</div>
+    <section class="login-card">
+      <div>
+        <p class="eyebrow">Sign In</p>
         <h2>统一登录</h2>
-        <p>登录后进入企业 AI 门户总导航页。当前页面支持员工与管理员两种体验入口。</p>
+        <p>使用企业账号进入系统。</p>
       </div>
 
       <div class="role-pills" id="roleSelector">
@@ -379,109 +214,81 @@
         <button class="role-pill" type="button" data-role="admin">管理员账号</button>
       </div>
 
-      <form class="login-form" id="loginForm">
+      <form id="loginForm">
         <div class="field">
           <label for="accountInput">企业账号</label>
-          <input id="accountInput" name="account" type="text" autocomplete="username" value="zhang.san" />
-          <div class="input-meta" id="accountMeta">默认账号：zhang.san</div>
+          <input id="accountInput" type="text" autocomplete="username" value="zhang.san" />
         </div>
         <div class="field">
           <label for="passwordInput">登录密码</label>
-          <input id="passwordInput" name="password" type="password" autocomplete="current-password" value="Demo@2026" />
-          <div class="input-meta">当前保留登录动作、角色切换和登录后跳转逻辑。</div>
+          <input id="passwordInput" type="password" autocomplete="current-password" value="Demo@2026" />
         </div>
-        <div class="error" id="errorText" aria-live="polite"></div>
+        <div class="error" id="errorText"></div>
         <div class="submit-row">
-          <button class="button primary" type="submit">登录并进入导航页</button>
-          <button class="button secondary" id="ssoButton" type="button">通过企业 SSO 进入</button>
+          <button class="button primary" type="submit">登录</button>
+          <button class="button secondary" id="ssoButton" type="button">企业 SSO</button>
         </div>
       </form>
-
-      <div class="helper-row">
-        <article class="helper-card">
-          <strong>员工账号</strong>
-          <p>zhang.san，登录后可查看桌面端工作入口、部门工具专区和移动端场景。</p>
-        </article>
-        <article class="helper-card">
-          <strong>管理员账号</strong>
-          <p>admin.ai，登录后可继续进入治理控制台、工具授权和运营统计模块。</p>
-        </article>
-      </div>
-
-      <div class="login-note">
-        <strong>登录说明：</strong>当前页面用于表达企业统一认证入口的产品形态。后续可对接企业 AD、OAuth2、OIDC 或单点登录系统。
-      </div>
     </section>
   </main>
 
   <script>
     (function () {
-      var authKey = "enterprise-ai-demo-auth";
-      var profileKey = "enterprise-ai-demo-profile";
+      var authKey = 'enterprise-ai-demo-auth';
+      var profileKey = 'enterprise-ai-demo-profile';
       var defaultProfiles = {
-        user: { account: "zhang.san", password: "Demo@2026", name: "张三", role: "user" },
-        admin: { account: "admin.ai", password: "Demo@2026", name: "平台管理员", role: "admin" }
+        user: { account: 'zhang.san', password: 'Demo@2026', name: '张三', role: 'user' },
+        admin: { account: 'admin.ai', password: 'Demo@2026', name: '周敏', role: 'admin' }
       };
-
       if (sessionStorage.getItem(authKey)) {
-        window.location.replace("./portal.html");
+        window.location.replace('./portal.html');
         return;
       }
-
-      var activeRole = "user";
-      var roleSelector = document.getElementById("roleSelector");
-      var accountInput = document.getElementById("accountInput");
-      var passwordInput = document.getElementById("passwordInput");
-      var accountMeta = document.getElementById("accountMeta");
-      var errorText = document.getElementById("errorText");
-      var loginForm = document.getElementById("loginForm");
-      var ssoButton = document.getElementById("ssoButton");
+      var activeRole = 'user';
+      var roleSelector = document.getElementById('roleSelector');
+      var accountInput = document.getElementById('accountInput');
+      var passwordInput = document.getElementById('passwordInput');
+      var errorText = document.getElementById('errorText');
+      var loginForm = document.getElementById('loginForm');
+      var ssoButton = document.getElementById('ssoButton');
 
       function applyRole(role) {
         activeRole = role;
         var profile = defaultProfiles[role];
         accountInput.value = profile.account;
         passwordInput.value = profile.password;
-        accountMeta.textContent = "默认账号：" + profile.account;
-        roleSelector.querySelectorAll(".role-pill").forEach(function (button) {
-          button.classList.toggle("active", button.dataset.role === role);
+        roleSelector.querySelectorAll('.role-pill').forEach(function (button) {
+          button.classList.toggle('active', button.dataset.role === role);
         });
-        errorText.textContent = "";
+        errorText.textContent = '';
       }
 
-      roleSelector.addEventListener("click", function (event) {
-        var button = event.target.closest(".role-pill");
-        if (!button) {
-          return;
-        }
+      function persistAndEnter(profile) {
+        sessionStorage.setItem(authKey, '1');
+        sessionStorage.setItem(profileKey, JSON.stringify(profile));
+        window.location.href = './portal.html';
+      }
+
+      roleSelector.addEventListener('click', function (event) {
+        var button = event.target.closest('.role-pill');
+        if (!button) return;
         applyRole(button.dataset.role);
       });
 
-      function persistAndEnter(profile) {
-        sessionStorage.setItem(authKey, "1");
-        sessionStorage.setItem(profileKey, JSON.stringify(profile));
-        window.location.href = "./portal.html";
-      }
-
-      loginForm.addEventListener("submit", function (event) {
+      loginForm.addEventListener('submit', function (event) {
         event.preventDefault();
         var account = accountInput.value.trim();
         var password = passwordInput.value.trim();
         if (!account || !password) {
-          errorText.textContent = "请输入企业账号和密码后再继续。";
+          errorText.textContent = '请输入账号和密码。';
           return;
         }
         var profile = defaultProfiles[activeRole];
-        persistAndEnter({
-          account: account,
-          name: profile.name,
-          role: activeRole
-        });
+        persistAndEnter({ account: account, name: profile.name, role: activeRole });
       });
 
-      ssoButton.addEventListener("click", function () {
-        var profile = defaultProfiles[activeRole];
-        persistAndEnter(profile);
+      ssoButton.addEventListener('click', function () {
+        persistAndEnter(defaultProfiles[activeRole]);
       });
 
       applyRole(activeRole);
@@ -489,5 +296,4 @@
   </script>
 </body>
 </html>
-
 

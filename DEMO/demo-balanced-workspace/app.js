@@ -1,223 +1,474 @@
-const iconMap={meeting:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3v3M17 3v3M4 9h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="5" width="16" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 13h3M8 17h8M15 13h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,procurement:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4.5h8l3 3V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 4.5V8h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 12h7M8.5 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,report:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 19.5h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 9.5 9 12l4-5 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,policy:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 5.5h9.5A2.5 2.5 0 0 1 19 8v10.5H9A3 3 0 0 0 6 21V8.5a3 3 0 0 1 1-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9.5h6M9 13h6M9 16.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,travel:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 14 4 12.5V10l6 1 4-6A1.5 1.5 0 0 1 16.8 6l-2 5 4.5.75a1.5 1.5 0 0 1 0 2.95L14.8 15l2 5a1.5 1.5 0 0 1-2.8 1l-4-6-6 1V13.5L10 14Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,access:`<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 7.5a3.5 3.5 0 1 0-7 0v3h7v-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 10.5h12a2 2 0 0 1 2 2v5A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5v-5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 14v2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`};
+const flowStore = window.EnterpriseAIDemoFlow;
+const chatStore = window.EnterpriseAIDemoChat;
+const userProfile = { ...(flowStore?.profiles?.desktopUser || { userId: 'lx', name: 'LX', department: '供应链计划部' }), channel: 'desktop' };
+const sentimentMailbox = chatStore?.mailbox || 'ai-feedback@enterprise.local';
 
-const scenarios={
-meeting:{label:'预定会议',iconKey:'meeting',mode:'流程执行',prompt:'帮我预定明天下午和采购部的项目评审会议，并生成议程。',description:'协调参会时间、预定会议室、生成议程、发送邀请并创建会后纪要任务。',aiAnswer:'已识别为“会议预定 + 议程生成”任务。我正在查询参会人空闲时间、会议室资源，并生成议程草稿。',aiProgress:'当前进度：已找到 3 个可用时间段，并关联了会议室与邮件系统。',stepTitle:'会议智能体执行步骤',steps:[{title:'识别会议意图与参会对象',desc:'已识别采购部、项目经理、技术负责人为核心参会人。',state:'done'},{title:'检索可用时间窗口',desc:'已找到 2026-03-12 下午 3 个共同空闲时段。',state:'done'},{title:'生成会议议程与邀请文案',desc:'正在根据“项目评审”主题生成标准议程。',state:'active'},{title:'等待用户确认并执行',desc:'确认后将发送邀请并创建会后纪要任务。',state:'pending'}],contextTitle:'系统推荐方案',contexts:[{title:'推荐时间',value:'2026-03-12 14:00 - 15:00'},{title:'推荐会议室',value:'A3-08 评审会议室'},{title:'关联对象',value:'采购部、项目经理、技术负责人'}],tools:[{title:'企业日历',desc:'已校验参会人空闲时间'},{title:'会议室系统',desc:'已锁定 A3-08 可用资源'},{title:'邮件通知',desc:'已准备邀请邮件与日历附件'}],requiresConfirmation:true,planningNextLabel:'查看待确认方案',confirm:{title:'请确认会议预定方案',badge:'等待确认',summary:[['会议主题','采购项目评审会'],['会议时间','2026-03-12 14:00 - 15:00'],['会议地点','A3-08 评审会议室'],['参会对象','采购部、项目经理、技术负责人']],contentKicker:'系统生成议程',contentItems:['项目背景同步','采购需求评审','风险点确认','后续行动安排'],checklist:[{text:'同步创建会后纪要任务',checked:true},{text:'抄送秘书与相关负责人',checked:true},{text:'会前 30 分钟发送提醒',checked:false}],sideTitle:'为什么推荐这个方案？',reason:'系统已检查核心参会人的空闲时间，14:00-15:00 的冲突最少，且会议室 A3-08 支持评审投屏。',automationTitle:'执行后将自动完成：',automation:['预定会议室','发送 Outlook/邮件邀请','写入会议议程','创建会后纪要任务']},complete:{badge:'执行完成',title:'会议已安排完成',subtitle:'邀请已发送，议程已生成，会后纪要任务已创建。',results:[['会议时间','2026-03-12 14:00 - 15:00'],['会议地点','A3-08 评审会议室'],['邀请状态','已发送给 6 位参会人'],['纪要任务','已在会后任务中心创建']],timeline:['已查询参会人日历','已预定会议室 A3-08','已生成会议议程','已发送会议邀请','已创建纪要与行动项模板'],outputTitle:'会议议程',outputItems:['项目背景同步','采购需求评审','风险点确认','后续行动安排'],nextActions:['继续生成主持词','补充会前材料清单','会后自动生成纪要','同步到项目周报']}},
-procurement:{label:'发起采购',iconKey:'procurement',mode:'流程执行',prompt:'帮我发起一笔办公用品采购申请，并整理预算说明。',description:'自动补齐采购申请要素、生成预算说明，并准备提交 OA 审批。',aiAnswer:'已识别为“采购申请 + 预算说明”任务。我正在整理采购清单、匹配预算模板，并准备审批材料。',aiProgress:'当前进度：已生成采购清单草稿，正在补齐预算说明和审批抄送对象。',stepTitle:'采购智能体执行步骤',steps:[{title:'解析采购需求',desc:'已识别办公用品采购、预算说明和审批诉求。',state:'done'},{title:'生成采购清单',desc:'已根据历史常用物资生成采购明细草稿。',state:'done'},{title:'补齐预算说明',desc:'正在生成预算合理性和使用场景说明。',state:'active'},{title:'等待确认并发起审批',desc:'确认后将提交 OA/BPM 系统。',state:'pending'}],contextTitle:'采购执行上下文',contexts:[{title:'预计金额',value:'8,600 元'},{title:'申请部门',value:'项目管理办公室'},{title:'推荐审批链',value:'部门负责人 → 财务 → 采购中心'}],tools:[{title:'OA/BPM',desc:'准备提交采购审批流程'},{title:'采购模板库',desc:'已匹配办公用品申请模板'},{title:'预算台账',desc:'已检查本月预算余额'}],requiresConfirmation:true,planningNextLabel:'查看采购申请方案',confirm:{title:'请确认采购申请方案',badge:'等待确认',summary:[['申请事项','办公用品采购申请'],['预算金额','8,600 元'],['申请部门','项目管理办公室'],['审批链','部门负责人 → 财务 → 采购中心']],contentKicker:'系统生成预算说明',contentItems:['满足季度评审会议和培训材料输出需要','现有库存不足以支撑 6 周消耗','采购金额在月度预算范围内','建议本周内提交以保证交付计划'],checklist:[{text:'自动填充 OA 审批表单',checked:true},{text:'同步抄送采购经理',checked:true},{text:'附带历史采购对比表',checked:true}],sideTitle:'为什么这样组织审批？',reason:'系统根据该类采购历史路径和当前预算范围，推荐标准审批链，能够减少退回补件。',automationTitle:'执行后将自动完成：',automation:['生成采购申请表','附带预算说明','抄送相关责任人','写入审批跟踪状态']},complete:{badge:'已提交审批',title:'采购申请已发起',subtitle:'OA 审批单已创建，预算说明和附件已同步上传。',results:[['审批单号','PO-2026-0312'],['预算金额','8,600 元'],['当前状态','待部门负责人审批'],['附件数量','3 份']],timeline:['已整理采购清单','已生成预算说明','已创建 OA 审批单','已抄送采购经理','已进入审批跟踪'],outputTitle:'预算说明摘要',outputItems:['满足当前项目培训和评审打印需求','采购金额在预算上限内','建议优先选用已有协议供应商'],nextActions:['继续生成供应商对比','补充采购明细表','订阅审批进度提醒']}},
-report:{label:'生成周报',iconKey:'report',mode:'内容生成',prompt:'帮我生成本周项目周报初稿，并提炼风险和下周计划。',description:'汇总项目进展、风险和下周计划，形成适合汇报的结构化周报初稿。',aiAnswer:'已识别为“项目周报生成”任务。我正在汇总本周进展、风险项和下周计划，并生成适合汇报的版本。',aiProgress:'当前进度：主体结构已生成，正在补充风险摘要和待决策事项。',stepTitle:'周报智能体执行步骤',steps:[{title:'收集项目进展信息',desc:'已整理项目里程碑、交付和延期事项。',state:'done'},{title:'提炼风险与阻塞项',desc:'已识别 3 项重点风险和 2 项待协调问题。',state:'done'},{title:'生成汇报草稿',desc:'正在输出适合给管理层汇报的结构化内容。',state:'active'},{title:'等待用户确认发送',desc:'确认后可同步到周报邮件或项目空间。',state:'pending'}],contextTitle:'周报上下文',contexts:[{title:'数据来源',value:'项目空间、任务系统、上周周报'},{title:'汇报对象',value:'项目群负责人、业务主管'},{title:'输出风格',value:'管理汇报版 / 精炼摘要'}],tools:[{title:'项目空间',desc:'拉取本周任务和里程碑更新'},{title:'文档系统',desc:'对比上周周报版本'},{title:'邮件草稿',desc:'已准备同步发送模板'}],requiresConfirmation:true,planningNextLabel:'查看周报初稿',confirm:{title:'请确认周报发送版本',badge:'等待确认',summary:[['周报周期','2026-03-04 至 2026-03-10'],['汇报对象','项目群负责人、业务主管'],['重点风险','3 项'],['待决策事项','2 项']],contentKicker:'系统生成周报提纲',contentItems:['本周完成 5 项关键交付','接口联调进度滞后 2 天','采购到货风险需要提前协调','下周重点推进交付测试与培训准备'],checklist:[{text:'同步生成邮件草稿',checked:true},{text:'附带风险清单附件',checked:true},{text:'抄送 PMO',checked:false}],sideTitle:'为什么这样组织内容？',reason:'系统根据管理层常用汇报结构，将内容压缩为“进展、风险、计划、待决策”四段，方便快速阅读。',automationTitle:'执行后将自动完成：',automation:['生成周报正文','生成邮件草稿','整理风险清单','归档到项目空间']},complete:{badge:'草稿已生成',title:'项目周报已准备完成',subtitle:'周报正文、风险摘要和发送草稿已同步生成。',results:[['文档状态','已生成草稿'],['邮件状态','待发送'],['风险项','3 项'],['归档位置','项目空间 / 周报目录']],timeline:['已汇总本周进展','已提炼风险与计划','已生成周报草稿','已生成邮件发送版本','已归档到项目空间'],outputTitle:'周报核心提纲',outputItems:['本周完成 5 项关键交付','重点风险 3 项，其中 1 项需管理层支持','下周重点推进交付测试与用户培训'],nextActions:['继续生成管理层口头汇报提纲','导出为 PPT 大纲','同步到月度报告']}},
-policy:{label:'查制度',iconKey:'policy',mode:'知识问答',prompt:'帮我总结最新采购制度的关键变化，并告诉我下一步怎么做。',description:'在制度库中检索最新版采购制度，提炼变化点，并输出行动建议。',aiAnswer:'已识别为“制度问答 + 行动建议”任务。我正在检索最新版采购制度，并对比历史版本差异。',aiProgress:'当前进度：已完成制度差异比对，正在生成面向业务人员的行动建议。',stepTitle:'知识智能体执行步骤',steps:[{title:'检索最新版制度',desc:'已定位 2026 版采购制度正文与附件。',state:'done'},{title:'对比历史版本变化',desc:'已提炼 4 个关键变化点。',state:'done'},{title:'生成行动建议',desc:'正在输出适合业务人员理解的下一步指引。',state:'active'},{title:'输出结论',desc:'无需额外确认，可直接查看结果。',state:'pending'}],contextTitle:'知识检索上下文',contexts:[{title:'知识范围',value:'采购制度库 / 2026 版'},{title:'对比来源',value:'2025 版制度'},{title:'目标输出',value:'变化摘要 + 下一步建议'}],tools:[{title:'制度知识库',desc:'已完成版本检索与引用定位'},{title:'差异分析引擎',desc:'已识别条款级变更'},{title:'问答生成器',desc:'正在转换为业务说明话术'}],requiresConfirmation:false,planningNextLabel:'查看生成结果',complete:{badge:'结果已生成',title:'制度变化摘要已整理完成',subtitle:'已提炼关键变化并生成下一步执行建议。',results:[['关键变化','4 项'],['影响流程','采购申请、预算附件、供应商比选'],['建议动作','3 项'],['引用依据','已关联制度原文']],timeline:['已检索最新版制度','已完成版本比对','已提炼关键变化','已输出业务行动建议'],outputTitle:'关键变化摘要',outputItems:['新增预算附件要求','单笔采购超过 5 万需补充供应商比选说明','审批链中增加财务预审节点','紧急采购说明模板已更新'],nextActions:['继续生成制度培训稿','输出给采购团队的通知','关联到采购申请流程说明']}},
-travel:{label:'差旅预定',iconKey:'travel',mode:'流程执行',prompt:'帮我安排下周去上海出差的机票和酒店，并准备差旅申请。',description:'整合差旅政策、机酒推荐和申请流程，自动准备差旅申请单。',aiAnswer:'已识别为“差旅预定 + 差旅申请”任务。我正在结合出差制度、预算标准和可选机酒资源生成方案。',aiProgress:'当前进度：已锁定 2 组符合政策的机酒组合，并准备出差申请单。',stepTitle:'差旅智能体执行步骤',steps:[{title:'识别行程与预算边界',desc:'已解析出发地、目的地、行程日期与预算级别。',state:'done'},{title:'匹配政策合规方案',desc:'已筛选出符合企业差旅制度的机酒组合。',state:'done'},{title:'准备差旅申请材料',desc:'正在补齐行程单、预算说明和审批抄送人。',state:'active'},{title:'等待确认后提交',desc:'确认后将完成机酒预占并发起审批。',state:'pending'}],contextTitle:'差旅执行上下文',contexts:[{title:'目的地',value:'上海 / 2 天 1 晚'},{title:'差旅等级',value:'标准商务舱以下 / 协议酒店'},{title:'预算估算',value:'3,480 元'}],tools:[{title:'差旅平台',desc:'已拉取符合政策的机酒资源'},{title:'制度库',desc:'已匹配差旅报销和出行制度'},{title:'OA/BPM',desc:'准备提交差旅申请'}],requiresConfirmation:true,planningNextLabel:'查看差旅方案',confirm:{title:'请确认差旅执行方案',badge:'等待确认',summary:[['出差城市','上海'],['行程时间','2026-03-18 至 2026-03-19'],['预算估算','3,480 元'],['审批链','直属主管 → 财务 → 行政']],contentKicker:'系统生成差旅建议',contentItems:['推荐去程 09:15 航班、返程 18:40 航班','推荐协议酒店 1 晚，距客户现场 1.2 公里','自动附带差旅事由与预算说明','符合最新差旅制度标准'],checklist:[{text:'提交差旅申请单',checked:true},{text:'预占机酒资源 30 分钟',checked:true},{text:'同步给行政支持',checked:false}],sideTitle:'为什么推荐这组方案？',reason:'系统优先选择政策合规、总成本更低且更贴近会面时间的机酒组合，减少后续改签成本。',automationTitle:'执行后将自动完成：',automation:['生成差旅申请单','预占机票与酒店','同步预算说明','创建报销准备清单']},complete:{badge:'申请已准备',title:'差旅方案已生成',subtitle:'差旅申请单、机酒建议和报销准备清单已同步完成。',results:[['申请状态','待主管审批'],['机票状态','已预占 30 分钟'],['酒店状态','协议酒店已锁定'],['附件','行程单 + 预算说明']],timeline:['已完成政策匹配','已生成机酒组合','已创建差旅申请单','已准备报销清单'],outputTitle:'差旅方案摘要',outputItems:['去程与返程航班已推荐','协议酒店已锁定','预算说明已自动生成'],nextActions:['继续生成客户拜访议程','补充出差联系人信息','同步到个人日历']}},
-access:{label:'开通权限',iconKey:'access',mode:'流程执行',prompt:'帮新同事申请开通 VPN、GitLab 和项目空间权限。',description:'根据岗位模板自动组装权限申请项，并生成开通说明与审批单。',aiAnswer:'已识别为“账号与权限开通”任务。我正在根据新同事岗位模板匹配权限清单，并准备 IT 开通流程。',aiProgress:'当前进度：已匹配开发岗位默认权限模板，正在校验所需系统与审批链。',stepTitle:'权限智能体执行步骤',steps:[{title:'识别岗位与目标系统',desc:'已识别 VPN、GitLab、项目空间为本次开通对象。',state:'done'},{title:'匹配标准权限模板',desc:'已从岗位模板中提取推荐权限清单。',state:'done'},{title:'生成开通申请与说明',desc:'正在准备 IT 开通说明与审批内容。',state:'active'},{title:'等待确认并提交',desc:'确认后将提交权限开通流程。',state:'pending'}],contextTitle:'权限执行上下文',contexts:[{title:'岗位模板',value:'研发工程师 / 标准权限包'},{title:'目标系统',value:'VPN、GitLab、项目空间'},{title:'风险级别',value:'中 / 需直属主管确认'}],tools:[{title:'IAM',desc:'准备生成权限开通工单'},{title:'组织通讯录',desc:'已校验员工部门与汇报关系'},{title:'ITSM',desc:'准备提交权限审批与执行单'}],requiresConfirmation:true,planningNextLabel:'查看权限开通方案',confirm:{title:'请确认权限开通方案',badge:'等待确认',summary:[['申请对象','新入职研发工程师'],['系统数量','3 个'],['权限模板','研发标准权限包'],['审批链','直属主管 → IT 支持']],contentKicker:'系统生成开通说明',contentItems:['VPN 开通用于远程办公','GitLab 开通用于代码协作','项目空间权限设置为成员只读起步','敏感仓库保持手动追加'],checklist:[{text:'自动生成 IT 工单',checked:true},{text:'附带岗位模板说明',checked:true},{text:'同步抄送直属主管',checked:true}],sideTitle:'为什么使用模板化权限？',reason:'岗位模板可以减少重复沟通，同时默认采用最小权限集，后续再按项目逐步追加敏感访问权限。',automationTitle:'执行后将自动完成：',automation:['生成权限工单','附带模板说明','提交审批','记录开通状态']},complete:{badge:'工单已创建',title:'权限申请已提交',subtitle:'IT 开通工单与审批链已建立，可继续跟踪处理状态。',results:[['工单号','IAM-2026-1142'],['申请系统','VPN / GitLab / 项目空间'],['当前状态','待直属主管审批'],['风险控制','默认最小权限']],timeline:['已匹配岗位模板','已生成权限清单','已创建 IT 工单','已同步审批链'],outputTitle:'权限清单摘要',outputItems:['VPN 远程访问','GitLab 项目组基础权限','项目空间只读权限'],nextActions:['补充敏感仓库申请','查看审批进度','生成入职 IT 清单']}}};
-
-const appShell=document.querySelector('#appShell');
-const railBackdrop=document.querySelector('#railBackdrop');
-const toggleRailBtn=document.querySelector('#toggleRailBtn');
-const railCloseBtn=document.querySelector('#railCloseBtn');
-const promptInput=document.querySelector('#mainPrompt');
-const startTaskBtn=document.querySelector('#startTaskBtn');
-const confirmExecuteBtn=document.querySelector('#confirmExecuteBtn');
-const regenerateBtn=document.querySelector('#regenerateBtn');
-const pendingJumpBtn=document.querySelector('#pendingJumpBtn');
-const sceneElements=document.querySelectorAll('[data-scene]');
-const sceneTriggers=document.querySelectorAll('[data-scene-target]');
-const railItems=document.querySelectorAll('.rail-item');
-const flowStore=window.EnterpriseAIDemoFlow;
-const urlParams=new URLSearchParams(window.location.search);
-
-const planningPrompt=document.querySelector('#planningPrompt');
-const planningTitle=document.querySelector('#planningTitle');
-const planningBadge=document.querySelector('#planningBadge');
-const planningAssistantMain=document.querySelector('#planningAssistantMain');
-const planningAssistantProgress=document.querySelector('#planningAssistantProgress');
-const planningStepTitle=document.querySelector('#planningStepTitle');
-const planningSteps=document.querySelector('#planningSteps');
-const planningContextTitle=document.querySelector('#planningContextTitle');
-const planningContext=document.querySelector('#planningContext');
-const planningTools=document.querySelector('#planningTools');
-const planningNextBtn=document.querySelector('#planningNextBtn');
-
-const confirmTitle=document.querySelector('#confirmTitle');
-const confirmBadge=document.querySelector('#confirmBadge');
-const confirmSummary=document.querySelector('#confirmSummary');
-const confirmContentKicker=document.querySelector('#confirmContentKicker');
-const confirmContentList=document.querySelector('#confirmContentList');
-const confirmChecklist=document.querySelector('#confirmChecklist');
-const confirmSideTitle=document.querySelector('#confirmSideTitle');
-const confirmReason=document.querySelector('#confirmReason');
-const confirmAutomationTitle=document.querySelector('#confirmAutomationTitle');
-const confirmAutomationList=document.querySelector('#confirmAutomationList');
-
-const completeBadge=document.querySelector('#completeBadge');
-const completeTitle=document.querySelector('#completeTitle');
-const completeSubtitle=document.querySelector('#completeSubtitle');
-const completeResults=document.querySelector('#completeResults');
-const completeTimeline=document.querySelector('#completeTimeline');
-const completeOutputTitle=document.querySelector('#completeOutputTitle');
-const completeOutputList=document.querySelector('#completeOutputList');
-const completeActions=document.querySelector('#completeActions');
-
-const landingChips=document.querySelector('#landingChips');
-const railQuickActions=document.querySelector('#railQuickActions');
-const scenarioGallery=document.querySelector('#scenarioGallery');
-const railTaskFeed=document.querySelector('#railTaskFeed');
-const recentTaskFeed=document.querySelector('#recentTaskFeed');
-const pendingActionCard=document.querySelector('#pendingActionCard');
-const pendingCardTitle=document.querySelector('#pendingCardTitle');
-const roleBridgeTitle=document.querySelector('#roleBridgeTitle');
-const roleBridgeText=document.querySelector('#roleBridgeText');
-const roleBridgeMeta=document.querySelector('#roleBridgeMeta');
-const bridgeAdminLink=document.querySelector('#bridgeAdminLink');
-const bridgeMobileUserLink=document.querySelector('#bridgeMobileUserLink');
-const bridgeMobileAdminLink=document.querySelector('#bridgeMobileAdminLink');
-
-const state={currentScene:'landing',currentScenario:'meeting',flowState:{meeting:'waiting',procurement:'running',report:'done',policy:'done',travel:'idle',access:'idle'},railOpen:false};
-const statusMap={idle:{text:'可发起',className:'badge-idle'},running:{text:'处理中',className:'badge-running'},waiting:{text:'待确认',className:'badge-wait'},done:{text:'已完成',className:'badge-done'}};
-const flowTransitions={idle:['running'],running:['waiting','done'],waiting:['running','done'],done:['running']};
-const scenarioMatchers=[['policy',['制度','规则','规范','条款','制度库','变化']],['meeting',['会议','议程','参会','会议室','纪要']],['report',['周报','汇报','月报','总结','风险']],['travel',['差旅','出差','机票','酒店','报销']],['access',['权限','账号','开通','vpn','gitlab','访问']],['procurement',['采购','审批','预算','供应商','请购']]];
-const scenarioMetrics={meeting:{tokens:42000,cost:86},procurement:{tokens:58000,cost:132},report:{tokens:36000,cost:74},policy:{tokens:24000,cost:42},travel:{tokens:47000,cost:118},access:{tokens:28000,cost:56}};
-
-function inferScenarioFromPrompt(prompt){const text=(prompt||'').toLowerCase();let bestScenario=state.currentScenario;let bestScore=0;scenarioMatchers.forEach(([scenarioId,keywords])=>{const score=keywords.reduce((total,keyword)=>total+(text.includes(keyword.toLowerCase())?1:0),0);if(score>bestScore){bestScore=score;bestScenario=scenarioId;}});return bestScenario;}
-function setScenarioFlowState(scenarioId,nextState,options={}){const currentState=state.flowState[scenarioId]||'idle';const allowed=flowTransitions[currentState]||[];if(options.force||currentState===nextState||allowed.includes(nextState)){state.flowState[scenarioId]=nextState;return true;}return false;}
-function renderScenarioIcon(iconKey){return iconMap[iconKey]||iconMap.meeting;}
-function renderStatusBadge(status,labelOverride){const data=statusMap[status]||statusMap.idle;return `<span class="badge ${data.className}">${labelOverride||data.text}</span>`;}
-function getScenarioActionLabel(status){if(status==='running')return '继续查看';if(status==='waiting')return '查看待确认';if(status==='done')return '查看结果';return '立即体验';}
-function applyBadge(element,status,labelOverride){const data=statusMap[status]||statusMap.idle;element.className=`badge ${data.className}`;element.textContent=labelOverride||data.text;}
-function setRail(open){state.railOpen=open;appShell.classList.toggle('rail-collapsed',!open);toggleRailBtn?.setAttribute('aria-expanded',String(open));}
-function updateRouteState(){urlParams.set('scenario',state.currentScenario);urlParams.set('scene',state.currentScene);window.history.replaceState({},'',`${window.location.pathname}?${urlParams.toString()}`);}
-function activateScene(sceneName){state.currentScene=sceneName;sceneElements.forEach((scene)=>{scene.classList.toggle('scene-active',scene.dataset.scene===sceneName);});railItems.forEach((item)=>{item.classList.toggle('is-active',item.dataset.sceneTarget===sceneName);});updateRouteState();renderRoleBridge();}
-function closeRailOnCompact(){if(window.innerWidth<=960)setRail(false);}
-function getScenarioPromptValue(scenarioId){const sharedPrompt=flowStore?.read()?.flows?.[scenarioId]?.prompt;return sharedPrompt||scenarios[scenarioId].prompt;}
-function getScenarioSummary(scenarioId,status){const scenario=scenarios[scenarioId];if(!scenario)return'';if(status==='running')return `${scenario.label}正在由内部智能体处理中。`;if(status==='waiting')return `${scenario.label}方案已生成，等待用户确认。`;if(status==='done'){if(['procurement','travel','access'].includes(scenarioId))return `${scenario.label}已生成并进入后续审批或工单流转。`;return `${scenario.label}结果已生成，可继续在多端查看。`; }return `${scenario.label}可随时从统一入口发起。`;}
-function getScenarioApprovalCount(scenarioId,status){if(status==='waiting'&&scenarios[scenarioId]?.requiresConfirmation)return 1;if(status==='done'&&['procurement','travel','access'].includes(scenarioId))return 1;return 0;}
-function syncScenarioToStore(scenarioId,status,action){if(!flowStore||!scenarios[scenarioId])return;const base=scenarioMetrics[scenarioId]||{tokens:22000,cost:40};const factor=status==='idle'?0:status==='running'?1:status==='waiting'?1.15:1.3;flowStore.upsertTask({scenarioId,status,prompt:(promptInput.value||'').trim()||scenarios[scenarioId].prompt,summary:getScenarioSummary(scenarioId,status),channel:'desktop',role:'user',approvalCount:getScenarioApprovalCount(scenarioId,status),tokensDelta:Math.round(base.tokens*factor),costDelta:Math.round(base.cost*factor),action});}
-function syncFlowStateFromStore(preferredScenario){if(!flowStore)return;const snapshot=flowStore.read();Object.keys(state.flowState).forEach((scenarioId)=>{if(snapshot.flows?.[scenarioId]?.status){state.flowState[scenarioId]=snapshot.flows[scenarioId].status;}});const nextScenario=preferredScenario&&scenarios[preferredScenario]?preferredScenario:state.currentScenario;if(scenarios[nextScenario])state.currentScenario=nextScenario;const sharedPrompt=snapshot.flows?.[state.currentScenario]?.prompt;if(sharedPrompt&&document.activeElement!==promptInput){promptInput.value=sharedPrompt;}}
-function updateBridgeLinks(){const scenarioId=state.currentScenario;const sceneName=state.currentScene;bridgeAdminLink.href=`../demo-admin-console/?scenario=${scenarioId}&scene=${sceneName}`;bridgeMobileUserLink.href=`../demo-mobile/?role=user&scenario=${scenarioId}`;bridgeMobileAdminLink.href=`../demo-mobile/?role=admin&scenario=${scenarioId}`;}
-function renderRoleBridge(){if(!roleBridgeTitle)return;const snapshot=flowStore?.read();const summary=flowStore?.summarize(snapshot);const scenario=scenarios[state.currentScenario];const flow=snapshot?.flows?.[state.currentScenario];const latest=summary?.latestAudit;roleBridgeTitle.textContent=`${scenario.label}已同步到管理员与移动端`;roleBridgeText.textContent=flow?`${flow.summary} 管理员可查看治理与审批压力，移动端可继续跟进当前任务。`:'当前任务会同步到管理员与移动端，便于演示跨角色协作闭环。';roleBridgeMeta.innerHTML=[`<span class="role-bridge-tag">当前状态：${statusMap[state.flowState[state.currentScenario]].text}</span>`,`<span class="role-bridge-tag">移动端可继续处理</span>`,latest?`<span class="role-bridge-tag">最近动作：${latest.action}</span>`:''].join('');updateBridgeLinks();}
-function renderScenarioSelectors(){const entries=Object.entries(scenarios);landingChips.innerHTML=entries.map(([id,scenario])=>`<button class="quick-chip ${state.currentScenario===id?'is-selected':''}" data-scenario="${id}">${scenario.label}</button>`).join('');railQuickActions.innerHTML=entries.map(([id,scenario])=>`<button class="rail-scene-pill ${state.currentScenario===id?'is-selected':''}" data-scenario="${id}">${scenario.label}</button>`).join('');scenarioGallery.innerHTML=entries.map(([id,scenario])=>{const status=state.flowState[id]||'idle';return `<article class="scenario-card ${state.currentScenario===id?'is-selected':''}" data-card-scenario="${id}"><div class="scenario-top"><div class="scenario-icon">${renderScenarioIcon(scenario.iconKey)}</div><span class="scenario-mode">${scenario.mode}</span></div><h4>${scenario.label}</h4><p>${scenario.description}</p><div class="card-actions"><button class="card-link" data-start-scenario="${id}">${getScenarioActionLabel(status)}</button><span class="card-status">${statusMap[status].text}</span></div></article>`;}).join('');document.querySelectorAll('[data-scenario]').forEach((button)=>{button.addEventListener('click',()=>selectScenario(button.dataset.scenario,{focusInput:true}));});document.querySelectorAll('[data-card-scenario]').forEach((card)=>{card.addEventListener('click',(event)=>{if(event.target.closest('[data-start-scenario]'))return;selectScenario(card.dataset.cardScenario,{focusInput:true});});});document.querySelectorAll('[data-start-scenario]').forEach((button)=>{button.addEventListener('click',()=>{const scenarioId=button.dataset.startScenario;const currentStatus=state.flowState[scenarioId]||'idle';if(currentStatus==='idle'){launchScenario(scenarioId);return;}openScenarioView(scenarioId);});});}
-function bindOpenScenarioTriggers(){document.querySelectorAll('[data-open-scenario]').forEach((button)=>{button.addEventListener('click',()=>openScenarioView(button.dataset.openScenario));});}
-function resolvePrimaryScenario(){const entries=Object.entries(scenarios);return entries.find(([id])=>state.flowState[id]==='waiting')||entries.find(([id])=>state.flowState[id]==='running')||entries.find(([id])=>state.flowState[id]==='done')||entries[0];}
-function renderLandingFeeds(){const entries=Object.entries(scenarios);railTaskFeed.innerHTML=entries.map(([id,scenario])=>`<article class="rail-task-card ${state.currentScenario===id?'is-selected':''}"><div class="rail-task-head">${renderStatusBadge(state.flowState[id])}<button class="card-link" data-open-scenario="${id}">打开</button></div><h4>${scenario.label}</h4><p>${scenario.description}</p></article>`).join('');recentTaskFeed.innerHTML=entries.map(([id,scenario])=>`<article class="task-row ${state.currentScenario===id?'is-selected':''}"><div><h4>${scenario.label}</h4><p>${scenario.description}</p></div><div class="task-row-meta">${renderStatusBadge(state.flowState[id])}<button class="ghost-link task-open-link" data-open-scenario="${id}">${getScenarioActionLabel(state.flowState[id])}</button></div></article>`).join('');const [primaryId,primaryScenario]=resolvePrimaryScenario();const primaryStatus=state.flowState[primaryId];const primaryLabel=primaryStatus==='waiting'&&primaryScenario.requiresConfirmation?'查看待确认方案':getScenarioActionLabel(primaryStatus);pendingCardTitle.textContent=`${primaryScenario.label}关键动作`;pendingJumpBtn.textContent=primaryLabel;pendingActionCard.innerHTML=`${renderStatusBadge(primaryStatus)}<h4>${primaryScenario.label}</h4><p>${primaryScenario.description}</p><button class="secondary-btn" data-open-scenario="${primaryId}">${primaryLabel}</button>`;bindOpenScenarioTriggers();renderRoleBridge();}
-function selectScenario(scenarioId,options={}){state.currentScenario=scenarioId;promptInput.value=getScenarioPromptValue(scenarioId);if(options.syncStore!==false){flowStore?.setActiveScenario(scenarioId,{prompt:promptInput.value,role:'user',channel:'desktop',action:'切换查看场景'});}renderScenarioSelectors();renderLandingFeeds();if(options.focusInput){activateScene('landing');promptInput.focus();}}
-function renderPlanning(){const scenario=scenarios[state.currentScenario];planningTitle.textContent=`${scenario.label}任务已受理`;applyBadge(planningBadge,'running','智能体处理中');planningPrompt.textContent=promptInput.value.trim()||scenario.prompt;planningAssistantMain.textContent=scenario.aiAnswer;planningAssistantProgress.textContent=scenario.aiProgress;planningStepTitle.textContent=scenario.stepTitle;planningContextTitle.textContent=scenario.contextTitle;planningSteps.innerHTML=scenario.steps.map((step,index)=>`<article class="plan-step ${step.state}"><span class="step-index">${String(index+1).padStart(2,'0')}</span><div><h4>${step.title}</h4><p>${step.desc}</p></div></article>`).join('');planningContext.innerHTML=scenario.contexts.map((item)=>`<div class="context-card"><h4>${item.title}</h4><p>${item.value}</p></div>`).join('');planningTools.innerHTML=scenario.tools.map((item)=>`<div class="tool-card"><h4>${item.title}</h4><p>${item.desc}</p></div>`).join('');planningNextBtn.textContent=scenario.planningNextLabel;renderRoleBridge();return 'planning';}
-function renderConfirm(){const scenario=scenarios[state.currentScenario];if(!scenario.requiresConfirmation){renderComplete();return 'complete';}const confirm=scenario.confirm;confirmTitle.textContent=confirm.title;applyBadge(confirmBadge,'waiting',confirm.badge);confirmContentKicker.textContent=confirm.contentKicker;confirmSummary.innerHTML=confirm.summary.map(([label,value])=>`<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`).join('');confirmContentList.innerHTML=confirm.contentItems.map((item)=>`<li>${item}</li>`).join('');confirmChecklist.innerHTML=confirm.checklist.map((item,index)=>`<label for="confirm-check-${index}"><input id="confirm-check-${index}" name="confirm-check-${index}" type="checkbox" ${item.checked?'checked':''} data-check-index="${index}" /> ${item.text}</label>`).join('');confirmSideTitle.textContent=confirm.sideTitle;confirmReason.textContent=confirm.reason;confirmAutomationTitle.textContent=confirm.automationTitle;confirmAutomationList.innerHTML=confirm.automation.map((item)=>`<li>${item}</li>`).join('');renderRoleBridge();return 'confirm';}
-function renderComplete(){const scenario=scenarios[state.currentScenario];const complete=scenario.complete;applyBadge(completeBadge,'done',complete.badge);completeTitle.textContent=complete.title;completeSubtitle.textContent=complete.subtitle;completeResults.innerHTML=complete.results.map(([label,value])=>`<div class="result-card"><span>${label}</span><strong>${value}</strong></div>`).join('');completeTimeline.innerHTML=complete.timeline.map((item)=>`<div class="done-step">${item}</div>`).join('');completeOutputTitle.textContent=complete.outputTitle;completeOutputList.innerHTML=complete.outputItems.map((item)=>`<li>${item}</li>`).join('');completeActions.innerHTML=complete.nextActions.map((item)=>`<div class="next-action-card">${item}</div>`).join('');renderRoleBridge();return 'complete';}
-function openScenarioView(scenarioId,preferredScene='auto'){selectScenario(scenarioId,{focusInput:false});let nextScene=preferredScene;if(preferredScene==='auto'){const flowStatus=state.flowState[scenarioId]||'idle';if(flowStatus==='running')nextScene=renderPlanning();else if(flowStatus==='waiting')nextScene=renderConfirm();else if(flowStatus==='done')nextScene=renderComplete();else nextScene='landing';}else if(preferredScene==='planning')nextScene=renderPlanning();else if(preferredScene==='confirm')nextScene=renderConfirm();else if(preferredScene==='complete')nextScene=renderComplete();activateScene(nextScene);closeRailOnCompact();}
-function launchScenario(scenarioId){selectScenario(scenarioId,{focusInput:false});setScenarioFlowState(scenarioId,'running',{force:true});syncScenarioToStore(scenarioId,'running','桌面端发起任务');renderScenarioSelectors();renderLandingFeeds();renderPlanning();activateScene('planning');closeRailOnCompact();}
-function startCurrentScenario(){const prompt=(promptInput.value||'').trim();const scenarioId=inferScenarioFromPrompt(prompt);launchScenario(scenarioId);}
-function goNextFromPlanning(){const scenario=scenarios[state.currentScenario];if(scenario.requiresConfirmation){setScenarioFlowState(state.currentScenario,'waiting',{force:true});syncScenarioToStore(state.currentScenario,'waiting','进入待确认阶段');renderScenarioSelectors();renderLandingFeeds();activateScene(renderConfirm());return;}setScenarioFlowState(state.currentScenario,'done',{force:true});syncScenarioToStore(state.currentScenario,'done','知识结果已生成');renderScenarioSelectors();renderLandingFeeds();activateScene(renderComplete());}
-function confirmCurrentScenario(){setScenarioFlowState(state.currentScenario,'done',{force:true});syncScenarioToStore(state.currentScenario,'done','用户确认并执行');renderScenarioSelectors();renderLandingFeeds();activateScene(renderComplete());}
-function regenerateCurrentScenario(){setScenarioFlowState(state.currentScenario,'running',{force:true});syncScenarioToStore(state.currentScenario,'running','重新生成方案');renderScenarioSelectors();renderLandingFeeds();activateScene(renderPlanning());}
-function refreshCurrentScene(){renderScenarioSelectors();renderLandingFeeds();if(state.currentScene==='planning'){renderPlanning();}else if(state.currentScene==='confirm'){const targetScene=renderConfirm();if(targetScene!=='confirm')state.currentScene=targetScene;}else if(state.currentScene==='complete'){renderComplete();}renderRoleBridge();}
-sceneTriggers.forEach((trigger)=>{trigger.addEventListener('click',()=>{const target=trigger.dataset.sceneTarget;if(!target)return;if(target==='landing'){selectScenario(state.currentScenario,{focusInput:false});activateScene('landing');closeRailOnCompact();return;}if(target==='planning'){activateScene(renderPlanning());closeRailOnCompact();return;}if(target==='confirm'){activateScene(renderConfirm());closeRailOnCompact();return;}if(target==='complete'){activateScene(renderComplete());closeRailOnCompact();}});});
-startTaskBtn?.addEventListener('click',startCurrentScenario);
-promptInput?.addEventListener('keydown',(event)=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter')startCurrentScenario();});
-planningNextBtn?.addEventListener('click',goNextFromPlanning);
-confirmExecuteBtn?.addEventListener('click',confirmCurrentScenario);
-regenerateBtn?.addEventListener('click',regenerateCurrentScenario);
-pendingJumpBtn?.addEventListener('click',()=>{const [primaryId]=resolvePrimaryScenario();openScenarioView(primaryId);});
-toggleRailBtn?.addEventListener('click',()=>setRail(!state.railOpen));
-railCloseBtn?.addEventListener('click',()=>setRail(false));
-railBackdrop?.addEventListener('click',()=>setRail(false));
-window.addEventListener('resize',()=>{if(window.innerWidth>960)railBackdrop.blur?.();});
-flowStore?.subscribe(()=>{syncFlowStateFromStore();refreshCurrentScene();});
-const initialScenario=urlParams.get('scenario');
-const initialScene=urlParams.get('scene');
-syncFlowStateFromStore(initialScenario&&scenarios[initialScenario]?initialScenario:(flowStore?.read()?.activeScenario||'meeting'));
-selectScenario(state.currentScenario,{focusInput:false,syncStore:false});
-renderPlanning();
-renderConfirm();
-renderComplete();
-if(initialScene&&['landing','planning','confirm','complete'].includes(initialScene)){openScenarioView(state.currentScenario,initialScene);}else{activateScene('landing');}
-setRail(false);
-renderRoleBridge();
-flowStore?.recordEvent({scenarioId:state.currentScenario,role:'user',channel:'desktop',action:'打开用户主入口'});
-
-/* Department tool zone */
-const desktopToolProfile = flowStore?.profiles?.desktopUser ? { ...flowStore.profiles.desktopUser, channel: 'desktop' } : null;
-const toolUserDirectory = { lx: 'LX', zhoumin: '周敏', lina: '李娜', chenhao: '陈灏', liujia: '刘嘉' };
-let desktopToolFeedback = '';
-function formatToolTargets(rule = {}) {
-  if ((rule.scope === 'department' || rule.scope === 'departmentAdmin') && rule.departments?.length) return rule.departments.join(' / ');
-  if ((rule.scope === 'users' || rule.scope === 'owner') && rule.users?.length) return rule.users.map((userId) => toolUserDirectory[userId] || userId).join(' / ');
-  return '';
-}
-function formatToolPolicy(rule = {}) {
-  const scopeLabel = flowStore?.scopeLabels?.[rule.scope] || '未配置';
-  const targets = formatToolTargets(rule);
-  return targets ? `${scopeLabel} · ${targets}` : scopeLabel;
-}
-function ensureDesktopToolZone() {
-  const landingScene = document.querySelector('.landing-scene');
-  const roleBridge = landingScene?.querySelector('.role-bridge');
-  if (!landingScene || !roleBridge) return null;
-  let section = landingScene.querySelector('#desktopToolZone');
-  if (!section) {
-    section = document.createElement('section');
-    section.id = 'desktopToolZone';
-    section.className = 'glow-card tool-zone-panel';
-    roleBridge.insertAdjacentElement('afterend', section);
+const scenarioMeta = {
+  meeting: {
+    label: '预定会议',
+    prompt: '帮我预定明天下午的项目评审会议，并生成议程。',
+    startReply: '已开始核对参会人时间、会议室资源和会议议程。',
+    waitReply: '会议方案已生成，请确认时间、地点和参会人。',
+    doneReply: '会议已创建，邀请和议程已同步完成。',
+    requiresConfirmation: true,
+    summaries: {
+      idle: '可从统一入口直接发起会议安排。',
+      running: '正在整理会议时间、会议室和议程。',
+      waiting: '会议方案已准备完成，等待确认。',
+      done: '会议安排已完成。'
+    },
+    steps: ['识别需求', '生成方案', '关键确认', '执行完成']
+  },
+  procurement: {
+    label: '发起采购',
+    prompt: '帮我发起一笔办公用品采购申请，并补预算说明。',
+    startReply: '已开始整理采购清单、预算说明和审批链。',
+    waitReply: '采购方案已生成，请确认后提交审批。',
+    doneReply: '采购申请已提交，预算说明已同步到审批单。',
+    requiresConfirmation: true,
+    summaries: {
+      idle: '可直接发起采购申请。',
+      running: '正在整理采购清单和预算说明。',
+      waiting: '采购申请已准备完成，等待确认。',
+      done: '采购申请已进入审批流。'
+    },
+    steps: ['识别需求', '生成方案', '关键确认', '执行完成']
+  },
+  report: {
+    label: '生成周报',
+    prompt: '帮我生成本周项目周报，并提炼风险和下周计划。',
+    startReply: '已开始汇总项目进展、风险和下周计划。',
+    waitReply: '周报草稿已生成，请确认后发送。',
+    doneReply: '周报草稿已生成，并可继续导出邮件版本。',
+    requiresConfirmation: true,
+    summaries: {
+      idle: '可直接生成周报草稿。',
+      running: '正在整理周报正文和风险摘要。',
+      waiting: '周报草稿已生成，等待确认。',
+      done: '周报内容已生成。'
+    },
+    steps: ['汇总数据', '生成草稿', '关键确认', '执行完成']
+  },
+  policy: {
+    label: '查制度',
+    prompt: '总结一下最新采购制度的变化。',
+    startReply: '已开始检索最新版制度并比对历史版本。',
+    waitReply: '制度摘要已生成。',
+    doneReply: '制度变化和下一步建议已整理完成。',
+    requiresConfirmation: false,
+    summaries: {
+      idle: '可直接检索制度和知识库内容。',
+      running: '正在检索制度条款并生成摘要。',
+      waiting: '制度摘要已生成。',
+      done: '制度摘要已返回。'
+    },
+    steps: ['检索知识', '生成摘要', '结果整理', '返回结果']
+  },
+  travel: {
+    label: '差旅预定',
+    prompt: '帮我安排下周去上海出差的机票和酒店。',
+    startReply: '已开始匹配机票、酒店和差旅政策。',
+    waitReply: '差旅方案已生成，请确认行程和预算。',
+    doneReply: '差旅申请已提交，机酒资源已预占。',
+    requiresConfirmation: true,
+    summaries: {
+      idle: '可直接发起差旅安排。',
+      running: '正在匹配合规的机酒组合。',
+      waiting: '差旅方案已准备完成，等待确认。',
+      done: '差旅申请已进入后续流转。'
+    },
+    steps: ['识别行程', '匹配方案', '关键确认', '执行完成']
+  },
+  access: {
+    label: '开通权限',
+    prompt: '帮新同事申请开通 VPN、GitLab 和项目空间权限。',
+    startReply: '已开始匹配权限模板和 IT 工单内容。',
+    waitReply: '权限方案已生成，请确认后提交。',
+    doneReply: '权限工单已创建，并进入审批处理。',
+    requiresConfirmation: true,
+    summaries: {
+      idle: '可直接发起权限开通。',
+      running: '正在匹配岗位模板和系统权限。',
+      waiting: '权限方案已准备完成，等待确认。',
+      done: '权限工单已提交。'
+    },
+    steps: ['匹配模板', '生成方案', '关键确认', '执行完成']
   }
-  return section;
+};
+
+const statusText = { idle: '可发起', running: '处理中', waiting: '待确认', done: '已完成' };
+const promptInput = document.querySelector('#mainPrompt');
+const quickActionList = document.querySelector('#quickActionList');
+const startTaskBtn = document.querySelector('#startTaskBtn');
+const newChatBtn = document.querySelector('#newChatBtn');
+const threadList = document.querySelector('#threadList');
+const threadCount = document.querySelector('#threadCount');
+const messageList = document.querySelector('#messageList');
+const messageCount = document.querySelector('#messageCount');
+const statusTitle = document.querySelector('#statusTitle');
+const statusBadge = document.querySelector('#statusBadge');
+const statusSummary = document.querySelector('#statusSummary');
+const statusMeta = document.querySelector('#statusMeta');
+const statusSteps = document.querySelector('#statusSteps');
+const advanceBtn = document.querySelector('#advanceBtn');
+const confirmBtn = document.querySelector('#confirmBtn');
+const toolCount = document.querySelector('#toolCount');
+const toolList = document.querySelector('#toolList');
+const toolFeedback = document.querySelector('#toolFeedback');
+
+const state = {
+  currentScenario: flowStore?.read()?.activeScenario || 'meeting',
+  currentThreadId: chatStore?.read()?.currentThreadId || ''
+};
+
+function thumbUpIcon() {
+  return '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10v10M11 21h6.6a2 2 0 0 0 2-1.67l1.2-7A2 2 0 0 0 18.82 10H14l.62-3.12A2.5 2.5 0 0 0 12.17 4L7 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
-function renderDesktopToolZone() {
-  const section = ensureDesktopToolZone();
-  if (!section || !flowStore || !desktopToolProfile) return;
+
+function thumbDownIcon() {
+  return '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 14V4M11 3H17.6a2 2 0 0 1 2 1.67l1.2 7A2 2 0 0 1 18.82 14H14l.62 3.12A2.5 2.5 0 0 1 12.17 20L7 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+function getScenarioMeta(scenarioId) {
+  return scenarioMeta[scenarioId] || scenarioMeta.meeting;
+}
+
+function inferScenario(prompt) {
+  const text = prompt.trim();
+  if (!text) return state.currentScenario;
+  if (/会议|议程|邀请/.test(text)) return 'meeting';
+  if (/采购|预算|供应商/.test(text)) return 'procurement';
+  if (/周报|汇报|计划/.test(text)) return 'report';
+  if (/制度|规则|流程说明/.test(text)) return 'policy';
+  if (/差旅|机票|酒店/.test(text)) return 'travel';
+  if (/权限|账号|VPN|GitLab/.test(text)) return 'access';
+  return state.currentScenario;
+}
+
+function getCurrentThread(snapshot = chatStore.read()) {
+  return snapshot.threads.find((thread) => thread.threadId === state.currentThreadId) || null;
+}
+
+function getCurrentStatus(thread) {
+  if (thread?.status) return thread.status;
+  const flow = flowStore?.read()?.flows?.[state.currentScenario];
+  return flow?.status || 'idle';
+}
+
+function getStepState(status, index, requiresConfirmation) {
+  if (status === 'done') return 'is-done';
+  if (status === 'waiting') {
+    if (index < 2) return 'is-done';
+    if (index === 2) return 'is-active';
+    return '';
+  }
+  if (status === 'running') {
+    if (index === 0) return 'is-done';
+    if (index === 1) return 'is-active';
+    return '';
+  }
+  if (!requiresConfirmation && status === 'done' && index === 2) return 'is-done';
+  return index === 0 ? 'is-active' : '';
+}
+
+function renderQuickActions() {
+  quickActionList.innerHTML = Object.entries(scenarioMeta).map(([scenarioId, meta]) => `
+    <button class="quick-chip ${state.currentScenario === scenarioId ? 'is-active' : ''}" type="button" data-scenario="${scenarioId}">${meta.label}</button>
+  `).join('');
+  quickActionList.querySelectorAll('[data-scenario]').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.currentScenario = button.dataset.scenario;
+      if (!state.currentThreadId) {
+        promptInput.value = getScenarioMeta(state.currentScenario).prompt;
+      }
+      renderQuickActions();
+      renderStatusCard();
+    });
+  });
+}
+
+function renderThreadList() {
+  const threads = chatStore.listThreads();
+  threadCount.textContent = `${threads.length} 条`;
+  threadList.innerHTML = threads.map((thread) => `
+    <button class="thread-item ${thread.threadId === state.currentThreadId ? 'is-active' : ''}" type="button" data-thread-id="${thread.threadId}">
+      <div class="thread-head">
+        <strong>${thread.title}</strong>
+        <span class="thread-status status-${thread.status}">${statusText[thread.status] || thread.status}</span>
+      </div>
+      <p>${thread.preview}</p>
+      <span>${thread.updatedAt}</span>
+    </button>
+  `).join('');
+  threadList.querySelectorAll('[data-thread-id]').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.currentThreadId = button.dataset.threadId;
+      const snapshot = chatStore.setCurrentThread(state.currentThreadId);
+      const thread = snapshot.threads.find((item) => item.threadId === state.currentThreadId);
+      if (thread) {
+        state.currentScenario = thread.scenarioId;
+        const firstUserMessage = chatStore.listMessages(thread.threadId, snapshot).find((message) => message.role === 'user');
+        promptInput.value = firstUserMessage?.text || getScenarioMeta(thread.scenarioId).prompt;
+        flowStore?.setActiveScenario(thread.scenarioId, { role: 'user', channel: 'desktop', action: '查看历史对话' });
+      }
+      renderAll();
+    });
+  });
+}
+
+function renderMessages() {
+  const messages = state.currentThreadId ? chatStore.listMessages(state.currentThreadId) : [];
+  messageCount.textContent = messages.length ? `${messages.length} 条` : '无记录';
+  if (!messages.length) {
+    messageList.innerHTML = '<div class="empty-state">发起新的任务后，会在这里保留历史对话和反馈记录。</div>';
+    return;
+  }
+  messageList.innerHTML = messages.map((message) => {
+    const assistantActions = message.role === 'assistant'
+      ? `
+        <div class="feedback-row">
+          <button class="feedback-btn ${message.feedback === 'up' ? 'is-active' : ''}" type="button" data-feedback="up" data-message-id="${message.messageId}" aria-label="点赞">${thumbUpIcon()}</button>
+          <button class="feedback-btn is-negative ${message.feedback === 'down' ? 'is-active' : ''}" type="button" data-feedback="down" data-message-id="${message.messageId}" aria-label="点踩">${thumbDownIcon()}</button>
+        </div>
+      `
+      : '';
+    return `
+      <article class="message-card ${message.role === 'assistant' ? 'assistant' : 'user'}">
+        <div class="message-bubble">${message.text}</div>
+        <div class="message-actions">
+          <span class="message-time">${message.createdAt}</span>
+          ${assistantActions}
+        </div>
+      </article>
+    `;
+  }).join('');
+  messageList.querySelectorAll('[data-feedback]').forEach((button) => {
+    button.addEventListener('click', () => {
+      chatStore.setFeedback(button.dataset.messageId, button.dataset.feedback, {
+        userId: userProfile.userId,
+        userName: userProfile.name,
+        mailbox: sentimentMailbox
+      });
+      renderMessages();
+    });
+  });
+}
+
+function renderStatusCard() {
+  const snapshot = chatStore.read();
+  const thread = getCurrentThread(snapshot);
+  const scenarioId = thread?.scenarioId || state.currentScenario;
+  const meta = getScenarioMeta(scenarioId);
+  const status = getCurrentStatus(thread);
+  const flow = flowStore?.read()?.flows?.[scenarioId];
+  statusTitle.textContent = meta.label;
+  statusSummary.textContent = meta.summaries[status] || flow?.summary || '';
+  statusBadge.textContent = statusText[status] || status;
+  statusBadge.className = `status-pill status-${status}`;
+  statusMeta.innerHTML = [
+    `<span>${flowStore?.statusLabels?.[status] || statusText[status] || status}</span>`,
+    `<span>${thread?.updatedAt || flow?.updatedAt || '刚刚更新'}</span>`,
+    `<span>${meta.label}</span>`
+  ].join('');
+  statusSteps.innerHTML = meta.steps.map((step, index) => `<div class="step-item ${getStepState(status, index, meta.requiresConfirmation)}"><strong>${step}</strong><span>${status === 'done' ? '已完成' : status === 'waiting' && index === 2 ? '等待确认' : status === 'running' && index === 1 ? '处理中' : index === 0 ? '已识别' : '待执行'}</span></div>`).join('');
+  if (status === 'done') {
+    advanceBtn.textContent = '继续提问';
+    confirmBtn.hidden = true;
+  } else if (status === 'waiting') {
+    advanceBtn.textContent = '重新生成';
+    confirmBtn.hidden = false;
+  } else if (status === 'running') {
+    advanceBtn.textContent = meta.requiresConfirmation ? '进入确认' : '生成结果';
+    confirmBtn.hidden = true;
+  } else {
+    advanceBtn.textContent = '开始处理';
+    confirmBtn.hidden = true;
+  }
+}
+
+function formatRule(rule = {}) {
+  const scopeLabel = flowStore?.scopeLabels?.[rule.scope] || '未配置';
+  if (rule.scope === 'department' && rule.departments?.length) return `${scopeLabel} · ${rule.departments.join(' / ')}`;
+  if (rule.scope === 'users' && rule.users?.length) return `${scopeLabel} · ${rule.users.join(' / ')}`;
+  return scopeLabel;
+}
+
+function renderTools() {
   const snapshot = flowStore.read();
-  const visibleTools = flowStore.listVisibleTools(desktopToolProfile, snapshot);
-  const downloadableCount = visibleTools.filter((tool) => flowStore.canDownloadTool(tool, desktopToolProfile)).length;
-  section.innerHTML = `
-    <div class="tool-zone-head">
-      <div class="tool-zone-copy">
-        <p class="section-kicker">部门工具专区</p>
-        <h3>各部门用 AI 开发的小工具，也统一收口到门户里。</h3>
-        <p class="tool-zone-note">例如供应链计划部的 Python 程序、采购中心的脚本包、财务部的 Agent 工具包，都可以在这里按权限查看、下载和追踪。</p>
-      </div>
-      <div class="tool-zone-summary">
-        <span class="role-bridge-tag">当前用户：${desktopToolProfile.name} / ${desktopToolProfile.department}</span>
-        <span class="role-bridge-tag">可见工具：${visibleTools.length}</span>
-        <span class="role-bridge-tag">可下载：${downloadableCount}</span>
-      </div>
-    </div>
-    ${desktopToolFeedback ? `<div class="tool-zone-feedback">${desktopToolFeedback}</div>` : ''}
-    <div class="tool-zone-grid">
-      ${visibleTools.map((tool) => {
-        const canDownload = flowStore.canDownloadTool(tool, desktopToolProfile);
-        return `
-          <article class="tool-zone-card">
-            <div class="tool-zone-card-top">
-              <div>
-                <p class="tool-zone-overline">${tool.department} · ${tool.type}</p>
-                <h4>${tool.name}</h4>
-              </div>
-              <span class="badge ${canDownload ? 'badge-done' : 'badge-idle'}">${canDownload ? '可下载' : '仅查看'}</span>
-            </div>
-            <p class="tool-zone-summary-text">${tool.summary}</p>
-            <div class="tool-zone-meta">
-              <div class="tool-zone-meta-item"><span>版本</span><strong>${tool.version}</strong></div>
-              <div class="tool-zone-meta-item"><span>交付物</span><strong>${tool.fileName}</strong></div>
-              <div class="tool-zone-meta-item"><span>可见范围</span><strong>${formatToolPolicy(tool.visibility)}</strong></div>
-              <div class="tool-zone-meta-item"><span>下载范围</span><strong>${formatToolPolicy(tool.download)}</strong></div>
-              <div class="tool-zone-meta-item"><span>管理方式</span><strong>${formatToolPolicy(tool.management)}</strong></div>
-            </div>
-            <div class="tool-zone-actions">
-              <span class="tool-zone-count">累计下载 ${tool.downloads} 次</span>
-              ${canDownload
-                ? `<button class="primary-btn tool-zone-action" data-download-tool="${tool.toolId}">下载工具</button>`
-                : `<button class="secondary-btn tool-zone-action tool-zone-disabled" type="button" disabled>仅可查看</button>`}
-            </div>
-          </article>`;
-      }).join('')}
-    </div>
-  `;
-  section.querySelectorAll('[data-download-tool]').forEach((button) => {
+  const tools = flowStore.listVisibleTools(userProfile, snapshot);
+  toolCount.textContent = `${tools.length} 个`;
+  if (!tools.length) {
+    toolList.innerHTML = '<div class="empty-state">当前角色暂无可见工具。</div>';
+    return;
+  }
+  toolList.innerHTML = tools.map((tool) => {
+    const canDownload = flowStore.canDownloadTool(tool, userProfile);
+    return `
+      <article class="tool-item">
+        <div class="tool-item-head">
+          <h3>${tool.name}</h3>
+          <span class="thread-status status-${canDownload ? 'done' : 'idle'}">${canDownload ? '可下载' : '仅查看'}</span>
+        </div>
+        <p>${tool.summary}</p>
+        <div class="tool-meta">
+          <span>部门：${tool.department}</span>
+          <span>版本：${tool.version}</span>
+          <span>可见：${formatRule(tool.visibility)}</span>
+          <span>下载：${formatRule(tool.download)}</span>
+        </div>
+        <div class="tool-item-foot">
+          <span class="meta-text">累计下载 ${tool.downloads} 次</span>
+          <button class="tool-download ${canDownload ? '' : 'secondary'}" type="button" ${canDownload ? `data-download-tool="${tool.toolId}"` : 'disabled'}>${canDownload ? '下载工具' : '仅查看'}</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+  toolList.querySelectorAll('[data-download-tool]').forEach((button) => {
     button.addEventListener('click', () => {
       const toolId = button.dataset.downloadTool;
       const tool = flowStore.read().tools?.[toolId];
       if (!tool) return;
-      flowStore.recordToolDownload(toolId, desktopToolProfile);
-      desktopToolFeedback = `${tool.name} 的下载已记录，管理员控制台会同步看到下载次数与审计动作。`;
-      renderDesktopToolZone();
+      flowStore.recordToolDownload(toolId, userProfile);
+      toolFeedback.textContent = `${tool.name} 下载已记录。`;
+      toolFeedback.classList.remove('is-hidden');
+      renderTools();
     });
   });
 }
-flowStore?.subscribe(() => renderDesktopToolZone());
-renderDesktopToolZone();
+
+function renderAll() {
+  renderQuickActions();
+  renderThreadList();
+  renderMessages();
+  renderStatusCard();
+  renderTools();
+}
+
+function startTask() {
+  const prompt = promptInput.value.trim() || getScenarioMeta(state.currentScenario).prompt;
+  if (!prompt) return;
+  const scenarioId = inferScenario(prompt);
+  const meta = getScenarioMeta(scenarioId);
+  state.currentScenario = scenarioId;
+  flowStore.upsertTask({
+    scenarioId,
+    status: 'running',
+    prompt,
+    summary: meta.summaries.running,
+    channel: 'desktop',
+    role: 'user',
+    action: '用户发起任务'
+  });
+  const result = chatStore.appendExchange({
+    scenarioId,
+    title: meta.label,
+    prompt,
+    response: meta.startReply,
+    status: 'running'
+  });
+  state.currentThreadId = result.threadId;
+  renderAll();
+}
+
+function advanceTask() {
+  const thread = getCurrentThread();
+  const scenarioId = thread?.scenarioId || state.currentScenario;
+  const meta = getScenarioMeta(scenarioId);
+  const status = getCurrentStatus(thread);
+  if (status === 'done') {
+    promptInput.focus();
+    return;
+  }
+  if (status === 'idle' || !thread) {
+    startTask();
+    return;
+  }
+  if (status === 'waiting') {
+    flowStore.upsertTask({
+      scenarioId,
+      status: 'running',
+      prompt: promptInput.value.trim() || meta.prompt,
+      summary: meta.summaries.running,
+      channel: 'desktop',
+      role: 'user',
+      action: '重新生成方案'
+    });
+    chatStore.appendAssistantMessage({
+      threadId: thread.threadId,
+      scenarioId,
+      text: meta.startReply,
+      status: 'running'
+    });
+    chatStore.updateThread(thread.threadId, { status: 'running', preview: meta.startReply });
+    renderAll();
+    return;
+  }
+  const nextStatus = meta.requiresConfirmation ? 'waiting' : 'done';
+  const nextText = nextStatus === 'waiting' ? meta.waitReply : meta.doneReply;
+  flowStore.upsertTask({
+    scenarioId,
+    status: nextStatus,
+    prompt: promptInput.value.trim() || meta.prompt,
+    summary: meta.summaries[nextStatus],
+    channel: 'desktop',
+    role: 'user',
+    action: nextStatus === 'waiting' ? '进入确认' : '生成结果'
+  });
+  chatStore.appendAssistantMessage({
+    threadId: thread.threadId,
+    scenarioId,
+    text: nextText,
+    status: nextStatus
+  });
+  chatStore.updateThread(thread.threadId, { status: nextStatus, preview: nextText });
+  renderAll();
+}
+
+function confirmTask() {
+  const thread = getCurrentThread();
+  if (!thread) return;
+  const scenarioId = thread.scenarioId;
+  const meta = getScenarioMeta(scenarioId);
+  flowStore.upsertTask({
+    scenarioId,
+    status: 'done',
+    prompt: promptInput.value.trim() || meta.prompt,
+    summary: meta.summaries.done,
+    channel: 'desktop',
+    role: 'user',
+    action: '用户确认执行'
+  });
+  chatStore.appendAssistantMessage({
+    threadId: thread.threadId,
+    scenarioId,
+    text: meta.doneReply,
+    status: 'done'
+  });
+  chatStore.updateThread(thread.threadId, { status: 'done', preview: meta.doneReply });
+  renderAll();
+}
+
+startTaskBtn?.addEventListener('click', startTask);
+advanceBtn?.addEventListener('click', advanceTask);
+confirmBtn?.addEventListener('click', confirmTask);
+promptInput?.addEventListener('keydown', (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+    startTask();
+  }
+});
+newChatBtn?.addEventListener('click', () => {
+  state.currentThreadId = '';
+  promptInput.value = '';
+  toolFeedback.classList.add('is-hidden');
+  state.currentScenario = flowStore?.read()?.activeScenario || 'meeting';
+  renderAll();
+  promptInput.focus();
+});
+
+chatStore?.subscribe(() => renderAll());
+flowStore?.subscribe(() => renderAll());
+flowStore?.recordEvent({ scenarioId: state.currentScenario, role: 'user', channel: 'desktop', action: '打开统一工作入口' });
+renderAll();
+if (!promptInput.value) {
+  promptInput.value = getScenarioMeta(state.currentScenario).prompt;
+}

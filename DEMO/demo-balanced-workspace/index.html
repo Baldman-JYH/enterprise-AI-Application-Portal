@@ -3,243 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>企业AI智能工作入口 Demo</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />  <title>企业智能工作入口</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="app-shell rail-collapsed" id="appShell">
-    <aside class="rail" id="appRail">
-      <div class="rail-head">
-        <div class="brand-mini">
-          <div class="brand-mark"></div>
-          <div>
-            <p class="brand-kicker">Enterprise AI</p>
-            <h1>工作入口</h1>
-          </div>
-        </div>
-        <button class="icon-btn rail-close" id="railCloseBtn" aria-label="隐藏侧边栏">×</button>
+  <div class="workspace-shell">
+    <aside class="history-rail">
+      <div class="brand-block">
+        <p class="eyebrow">Enterprise AI</p>
+        <h1>统一工作入口</h1>
       </div>
+      <button class="primary-btn full-width" id="newChatBtn" type="button">新建对话</button>
 
-      <button class="new-task-btn" data-scene-target="landing">+ 发起新任务</button>
-
-      <nav class="rail-nav">
-        <button class="rail-item is-active" data-scene-target="landing">首页</button>
-        <button class="rail-item" data-scene-target="planning">任务规划</button>
-        <button class="rail-item" data-scene-target="confirm">待确认</button>
-        <button class="rail-item" data-scene-target="complete">执行完成</button>
-      </nav>
-
-      <section class="rail-block">
-        <p class="rail-label">进行中任务</p>
-        <div class="rail-task-list" id="railTaskFeed"></div>
-      </section>
-
-      <section class="rail-block">
-        <p class="rail-label">企业流程场景</p>
-        <div class="chip-cloud compact" id="railQuickActions"></div>
+      <section class="rail-section">
+        <div class="section-head compact">
+          <h2>历史对话</h2>
+          <span class="meta-text" id="threadCount">0 条</span>
+        </div>
+        <div class="thread-list" id="threadList"></div>
       </section>
     </aside>
 
-    <button class="rail-backdrop" id="railBackdrop" aria-label="关闭侧边栏"></button>
-
-    <main class="main-stage">
+    <main class="workspace-main">
       <header class="topbar">
-        <div class="topbar-left">
-          <button class="icon-btn" id="toggleRailBtn" aria-label="展开侧边栏" aria-expanded="false">☰</button>
-          <div class="topbar-brand">
-            <p class="eyebrow">AI-native Enterprise Workspace</p>
-            <h2>企业智能工作入口</h2>
-          </div>
+        <div>
+          <p class="eyebrow">Enterprise AI</p>
+          <h2>统一工作入口</h2>
         </div>
-        <div class="topbar-meta">
-          <span class="meta-pill">多智能体协作</span>
-          <span class="meta-pill">会议 / OA / 知识库 / 报表 已接入</span>
+        <div class="topbar-actions">
+          <a class="link-btn" href="../portal.html">导航</a>
+          <a class="link-btn" href="../demo-admin-console/">管理员</a>
           <div class="avatar">LX</div>
         </div>
       </header>
 
-
-      <section class="scene scene-active landing-scene" data-scene="landing">
-        <div class="landing-hero-shell">
-          <div class="hero-copy hero-copy-centered">
-            <p class="hero-kicker">先说需求，不必先找应用</p>
-            <p class="hero-greeting">今天想让 AI 帮你完成什么工作？</p>
-            <p class="hero-subtitle">把企业流程、知识问答、日常文档和协同任务收口到一个对话入口，系统将自动识别意图、调用内部智能体并完成执行。</p>
-          </div>
-
-          <div class="chat-composer hero-composer">
-            <textarea id="mainPrompt" rows="4" placeholder="例如：帮我预定明天下午和采购部的项目评审会议，并生成议程。"></textarea>
-            <div class="composer-toolbar">
-              <div class="toolbar-left">
-                <button class="tool-pill">上传附件</button>
-                <button class="tool-pill">限定知识范围</button>
-                <button class="tool-pill">深度执行</button>
-              </div>
-              <button id="startTaskBtn" class="primary-btn">开始处理</button>
-            </div>
-          </div>
-
-          <p class="hero-inline-note">AI 会自动识别意图并调用内部智能体执行，关键动作保留确认，其余步骤自动完成。</p>
-
-          <div class="chip-cloud hero-chip-cloud" id="landingChips"></div>
+      <section class="composer-card">
+        <textarea id="mainPrompt" rows="4" placeholder="输入需求，例如：帮我预定明天下午的项目评审会议。"></textarea>
+        <div class="composer-footer">
+          <div class="chip-row" id="quickActionList"></div>
+          <button class="primary-btn" id="startTaskBtn" type="button">发送</button>
         </div>
+      </section>
 
-        <section class="scenario-gallery" id="scenarioGallery"></section>
-
-        <div class="landing-grid">
-          <section class="glow-card status-card">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">最近任务</p>
-                <h3>企业流程与知识任务总览</h3>
-              </div>
-              <button class="ghost-link" data-scene-target="complete">查看最近完成</button>
-            </div>
-            <div class="task-list" id="recentTaskFeed"></div>
-          </section>
-
-          <section class="glow-card status-card pending-card-section">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">待确认</p>
-                <h3 id="pendingCardTitle">关键执行动作</h3>
-              </div>
-              <button class="ghost-link" id="pendingJumpBtn">立即处理</button>
-            </div>
-            <div class="approval-card" id="pendingActionCard"></div>
-          </section>
-        </div>
-
-        <section class="glow-card role-bridge" aria-label="角色联动">
-          <div class="role-bridge-head">
-            <div class="role-bridge-copy">
-              <p class="section-kicker">角色联动</p>
-              <h3 id="roleBridgeTitle">当前任务会同步到管理员与移动端</h3>
-              <p id="roleBridgeText">用户在桌面端发起的任务，会同步给管理员控制台和移动端，便于演示统一入口后的跨角色协作闭环。</p>
-            </div>
-            <div class="role-bridge-meta" id="roleBridgeMeta"></div>
+      <section class="workspace-grid">
+        <section class="panel chat-panel">
+          <div class="section-head">
+            <h2>对话记录</h2>
+            <span class="meta-text" id="messageCount">0 条</span>
           </div>
-          <div class="role-bridge-actions">
-            <a class="secondary-btn bridge-link" id="bridgeAdminLink" href="../demo-admin-console/">切到管理员查看</a>
-            <a class="secondary-btn bridge-link" id="bridgeMobileUserLink" href="../demo-mobile/?role=user">手机继续处理</a>
-            <a class="secondary-btn bridge-link" id="bridgeMobileAdminLink" href="../demo-mobile/?role=admin">手机看治理</a>
-          </div>
+          <div class="message-list" id="messageList"></div>
         </section>
-      </section>
 
-      <section class="scene" data-scene="planning">
-        <div class="workspace-grid">
-          <section class="glow-card panel conversation-panel">
-            <div class="section-heading">
+        <aside class="side-stack">
+          <section class="panel status-panel">
+            <div class="section-head">
               <div>
-                <p class="section-kicker">对话上下文</p>
-                <h3 id="planningTitle">需求已受理</h3>
+                <p class="section-kicker">当前任务</p>
+                <h2 id="statusTitle">预定会议</h2>
               </div>
-              <span class="badge badge-running" id="planningBadge">智能体处理中</span>
+              <span class="status-pill status-idle" id="statusBadge">可发起</span>
             </div>
-            <div class="conversation-bubble user-bubble" id="planningPrompt"></div>
-            <div class="conversation-bubble ai-bubble" id="planningAssistantMain"></div>
-            <div class="conversation-bubble ai-bubble subtle" id="planningAssistantProgress"></div>
+            <p class="status-summary" id="statusSummary"></p>
+            <div class="status-meta" id="statusMeta"></div>
+            <div class="step-list" id="statusSteps"></div>
+            <div class="action-row">
+              <button class="secondary-btn" id="advanceBtn" type="button">开始处理</button>
+              <button class="primary-btn" id="confirmBtn" type="button">确认执行</button>
+            </div>
           </section>
 
-          <section class="glow-card panel plan-panel">
-            <div class="section-heading">
+          <section class="panel tool-panel">
+            <div class="section-head">
               <div>
-                <p class="section-kicker">任务规划</p>
-                <h3 id="planningStepTitle">内部智能体执行步骤</h3>
+                <p class="section-kicker">部门工具</p>
+                <h2>工具专区</h2>
               </div>
+              <span class="meta-text" id="toolCount">0 个</span>
             </div>
-            <div class="plan-steps" id="planningSteps"></div>
-            <button class="primary-btn full-width plan-next-btn" id="planningNextBtn">查看下一步</button>
+            <div class="tool-feedback is-hidden" id="toolFeedback"></div>
+            <div class="tool-list" id="toolList"></div>
           </section>
-
-          <section class="glow-card panel context-panel">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">执行上下文</p>
-                <h3 id="planningContextTitle">系统已关联企业上下文</h3>
-              </div>
-            </div>
-            <div id="planningContext"></div>
-            <div class="tool-stack" id="planningTools"></div>
-          </section>
-        </div>
-      </section>
-
-      <section class="scene" data-scene="confirm">
-        <div class="confirm-layout">
-          <section class="glow-card panel confirm-main">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">待确认动作</p>
-                <h3 id="confirmTitle">请确认执行方案</h3>
-              </div>
-              <span class="badge badge-wait" id="confirmBadge">等待确认</span>
-            </div>
-
-            <div class="confirm-summary" id="confirmSummary"></div>
-
-            <div class="agenda-card">
-              <p class="section-kicker" id="confirmContentKicker">系统生成内容</p>
-              <ol id="confirmContentList"></ol>
-            </div>
-
-            <div class="toggle-list" id="confirmChecklist"></div>
-
-            <div class="confirm-actions">
-              <button class="ghost-btn" data-scene-target="planning">返回修改</button>
-              <button class="secondary-btn" id="regenerateBtn">重新生成方案</button>
-              <button class="primary-btn" id="confirmExecuteBtn">确认并执行</button>
-            </div>
-          </section>
-
-          <aside class="glow-card panel confirm-side">
-            <p class="section-kicker">AI 说明</p>
-            <h3 id="confirmSideTitle">为什么推荐这个方案？</h3>
-            <p id="confirmReason"></p>
-            <div class="side-note">
-              <strong id="confirmAutomationTitle">执行后将自动完成：</strong>
-              <ul id="confirmAutomationList"></ul>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="scene" data-scene="complete">
-        <div class="complete-layout">
-          <section class="glow-card panel complete-main">
-            <div class="completion-head">
-              <span class="badge badge-done" id="completeBadge">执行完成</span>
-              <h3 id="completeTitle">任务已完成</h3>
-              <p id="completeSubtitle"></p>
-            </div>
-
-            <div class="result-grid" id="completeResults"></div>
-
-            <div class="timeline-card">
-              <p class="section-kicker">执行时间线</p>
-              <div id="completeTimeline"></div>
-            </div>
-
-            <div class="agenda-card complete-output-card">
-              <p class="section-kicker" id="completeOutputTitle">生成内容</p>
-              <ol id="completeOutputList"></ol>
-            </div>
-          </section>
-
-          <aside class="glow-card panel complete-side">
-            <p class="section-kicker">下一步推荐</p>
-            <div id="completeActions"></div>
-            <button class="primary-btn full-width" data-scene-target="landing">发起下一项工作</button>
-          </aside>
-        </div>
+        </aside>
       </section>
     </main>
   </div>
 
   <script src="../shared/demo-flow.js"></script>
+  <script src="../shared/chat-feedback.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
-
 

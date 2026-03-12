@@ -4,20 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
-  <title>企业 AI 门户 Demo 导航</title>
+  <title>企业智能工作入口 | 入口导航</title>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f7f7f3;
-      --panel: rgba(255, 255, 255, 0.92);
+      --panel: rgba(255, 255, 255, 0.94);
       --panel-strong: rgba(252, 252, 249, 0.98);
       --border: rgba(32, 33, 35, 0.08);
       --text: #202123;
       --muted: #6e6e80;
       --accent: #10a37f;
-      --accent-2: #202123;
-      --shadow: 0 18px 60px rgba(15, 23, 42, 0.07);
-      --radius: 28px;
+      --shadow: 0 18px 56px rgba(15, 23, 42, 0.07);
       font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -26,23 +23,21 @@
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(16, 163, 127, 0.08), transparent 22%),
-        radial-gradient(circle at top right, rgba(0, 0, 0, 0.04), transparent 24%),
+        radial-gradient(circle at 10% 0%, rgba(16, 163, 127, 0.08), transparent 22%),
+        radial-gradient(circle at 100% 0%, rgba(0, 0, 0, 0.04), transparent 20%),
         linear-gradient(180deg, #fcfcf9 0%, #f3f4ee 100%);
     }
     main {
-      width: min(1240px, calc(100vw - 40px));
+      width: min(1120px, calc(100vw - 40px));
       margin: 0 auto;
-      padding: 40px 0 72px;
+      padding: 32px 0 56px;
     }
     .top-shell,
-    .hero,
-    .card,
-    .table-shell,
-    .reading-strip {
-      border-radius: 32px;
-      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+    .note,
+    .card {
+      border-radius: 28px;
       border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
       box-shadow: var(--shadow);
     }
     .top-shell {
@@ -51,501 +46,196 @@
       justify-content: space-between;
       align-items: center;
       gap: 16px;
-      margin-bottom: 18px;
     }
-    .top-brand {
-      display: grid;
-      gap: 4px;
-    }
-    .top-brand strong,
-    .eyebrow,
-    .section-kicker,
-    .card strong {
-      margin: 0;
+    .eyebrow {
+      margin: 0 0 6px;
       font-size: 12px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent);
     }
-    .top-brand span {
+    h1,
+    h2 {
+      margin: 0;
+      letter-spacing: -0.03em;
+    }
+    .top-shell p,
+    .note,
+    .card p {
       color: var(--muted);
-      font-size: 13px;
+      line-height: 1.72;
     }
     .top-actions {
       display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
     }
-    .session-badge {
-      padding: 10px 14px;
+    .session-badge,
+    .note,
+    .meta-tag {
+      font-size: 13px;
+    }
+    .session-badge,
+    .meta-tag {
+      min-height: 36px;
+      padding: 0 14px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(32, 33, 35, 0.08);
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .demo-note {
-      margin-bottom: 18px;
-      padding: 14px 18px;
-      border-radius: 20px;
-      background: rgba(16, 163, 127, 0.08);
-      border: 1px solid rgba(16, 163, 127, 0.14);
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-    .demo-note strong {
-      color: var(--text);
-    }
-    .hero {
-      padding: 42px;
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 4.8vw, 56px);
-      line-height: 1.06;
-      letter-spacing: -0.03em;
-      max-width: 860px;
-    }
-    .hero p:last-of-type {
-      margin: 18px 0 0;
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-    .link-strip,
-    .reading-tags,
-    .meta,
-    .actions,
-    .table-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .link-strip { margin-top: 24px; }
-    .pill,
-    .reading-tags span,
-    .meta span,
-    .table-badge {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(32, 33, 35, 0.08);
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .hint {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .section { margin-top: 28px; }
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-    .section-head h2 {
-      margin: 0;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-    }
-    .section-head p { margin: 6px 0 0; color: var(--muted); }
-    .reading-strip {
-      padding: 22px 24px;
-      display: grid;
-      gap: 12px;
-    }
-    .reading-strip h2 {
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: -0.02em;
-    }
-    .reading-strip p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .table-shell {
-      padding: 24px;
-      overflow: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 980px;
-    }
-    thead th {
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
-      border-bottom: 1px solid var(--border);
-      background: rgba(247, 247, 243, 0.9);
-    }
-    tbody td {
-      padding: 18px 16px;
-      vertical-align: top;
-      border-bottom: 1px solid rgba(32, 33, 35, 0.06);
-      line-height: 1.7;
-    }
-    tbody tr:last-child td { border-bottom: 0; }
-    .table-title {
-      display: grid;
-      gap: 6px;
-    }
-    .table-title strong {
-      font-size: 17px;
-      letter-spacing: -0.01em;
-      color: var(--text);
-    }
-    .table-sub {
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .priority {
       display: inline-flex;
       align-items: center;
-      min-height: 32px;
-      padding: 0 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(16, 163, 127, 0.1);
-      color: var(--accent);
-    }
-    .priority.secondary {
-      background: rgba(32, 33, 35, 0.06);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.84);
       color: var(--muted);
     }
-    .card-grid {
+    .button {
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+    .note {
+      margin-top: 18px;
+      padding: 14px 18px;
+      background: rgba(16, 163, 127, 0.08);
+      border-color: rgba(16, 163, 127, 0.14);
+    }
+    .grid {
+      margin-top: 20px;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
     .card {
       padding: 24px;
-      backdrop-filter: blur(12px);
+      display: grid;
+      gap: 16px;
     }
-    .card h3 {
-      margin: 18px 0 10px;
-      font-size: 24px;
-      letter-spacing: -0.02em;
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .card p { margin: 0; color: var(--muted); line-height: 1.72; }
-    a.button,
-    button.button {
+    .open-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 44px;
       padding: 0 18px;
       border-radius: 999px;
-      color: #ffffff;
       text-decoration: none;
       background: #202123;
-      border: 0;
-      cursor: pointer;
+      color: #ffffff;
       font-weight: 700;
-      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
-      box-shadow: 0 10px 24px rgba(32, 33, 35, 0.12);
-      font: inherit;
     }
-    a.button.secondary,
-    button.button.secondary {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(32, 33, 35, 0.08);
-      box-shadow: none;
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .top-shell {
+        flex-direction: column;
+        align-items: start;
+      }
     }
-    a.button:hover,
-    button.button:hover { transform: translateY(-1px); }
-    code {
-      padding: 3px 7px;
-      border-radius: 8px;
-      background: rgba(32, 33, 35, 0.06);
-    }
-    @media (max-width: 860px) {
-      main { width: min(100vw - 24px, 1240px); padding: 24px 0 44px; }
+    @media (max-width: 720px) {
+      main {
+        width: min(100vw - 24px, 1120px);
+        padding: 20px 0 36px;
+      }
       .top-shell,
-      .hero,
       .card,
-      .table-shell,
-      .reading-strip { padding: 20px; }
-      .top-shell,
-      .section-head { flex-direction: column; align-items: start; }
-      .card-grid { grid-template-columns: 1fr; }
+      .note {
+        padding: 18px;
+      }
     }
   </style>
 </head>
 <body>
   <main>
     <section class="top-shell">
-      <div class="top-brand">
-        <strong>Enterprise AI Portal</strong>
-        <span>统一登录后进入导航总览，集中访问对话式入口、治理控制台、移动端和多版本方案。</span>
+      <div>
+        <p class="eyebrow">Enterprise AI</p>
+        <h1>入口导航</h1>
+        <p>登录后可进入用户入口、管理员控制台和手机端。</p>
       </div>
       <div class="top-actions">
-        <span class="session-badge" id="sessionBadge">当前登录：演示用户</span>
-        <button class="button secondary" id="logoutButton" type="button">退出登录</button>
+        <span class="session-badge" id="sessionBadge">当前登录：当前用户</span>
+        <button class="button" id="logoutButton" type="button">退出登录</button>
       </div>
     </section>
 
-    <div class="demo-note"><strong>说明：</strong>当前页为 demo 临时总览页，用于集中切换不同版本方案。正式系统中将直接进入统一工作入口，不保留此导航页结构。</div>
+    <div class="note"><strong>说明：</strong>当前页用于切换不同终端入口，正式使用时将直接进入统一工作入口。</div>
 
-    <section class="hero">
-      <p class="eyebrow">Enterprise AI Portal Demo Hub</p>
-      <h1>从统一导航页快速进入不同版本的企业 AI 门户方案。</h1>
-      <p>这里集中展示各版本 demo 的定位、能力重点和适用场景，便于快速切换到桌面端、管理员端、移动端或智能体执行视角。</p>
-      <div class="link-strip">
-        <span class="pill">对话式统一入口</span>
-        <span class="pill">部门工具专区</span>
-        <span class="pill">权限与下载治理</span>
-        <span class="pill">管理员运营控制台</span>
-        <span class="pill">移动端角色切换</span>
-      </div>
-      <p class="hint">站点地址：<code>https://baldman-jyh.github.io/enterprise-AI-Application-Portal/</code></p>
-    </section>
-
-    <section class="section">
-      <div class="reading-strip">
-        <p class="section-kicker">建议浏览顺序</p>
-        <h2>可先查看平衡型工作入口版，再切换管理员控制台，最后补充移动端与执行轨迹版。</h2>
-        <p>如果关注首页入口形态，可先打开极简版；如果关注智能体如何拆解任务、调用工具和等待确认，可优先查看执行轨迹版。</p>
-        <div class="reading-tags">
-          <span>第一步：平衡型企业工作入口版</span>
-          <span>第二步：管理员运营控制台</span>
-          <span>第三步：移动端角色切换版</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
+    <section class="grid">
+      <article class="card">
         <div>
-          <h2>版本对比表</h2>
-          <p>用于快速判断每一版的主要能力重点和适用场景。</p>
+          <p class="eyebrow">User</p>
+          <h2>用户入口</h2>
         </div>
-      </div>
-      <div class="table-shell">
-        <table>
-          <thead>
-            <tr>
-              <th>版本</th>
-              <th>主要关注点</th>
-              <th>核心优势</th>
-              <th>适用角色</th>
-              <th>建议顺序</th>
-              <th>入口</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>平衡型企业工作入口版</strong>
-                  <span class="table-sub">桌面主版本 / 最贴近真实落地</span>
-                </div>
-              </td>
-              <td>企业 AI 门户首页的整体形态、流程闭环和跨角色联动。</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">大对话框统一入口</span>
-                  <span class="table-badge">最近任务与待确认</span>
-                  <span class="table-badge">部门工具专区</span>
-                  <span class="table-badge">跨角色联动</span>
-                </div>
-              </td>
-              <td>管理层、业务负责人、产品、前端</td>
-              <td><span class="priority">优先查看</span></td>
-              <td><a class="button" href="./demo-balanced-workspace/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>极简对话首页版</strong>
-                  <span class="table-sub">最像 ChatGPT 首屏的版本</span>
-                </div>
-              </td>
-              <td>更简洁的首页入口形态，以及“先对话、后分发”的产品感受。</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">首屏极简</span>
-                  <span class="table-badge">弱化系统感</span>
-                  <span class="table-badge">保留工具专区轻量版</span>
-                </div>
-              </td>
-              <td>产品、设计、品牌、业务体验团队</td>
-              <td><span class="priority secondary">补充查看</span></td>
-              <td><a class="button secondary" href="./demo-minimal-chat/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>智能体执行轨迹版</strong>
-                  <span class="table-sub">强调 Planner / Router / Tool 调用</span>
-                </div>
-              </td>
-              <td>智能体如何拆解任务、调用工具、等待确认并保留可解释执行轨迹。</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">多 Agent 轨迹</span>
-                  <span class="table-badge">审批节点可解释</span>
-                  <span class="table-badge">工具资产轨迹补充</span>
-                </div>
-              </td>
-              <td>架构团队、平台团队、技术负责人</td>
-              <td><span class="priority secondary">按需查看</span></td>
-              <td><a class="button secondary" href="./demo-agent-trace/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>管理员运营控制台</strong>
-                  <span class="table-sub">治理 / 成本 / 审批 / 工具授权</span>
-                </div>
-              </td>
-              <td>平台运行指标、工具授权、下载治理、审批积压和风险控制。</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">Token 与成本</span>
-                  <span class="table-badge">治理告警</span>
-                  <span class="table-badge">部门工具权限控制</span>
-                </div>
-              </td>
-              <td>平台管理员、治理团队、管理层</td>
-              <td><span class="priority">优先查看</span></td>
-              <td><a class="button" href="./demo-admin-console/">打开 demo</a></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="table-title">
-                  <strong>移动端角色切换版</strong>
-                  <span class="table-sub">用户 / 管理员双视角</span>
-                </div>
-              </td>
-              <td>手机端的工作入口、摘要查看和角色切换体验。</td>
-              <td>
-                <div class="table-badges">
-                  <span class="table-badge">移动端工作入口</span>
-                  <span class="table-badge">管理员摘要</span>
-                  <span class="table-badge">部门工具联动</span>
-                </div>
-              </td>
-              <td>移动端用户、业务同事、管理员</td>
-              <td><span class="priority secondary">第三顺位</span></td>
-              <td><a class="button secondary" href="./demo-mobile/">打开 demo</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+        <p>统一对话入口、历史对话、部门工具专区。</p>
+        <div class="meta-row">
+          <span class="meta-tag">对话优先</span>
+          <span class="meta-tag">保留历史记录</span>
+          <span class="meta-tag">支持反馈</span>
+        </div>
+        <a class="open-link" href="./demo-balanced-workspace/">打开</a>
+      </article>
 
-    <section class="section">
-      <div class="section-head">
+      <article class="card">
         <div>
-          <h2>快速入口</h2>
-          <p>也可以直接从这里进入各个版本。</p>
+          <p class="eyebrow">Admin</p>
+          <h2>管理员控制台</h2>
         </div>
-      </div>
-      <div class="card-grid">
-        <article class="card">
-          <strong>主版本</strong>
-          <h3>平衡型企业工作入口版</h3>
-          <p>展示大对话框首页、流程闭环、角色联动和部门工具专区，是当前最完整的桌面端入口方案。</p>
-          <div class="meta">
-            <span>桌面主版本</span>
-            <span>业务落地感强</span>
-            <span>多角色联动</span>
-          </div>
-          <div class="actions">
-            <a class="button" href="./demo-balanced-workspace/">打开 demo</a>
-            <a class="button secondary" href="./demo-a-c/">稳定版本</a>
-          </div>
-        </article>
-        <article class="card">
-          <strong>治理视角</strong>
-          <h3>管理员运营控制台</h3>
-          <p>集中查看 token 消耗、审计、审批积压和工具权限控制，体现平台治理与运营能力。</p>
-          <div class="meta">
-            <span>治理视角</span>
-            <span>成本与风控</span>
-            <span>工具授权</span>
-          </div>
-          <div class="actions">
-            <a class="button" href="./demo-admin-console/">打开 demo</a>
-          </div>
-        </article>
-        <article class="card">
-          <strong>首页形态</strong>
-          <h3>极简对话首页版</h3>
-          <p>强调首页的 AI 入口感，用于观察“先对话、后分发”的产品气质是否成立。</p>
-          <div class="meta">
-            <span>首页气质验证</span>
-            <span>更轻更简</span>
-            <span>轻量工具区</span>
-          </div>
-          <div class="actions">
-            <a class="button secondary" href="./demo-minimal-chat/">打开 demo</a>
-          </div>
-        </article>
-        <article class="card">
-          <strong>执行视角</strong>
-          <h3>智能体执行轨迹版</h3>
-          <p>强调任务拆解、系统调用和审批确认过程，突出智能体执行链路的可解释性。</p>
-          <div class="meta">
-            <span>Agent 轨迹</span>
-            <span>流程解释</span>
-            <span>资产接入视角</span>
-          </div>
-          <div class="actions">
-            <a class="button secondary" href="./demo-agent-trace/">打开 demo</a>
-          </div>
-        </article>
-      </div>
+        <p>查看 Tokens、成本、反馈记录和工具权限。</p>
+        <div class="meta-row">
+          <span class="meta-tag">趋势图</span>
+          <span class="meta-tag">数据表</span>
+          <span class="meta-tag">邮件反馈</span>
+        </div>
+        <a class="open-link" href="./demo-admin-console/">打开</a>
+      </article>
+
+      <article class="card">
+        <div>
+          <p class="eyebrow">Mobile</p>
+          <h2>手机端</h2>
+        </div>
+        <p>查看手机端发起、跟进和管理员摘要。</p>
+        <div class="meta-row">
+          <span class="meta-tag">角色切换</span>
+          <span class="meta-tag">移动端摘要</span>
+        </div>
+        <a class="open-link" href="./demo-mobile/">打开</a>
+      </article>
     </section>
   </main>
 
   <script>
     (function () {
-      var authKey = "enterprise-ai-demo-auth";
-      var profileKey = "enterprise-ai-demo-profile";
-      var auth = sessionStorage.getItem(authKey);
-      if (!auth) {
-        window.location.replace("./index.html");
+      var authKey = 'enterprise-ai-demo-auth';
+      var profileKey = 'enterprise-ai-demo-profile';
+      if (!sessionStorage.getItem(authKey)) {
+        window.location.replace('./index.html');
         return;
       }
-
-      var profile = null;
+      var profile = {};
       try {
-        profile = JSON.parse(sessionStorage.getItem(profileKey) || "{}");
+        profile = JSON.parse(sessionStorage.getItem(profileKey) || '{}');
       } catch (error) {
         profile = {};
       }
-
-      var sessionBadge = document.getElementById("sessionBadge");
-      if (sessionBadge && profile) {
-        var roleLabel = profile.role === "admin" ? "平台管理员" : "企业员工";
-        sessionBadge.textContent = "当前登录：" + (profile.name || "演示用户") + " / " + roleLabel;
-      }
-
-      var logoutButton = document.getElementById("logoutButton");
-      if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-          sessionStorage.removeItem(authKey);
-          sessionStorage.removeItem(profileKey);
-          window.location.replace("./index.html");
-        });
-      }
+      var sessionBadge = document.getElementById('sessionBadge');
+      sessionBadge.textContent = '当前登录：' + (profile.name || '当前用户');
+      document.getElementById('logoutButton').addEventListener('click', function () {
+        sessionStorage.removeItem(authKey);
+        sessionStorage.removeItem(profileKey);
+        window.location.replace('./index.html');
+      });
     })();
   </script>
 </body>
 </html>
-
-
 

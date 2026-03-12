@@ -3,113 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>企业 AI 门户 Demo - 管理员控制台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%2310a37f'/%3E%3Cpath d='M18 33h28M32 19v28' stroke='%23ffffff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />  <title>企业 AI 运营与治理控制台</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <main class="dashboard-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Admin Control Tower</p>
-        <h1>企业 AI 管理员运营控制台</h1>
-        <p>这个页面承接管理员视角，重点展示 tokens、模型调用、审批积压、治理和风险。</p>
+        <p class="eyebrow">Enterprise AI</p>
+        <h1>运营与治理控制台</h1>
       </div>
-      <a class="nav-link" href="../index.html">返回导航</a>
+      <div class="top-actions">
+        <a class="button secondary" href="../portal.html">导航</a>
+        <a class="button secondary" href="../demo-balanced-workspace/">用户入口</a>
+        <span class="user-pill">周敏</span>
+      </div>
     </header>
 
-    <section class="hero-grid">
-      <article class="hero-card">
-        <p class="card-kicker">运行摘要</p>
-        <h2>统一查看平台运行状态，而不是逐系统切换统计面板。</h2>
-        <p>适合向领导解释“企业 AI 门户不是只有对话入口，后面还需要治理、成本和审计能力”。</p>
-      </article>
-
-      <article class="hero-card">
-        <p class="card-kicker">快捷切换</p>
-        <div class="hero-actions">
-          <a class="button" id="adminUserLink" href="../demo-a-c/">用户工作入口</a>
-          <a class="button secondary" id="adminMobileUserLink" href="../demo-mobile/?role=user">移动端用户</a>
-          <a class="button secondary" id="adminMobileAdminLink" href="../demo-mobile/?role=admin">移动端管理员</a>
-        </div>
-      </article>
+    <section class="metric-grid">
+      <article class="metric-card"><span>今日 Tokens</span><strong id="metricTokens">0</strong><small id="metricTokensHint">-</small></article>
+      <article class="metric-card"><span>今日成本</span><strong id="metricCost">0</strong><small id="metricCostHint">-</small></article>
+      <article class="metric-card"><span>活跃用户</span><strong id="metricUsers">0</strong><small id="metricUsersHint">-</small></article>
+      <article class="metric-card"><span>待处理事项</span><strong id="metricApprovals">0</strong><small id="metricApprovalsHint">-</small></article>
+      <article class="metric-card"><span>正向反馈</span><strong id="metricPositive">0</strong><small id="metricPositiveHint">-</small></article>
+      <article class="metric-card"><span>反馈邮件</span><strong id="metricMails">0</strong><small id="metricMailsHint">-</small></article>
     </section>
 
-    <section class="metric-grid">
-      <article class="metric-card"><span>今日 Tokens</span><strong id="metricTokens">1.82M</strong><small id="metricTokensHint">较昨日 +12.4%</small></article>
-      <article class="metric-card"><span>今日推理成本</span><strong id="metricCost">¥ 3,240</strong><small id="metricCostHint">预算使用率 58%</small></article>
-      <article class="metric-card"><span>活跃用户</span><strong id="metricUsers">426</strong><small id="metricUsersHint">覆盖 9 个部门</small></article>
-      <article class="metric-card"><span>待审批任务</span><strong id="metricApprovals">7</strong><small id="metricApprovalsHint">高优先级 3 个</small></article>
-      <article class="metric-card"><span>活跃智能体</span><strong id="metricAgents">14</strong><small id="metricAgentsHint">3 个流程型高频</small></article>
-      <article class="metric-card"><span>知识命中率</span><strong id="metricHitRate">87%</strong><small id="metricHitRateHint">采购、制度场景最佳</small></article>
+    <section class="trend-grid">
+      <article class="panel wide">
+        <div class="panel-head">
+          <div>
+            <p class="card-kicker">数据趋势</p>
+            <h3>Tokens 与成本</h3>
+          </div>
+        </div>
+        <div class="trend-layout">
+          <div class="chart-shell">
+            <div class="chart-legend">
+              <span><i class="legend-dot tokens"></i>Tokens</span>
+              <span><i class="legend-dot cost"></i>成本</span>
+            </div>
+            <svg id="trendChart" viewBox="0 0 720 240" aria-label="Tokens 与成本趋势图"></svg>
+          </div>
+          <div class="table-shell">
+            <table class="metric-table">
+              <thead>
+                <tr>
+                  <th>模块</th>
+                  <th>调用量</th>
+                  <th>Tokens</th>
+                  <th>成本</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="metricTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section class="dashboard-grid">
-      <article class="panel wide linked-panel">
+      <article class="panel wide">
         <div class="panel-head">
           <div>
-            <p class="card-kicker">跨角色联动</p>
-            <h3 id="sharedTaskTitle">当前共享任务</h3>
+            <p class="card-kicker">用户反馈</p>
+            <h3>反馈记录</h3>
           </div>
-          <span class="badge" id="sharedTaskBadge">实时联动</span>
+          <span class="badge" id="feedbackMailBadge">等待反馈</span>
         </div>
-        <div class="linked-flow-grid">
-          <div class="linked-flow-main">
-            <p id="sharedTaskText">用户端发起的任务会同步到管理员视角，便于查看审批积压、tokens 消耗和治理风险。</p>
-            <div class="tag-row" id="sharedTaskMeta"></div>
-          </div>
-          <div class="linked-flow-side">
-            <p class="card-kicker">共享任务队列</p>
-            <div id="sharedTaskList" class="stack-list"></div>
-          </div>
-        </div>
+        <div class="tag-row" id="feedbackOverview"></div>
+        <div class="feedback-list" id="feedbackList"></div>
       </article>
 
       <article class="panel">
         <div class="panel-head">
           <div>
-            <p class="card-kicker">模型调用分布</p>
-            <h3>主要模型与工作负载</h3>
+            <p class="card-kicker">共享任务</p>
+            <h3>任务队列</h3>
           </div>
-          <span class="badge">实时更新</span>
         </div>
-        <div id="modelList" class="stack-list"></div>
+        <div class="stack-list" id="sharedTaskList"></div>
       </article>
 
       <article class="panel">
         <div class="panel-head">
           <div>
-            <p class="card-kicker">审批与流程</p>
-            <h3>当前积压与流转状态</h3>
+            <p class="card-kicker">待处理事项</p>
+            <h3>审批与确认</h3>
           </div>
-          <span class="badge warning">需关注</span>
         </div>
-        <div id="approvalList" class="stack-list"></div>
+        <div class="stack-list" id="approvalList"></div>
       </article>
 
       <article class="panel">
         <div class="panel-head">
           <div>
             <p class="card-kicker">治理告警</p>
-            <h3>风险、越权与异常调用</h3>
+            <h3>风险提示</h3>
           </div>
-          <span class="badge warning">3 条</span>
         </div>
-        <div id="alertList" class="stack-list"></div>
+        <div class="stack-list" id="alertList"></div>
       </article>
 
-      <article class="panel wide">
+      <article class="panel wide tool-governance-panel" id="toolGovernancePanel">
         <div class="panel-head">
           <div>
-            <p class="card-kicker">部门使用热区</p>
-            <h3>当前高频业务场景</h3>
+            <p class="card-kicker">部门工具</p>
+            <h3>工具权限</h3>
           </div>
+          <span class="badge" id="toolGovernanceBadge">0 个工具</span>
         </div>
-        <div id="departmentGrid" class="department-grid"></div>
+        <div class="tool-governance-grid">
+          <div class="tool-governance-list" id="toolGovernanceList"></div>
+          <div class="tool-governance-detail" id="toolGovernanceDetail"></div>
+        </div>
       </article>
     </section>
   </main>
 
   <script src="../shared/demo-flow.js"></script>
+  <script src="../shared/chat-feedback.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
+

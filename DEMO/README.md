@@ -1,23 +1,22 @@
-# DEMO 导航
+# DEMO 入口说明
 
-当前可演示内容分为三条线：
+当前对外保留的入口只有三类：
 
-- `用户视角`
-  - `demo-minimal-chat`
-  - `demo-balanced-workspace`
-  - `demo-a-c`
-- `管理员视角`
-  - `demo-agent-trace`
-  - `demo-admin-console`
-- `移动端视角`
-  - `demo-mobile`
+- `用户入口`：`DEMO/demo-balanced-workspace`
+- `管理员控制台`：`DEMO/demo-admin-console`
+- `手机端`：`DEMO/demo-mobile`
 
-统一登录页：
+统一访问路径：
 
-- `DEMO/index.html`
+1. 登录页：`DEMO/index.html`
+2. 登录后入口导航：`DEMO/portal.html`
+3. 从导航页继续进入上述三个页面
 
-登录成功后进入统一导航页：
+当前展示重点：
 
-- `DEMO/portal.html`
+- 用户端保留历史对话、任务状态和部门工具专区
+- 用户端 assistant 回复支持点赞 / 点踩反馈
+- 管理员端查看 Tokens、成本、反馈记录、邮件状态和工具权限
+- 手机端查看用户摘要、管理员摘要和工具权限联动结果
 
-如果启用 GitHub Pages，可直接把 `DEMO` 目录发布为静态站点，并通过一个 URL 分享给公司同事。
+如果启用 GitHub Pages，可直接发布 `DEMO` 目录，并通过统一 URL 分享给公司同事查看。

@@ -99,7 +99,7 @@ function renderSharedFlow() {
   sharedFlowTitle.textContent = `${activeFlow.label}已同步到移动端`;
   sharedFlowText.textContent = `${activeFlow.summary} 最近更新于 ${activeFlow.updatedAt}，可以在手机端继续查看状态，或切到管理员视角查看治理信息。`;
   sharedFlowMeta.innerHTML = [`<span class="meta-pill">当前状态：${flowStore.statusLabels[activeFlow.status] || activeFlow.status}</span>`, `<span class="meta-pill">待审批：${summary.pendingApprovals}</span>`, `<span class="meta-pill">工具下载：${summary.totalToolDownloads}</span>`].join('');
-  continueDesktopLink.href = `../demo-a-c/?scenario=${activeFlow.scenarioId}&scene=landing`;
+  continueDesktopLink.href = `../demo-balanced-workspace/?scenario=${activeFlow.scenarioId}&scene=landing`;
   continueAdminLink.href = `../demo-admin-console/?scenario=${activeFlow.scenarioId}&scene=landing`;
   const sharedTasks = Object.values(snapshot.flows).filter((flow) => flow.status !== 'idle').slice(0, 3).map((flow) => [flow.label, flow.summary]);
   const sharedPending = Object.values(snapshot.flows).filter((flow) => flow.approvalCount > 0).map((flow) => [flow.label, `${flow.summary} 当前有 ${flow.approvalCount} 个待确认或待审批动作。`]);
@@ -138,3 +138,4 @@ flowStore.recordEvent({ scenarioId: currentPreset, role: currentRole, channel: '
 renderPreset(currentPreset);
 syncRole();
 renderSharedFlow();
+
