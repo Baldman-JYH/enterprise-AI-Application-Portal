@@ -92,9 +92,9 @@ button {
   color: var(--accent);
 }
 .workspace-main {
-  padding: 24px 28px 36px;
+  padding: 28px 32px 42px;
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 .topbar,
 .topbar-actions,
@@ -120,6 +120,9 @@ button {
 .message-actions {
   justify-content: space-between;
   align-items: center;
+}
+.topbar {
+  padding: 0 4px;
 }
 .topbar-actions,
 .feedback-row,
@@ -164,6 +167,10 @@ button {
 .secondary-btn {
   color: var(--text);
   background: rgba(255, 255, 255, 0.86);
+}
+.quick-chip.is-active {
+  background: rgba(16, 163, 127, 0.12);
+  border-color: rgba(16, 163, 127, 0.24);
 }
 .primary-btn {
   color: #ffffff;
@@ -296,21 +303,26 @@ button {
   background: rgba(15, 157, 88, 0.1);
 }
 .composer-card {
-  padding: 18px;
+  padding: 20px 20px 16px;
+  border-radius: 32px;
+  box-shadow: 0 24px 68px rgba(15, 23, 42, 0.08);
 }
 .composer-card textarea {
   width: 100%;
-  min-height: 120px;
+  min-height: 132px;
   border: 0;
   resize: none;
   outline: none;
   background: transparent;
   color: var(--text);
   font-size: 18px;
-  line-height: 1.72;
+  line-height: 1.76;
 }
 .composer-card textarea::placeholder {
   color: rgba(32, 33, 35, 0.34);
+}
+.composer-footer {
+  align-items: flex-end;
 }
 .workspace-grid {
   display: grid;
@@ -318,42 +330,57 @@ button {
   gap: 20px;
 }
 .panel {
-  padding: 20px;
+  padding: 22px;
 }
 .chat-panel {
   min-height: 640px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 42px rgba(15, 23, 42, 0.05);
 }
 .message-list {
   align-content: start;
+  gap: 18px;
 }
 .message-card {
-  background: #ffffff;
-  padding: 14px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
 }
 .message-card.user {
-  margin-left: 72px;
+  margin-left: 120px;
+  align-items: flex-end;
 }
 .message-card.assistant {
-  margin-right: 24px;
+  margin-right: 120px;
+  align-items: flex-start;
 }
 .message-bubble {
-  border-radius: 22px;
-  padding: 16px 18px;
-  line-height: 1.72;
+  width: min(100%, 720px);
+  border-radius: 24px;
+  padding: 18px 20px;
+  line-height: 1.74;
   border: 1px solid rgba(32, 33, 35, 0.08);
-  background: #fbfbf8;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.03);
 }
 .message-card.user .message-bubble {
-  background: #202123;
+  background: linear-gradient(135deg, #202123, #171717);
   color: #ffffff;
   border-color: #202123;
+  box-shadow: 0 14px 28px rgba(32, 33, 35, 0.14);
 }
 .message-actions {
-  margin-top: 10px;
+  width: min(100%, 720px);
+  margin-top: 8px;
+  padding: 0 4px;
   font-size: 12px;
 }
 .feedback-row {
   justify-content: flex-end;
+  gap: 8px;
 }
 .feedback-btn {
   width: 32px;
@@ -499,6 +526,10 @@ button {
   .message-card.user,
   .message-card.assistant {
     margin: 0;
+  }
+  .message-bubble,
+  .message-actions {
+    width: 100%;
   }
   .tool-meta {
     grid-template-columns: 1fr;

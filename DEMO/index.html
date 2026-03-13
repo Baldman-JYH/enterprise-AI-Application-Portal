@@ -9,12 +9,13 @@
     :root {
       color-scheme: light;
       --bg: #f7f8f4;
-      --panel: rgba(255, 255, 255, 0.95);
+      --panel: rgba(255, 255, 255, 0.96);
+      --panel-soft: rgba(255, 255, 255, 0.84);
       --border: rgba(15, 23, 42, 0.08);
       --text: #202123;
       --muted: #667085;
       --accent: #10a37f;
-      --shadow: 0 24px 80px rgba(15, 23, 42, 0.10);
+      --shadow: 0 28px 72px rgba(15, 23, 42, 0.08);
       font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
     * { box-sizing: border-box; }
@@ -23,32 +24,32 @@
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 12%, rgba(16, 163, 127, 0.10), transparent 24%),
-        radial-gradient(circle at 88% 18%, rgba(15, 23, 42, 0.05), transparent 18%),
-        linear-gradient(180deg, #fcfcf9 0%, #eef2ea 100%);
+        radial-gradient(circle at 0% 0%, rgba(16, 163, 127, 0.10), transparent 28%),
+        radial-gradient(circle at 100% 16%, rgba(15, 23, 42, 0.05), transparent 22%),
+        linear-gradient(180deg, #fcfcf9 0%, #f1f3eb 100%);
     }
     .shell {
-      width: min(1080px, calc(100vw - 40px));
+      width: min(1120px, calc(100vw - 40px));
       margin: 0 auto;
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 24px;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 32px;
       align-items: center;
       padding: 32px 0;
     }
     .brand-panel,
     .login-card {
-      border-radius: 32px;
+      border-radius: 34px;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.90));
       box-shadow: var(--shadow);
     }
     .brand-panel {
-      padding: 40px;
+      padding: 48px;
       display: grid;
-      gap: 20px;
-      min-height: 520px;
+      gap: 24px;
+      min-height: 540px;
       align-content: center;
     }
     .eyebrow {
@@ -64,50 +65,65 @@
       letter-spacing: -0.04em;
     }
     h1 {
-      font-size: clamp(40px, 6vw, 72px);
-      line-height: 1.02;
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 1.01;
     }
     .brand-panel p,
     .login-card p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.75;
+      line-height: 1.8;
     }
     .brand-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-    .brand-tags span,
-    .role-pill {
-      min-height: 40px;
+    .brand-tags span {
+      min-height: 38px;
       padding: 0 14px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.84);
       display: inline-flex;
       align-items: center;
       color: var(--muted);
       font-size: 13px;
     }
     .login-card {
-      padding: 28px;
+      padding: 32px;
       display: grid;
-      gap: 18px;
+      gap: 20px;
+      background: linear-gradient(180deg, var(--panel), var(--panel-soft));
+    }
+    .login-head {
+      display: grid;
+      gap: 8px;
     }
     .role-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      padding: 6px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(247, 248, 244, 0.86);
     }
     .role-pill {
+      min-height: 44px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
       cursor: pointer;
-      color: var(--text);
-      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
     }
     .role-pill.active {
-      background: rgba(16, 163, 127, 0.10);
-      border-color: rgba(16, 163, 127, 0.32);
+      background: #202123;
+      color: #ffffff;
+      border-color: #202123;
+      box-shadow: 0 10px 24px rgba(32, 33, 35, 0.14);
     }
     .field {
       display: grid;
@@ -119,30 +135,36 @@
     }
     .field input {
       width: 100%;
-      min-height: 52px;
-      padding: 0 16px;
-      border-radius: 18px;
+      min-height: 56px;
+      padding: 0 18px;
+      border-radius: 20px;
       border: 1px solid rgba(15, 23, 42, 0.10);
-      background: rgba(255, 255, 255, 0.92);
+      background: #fbfbf8;
       font: inherit;
       color: var(--text);
       outline: none;
+      font-size: 15px;
     }
     .field input:focus {
       border-color: rgba(16, 163, 127, 0.45);
-      box-shadow: 0 0 0 4px rgba(16, 163, 127, 0.12);
+      box-shadow: 0 0 0 4px rgba(16, 163, 127, 0.10);
     }
     .submit-row {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
     .button {
       min-height: 52px;
-      border-radius: 18px;
+      border-radius: 20px;
       border: 0;
       font: inherit;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+    .button:hover,
+    .role-pill:hover {
+      transform: translateY(-1px);
     }
     .button.primary {
       background: #202123;
@@ -150,7 +172,7 @@
       box-shadow: 0 12px 28px rgba(32, 33, 35, 0.14);
     }
     .button.secondary {
-      background: rgba(255, 255, 255, 0.84);
+      background: rgba(255, 255, 255, 0.88);
       color: var(--text);
       border: 1px solid var(--border);
     }
@@ -169,12 +191,15 @@
     }
     @media (max-width: 720px) {
       .shell {
-        width: min(100vw - 24px, 1080px);
+        width: min(100vw - 24px, 1120px);
         padding: 18px 0 24px;
       }
       .brand-panel,
       .login-card {
-        padding: 22px;
+        padding: 24px;
+      }
+      .role-pills {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -194,7 +219,7 @@
     </section>
 
     <section class="login-card">
-      <div>
+      <div class="login-head">
         <p class="eyebrow">Sign In</p>
         <h2>统一登录</h2>
         <p>使用企业账号进入系统。</p>
