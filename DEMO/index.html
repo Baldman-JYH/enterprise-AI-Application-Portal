@@ -10,7 +10,7 @@
       color-scheme: light;
       --bg: #f7f8f4;
       --panel: rgba(255, 255, 255, 0.96);
-      --panel-soft: rgba(255, 255, 255, 0.84);
+      --panel-soft: rgba(255, 255, 255, 0.88);
       --border: rgba(15, 23, 42, 0.08);
       --text: #202123;
       --muted: #667085;
@@ -29,11 +29,11 @@
         linear-gradient(180deg, #fcfcf9 0%, #f1f3eb 100%);
     }
     .shell {
-      width: min(1120px, calc(100vw - 40px));
+      width: min(1140px, calc(100vw - 40px));
       margin: 0 auto;
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-columns: 1.04fr 0.96fr;
       gap: 32px;
       align-items: center;
       padding: 32px 0;
@@ -48,8 +48,8 @@
     .brand-panel {
       padding: 48px;
       display: grid;
-      gap: 24px;
-      min-height: 540px;
+      gap: 28px;
+      min-height: 560px;
       align-content: center;
     }
     .eyebrow {
@@ -60,7 +60,8 @@
       color: var(--accent);
     }
     h1,
-    h2 {
+    h2,
+    h3 {
       margin: 0;
       letter-spacing: -0.04em;
     }
@@ -68,37 +69,44 @@
       font-size: clamp(44px, 6vw, 76px);
       line-height: 1.01;
     }
-    .brand-panel p,
-    .login-card p {
+    .brand-copy {
+      display: grid;
+      gap: 12px;
+    }
+    .brand-copy p,
+    .login-card p,
+    .feature-item p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.78;
     }
-    .brand-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
-    .brand-tags span {
-      min-height: 38px;
-      padding: 0 14px;
-      border-radius: 999px;
+    .feature-item {
+      padding: 18px 18px 16px;
+      border-radius: 24px;
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.84);
-      display: inline-flex;
-      align-items: center;
-      color: var(--muted);
-      font-size: 13px;
+    }
+    .feature-item h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
     }
     .login-card {
       padding: 32px;
       display: grid;
-      gap: 20px;
+      gap: 22px;
       background: linear-gradient(180deg, var(--panel), var(--panel-soft));
     }
     .login-head {
       display: grid;
       gap: 8px;
+    }
+    .login-head p {
+      margin: 0;
     }
     .role-pills {
       display: grid;
@@ -191,14 +199,15 @@
     }
     @media (max-width: 720px) {
       .shell {
-        width: min(100vw - 24px, 1120px);
+        width: min(100vw - 24px, 1140px);
         padding: 18px 0 24px;
       }
       .brand-panel,
       .login-card {
         padding: 24px;
       }
-      .role-pills {
+      .role-pills,
+      .feature-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -207,14 +216,28 @@
 <body>
   <main class="shell">
     <section class="brand-panel">
-      <p class="eyebrow">Enterprise AI</p>
-      <h1>企业智能工作入口</h1>
-      <p>登录后按角色直接进入工作入口或治理控制台，手机端支持单独预览。</p>
-      <div class="brand-tags">
-        <span>统一对话入口</span>
-        <span>历史对话保留</span>
-        <span>部门工具专区</span>
-        <span>反馈记录闭环</span>
+      <div class="brand-copy">
+        <p class="eyebrow">Enterprise AI</p>
+        <h1>企业智能工作入口</h1>
+        <p>统一接入对话、任务执行、部门工具与运营治理能力。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-item">
+          <h3>对话入口</h3>
+          <p>从一个输入框发起工作需求，保留历史会话与执行状态。</p>
+        </article>
+        <article class="feature-item">
+          <h3>部门工具</h3>
+          <p>按角色与权限查看部门工具，控制可见、可用与可下载范围。</p>
+        </article>
+        <article class="feature-item">
+          <h3>反馈闭环</h3>
+          <p>对话支持点赞和点踩，反馈可进入管理员侧统一查看。</p>
+        </article>
+        <article class="feature-item">
+          <h3>移动协同</h3>
+          <p>手机端可单独预览，查看任务摘要与角色对应信息。</p>
+        </article>
       </div>
     </section>
 

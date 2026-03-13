@@ -15,7 +15,10 @@
           <p class="eyebrow">Enterprise AI</p>
           <div class="brand-lockup">
             <span class="brand-dot" aria-hidden="true"></span>
-            <span class="brand-title">工作区</span>
+            <div class="brand-copy">
+              <span class="brand-title">工作区</span>
+              <span class="brand-subtitle">会话与任务</span>
+            </div>
           </div>
         </div>
         <button class="primary-btn full-width new-chat-btn" id="newChatBtn" type="button">新建对话</button>
@@ -32,9 +35,12 @@
 
     <main class="workspace-main">
       <header class="topbar">
-        <div>
+        <div class="topbar-copy">
           <p class="eyebrow">Enterprise AI</p>
-          <h2>统一工作入口</h2>
+          <div class="topbar-line">
+            <h2>统一工作入口</h2>
+            <span class="surface-pill">员工</span>
+          </div>
         </div>
         <div class="topbar-actions">
           <a class="link-btn" href="../demo-mobile/?role=user" id="mobilePreviewLink">手机端预览</a>
@@ -54,7 +60,7 @@
       <section class="workspace-grid">
         <section class="panel chat-panel">
           <div class="section-head">
-            <h2>当前对话</h2>
+            <h2>对话</h2>
             <span class="meta-text" id="messageCount">0 条</span>
           </div>
           <div class="message-list" id="messageList"></div>
@@ -64,8 +70,8 @@
           <section class="panel status-panel">
             <div class="section-head">
               <div>
-                <p class="section-kicker">当前任务</p>
-                <h2 id="statusTitle">预定会议</h2>
+                <p class="section-kicker">执行状态</p>
+                <h2 id="statusTitle">当前任务</h2>
               </div>
               <span class="status-pill status-idle" id="statusBadge">可发起</span>
             </div>

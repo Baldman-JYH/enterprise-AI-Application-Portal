@@ -24,12 +24,13 @@ body {
     linear-gradient(180deg, #fcfcf9 0%, #f3f4ee 100%);
 }
 .dashboard-shell {
-  width: min(1240px, calc(100vw - 40px));
+  width: min(1280px, calc(100vw - 40px));
   margin: 0 auto;
-  padding: 40px 0 72px;
+  padding: 34px 0 72px;
 }
 .topbar,
 .top-actions,
+.topbar-line,
 .panel-head,
 .tag-row,
 .feedback-item-head,
@@ -49,9 +50,10 @@ body {
 .feedback-item-head,
 .tool-queue-top,
 .tool-detail-head,
-.tool-governance-actions {
+.tool-governance-actions,
+.topbar-line {
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 .top-actions,
 .tag-row,
@@ -62,9 +64,16 @@ body {
 .chart-legend {
   flex-wrap: wrap;
 }
+.topbar {
+  padding: 2px 4px 0;
+}
+.topbar-copy {
+  display: grid;
+  gap: 8px;
+}
 .eyebrow,
 .card-kicker {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -103,7 +112,8 @@ body {
 .panel,
 .tool-overview-item,
 .table-shell,
-.chart-shell {
+.chart-shell,
+.surface-pill {
   border-radius: var(--radius);
   border: 1px solid var(--border);
 }
@@ -112,7 +122,8 @@ body {
 .badge,
 .tag-pill,
 .scope-chip,
-.target-chip {
+.target-chip,
+.surface-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -125,14 +136,27 @@ body {
   color: #ffffff;
   background: #202123;
   box-shadow: 0 10px 24px rgba(32, 33, 35, 0.12);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+.button:hover,
+.tool-queue-card:hover {
+  transform: translateY(-1px);
 }
 .button.secondary,
 .user-pill,
 .scope-chip,
-.target-chip {
+.target-chip,
+.surface-pill {
   color: var(--text);
   background: rgba(255, 255, 255, 0.84);
   box-shadow: none;
+}
+.surface-pill {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
 }
 .user-pill,
 .badge,
@@ -153,7 +177,7 @@ body {
 }
 .metric-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  margin-top: 20px;
+  margin-top: 22px;
 }
 .metric-card,
 .panel {
@@ -199,12 +223,12 @@ body {
 }
 .trend-layout {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.18fr 0.82fr;
   gap: 18px;
 }
 .chart-shell,
 .table-shell {
-  padding: 16px 18px;
+  padding: 18px;
   background: #fbfbf8;
 }
 .chart-shell svg {
@@ -245,7 +269,9 @@ body {
 .feedback-list,
 .stack-list,
 .tool-queue-list,
-.policy-grid { margin-top: 16px; }
+.policy-grid {
+  margin-top: 16px;
+}
 .feedback-item,
 .stack-item,
 .tool-queue-card,
@@ -347,10 +373,11 @@ body {
 }
 @media (max-width: 760px) {
   .dashboard-shell {
-    width: min(100vw - 24px, 1240px);
+    width: min(100vw - 24px, 1280px);
     padding: 24px 0 40px;
   }
   .topbar,
+  .topbar-line,
   .top-actions,
   .feedback-item-head,
   .tool-detail-head,
