@@ -11,6 +11,7 @@
   --danger: #c2410c;
   --radius: 28px;
   --shadow: 0 18px 56px rgba(15, 23, 42, 0.07);
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.05);
   font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 * { box-sizing: border-box; }
@@ -26,7 +27,7 @@ body {
 .dashboard-shell {
   width: min(1280px, calc(100vw - 40px));
   margin: 0 auto;
-  padding: 34px 0 72px;
+  padding: 24px 0 72px;
 }
 .topbar,
 .top-actions,
@@ -65,11 +66,22 @@ body {
   flex-wrap: wrap;
 }
 .topbar {
-  padding: 2px 4px 0;
+  position: sticky;
+  top: 16px;
+  z-index: 5;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-soft);
 }
 .topbar-copy {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+}
+.topbar-line {
+  justify-content: flex-start;
 }
 .eyebrow,
 .card-kicker {
@@ -184,8 +196,20 @@ body {
   box-shadow: var(--shadow);
 }
 .metric-card {
+  position: relative;
+  overflow: hidden;
   padding: 20px;
   background: rgba(255, 255, 255, 0.88);
+}
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(16, 163, 127, 0.8), rgba(16, 163, 127, 0.08));
 }
 .metric-card span,
 .metric-card small,
@@ -206,6 +230,7 @@ body {
   display: block;
   margin: 12px 0 8px;
   font-size: 28px;
+  letter-spacing: -0.03em;
 }
 .panel {
   padding: 24px;
@@ -230,6 +255,7 @@ body {
 .table-shell {
   padding: 18px;
   background: #fbfbf8;
+  border-radius: 24px;
 }
 .chart-shell svg {
   width: 100%;
@@ -264,6 +290,9 @@ body {
 .metric-table th {
   color: var(--muted);
   font-weight: 600;
+}
+.metric-table tbody tr:hover {
+  background: rgba(16, 163, 127, 0.04);
 }
 .metric-table tr:last-child td { border-bottom: 0; }
 .feedback-list,
@@ -374,7 +403,7 @@ body {
 @media (max-width: 760px) {
   .dashboard-shell {
     width: min(100vw - 24px, 1280px);
-    padding: 24px 0 40px;
+    padding: 18px 0 40px;
   }
   .topbar,
   .topbar-line,
